@@ -89,9 +89,11 @@ Software Architecture/Design
 ## 6. Skills Required
 
 Group has combined experience with Computer Vision, Robotics and Embedded Systems, as well as Software Architecture to make a coherent system that meets requirements.
-
+ 
 ## 7. Methods to Use
-??
+
+- Go over direct alternatives to software and hardware implementations (ROS? Simulation Environments? Hardware?)
+- Rule-based or PID control
 
 ## 8. Proposed Timetable
 
@@ -109,6 +111,11 @@ Group has combined experience with Computer Vision, Robotics and Embedded System
 
 - Neural Networks / ML is too complicated - Detection, K&C
 	- Fall back to algorithmic approach
+- Hardware risks
+	- Too expensive?
+	- Incompatible with other components?
+	- Explore alternatives to hardware to suit constraints
+	- Software should also play well with hardware restrictions
 - Scope Creep
 	- Tight organisation of tasks; have it as organised as possible before starting
 	- **Review tasks regularly to reassess deadlines realistically**
@@ -116,7 +123,8 @@ Group has combined experience with Computer Vision, Robotics and Embedded System
 ## 10. Special Components & Facilities
 
 - Robot
-	- Should be provided by Professor Shen as previously mentioned
+	- Should be provided by Professor Shen as previously mentioned (?)
+	- Keep computation off the robot if we end up using it; just use it for sensing and motors
 - Test Track
 	- Bristol board with drawn lines for lanes
 	- Go into paved parking lot with tape for lanes
