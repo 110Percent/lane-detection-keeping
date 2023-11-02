@@ -71,7 +71,7 @@
 
 ## Detection
 - boilerplate setup so we can get moving on flow of detection processing
-- should have updates with frequency >15, every 20ms at least
+- should have updates with frequency >50, every 20ms at least
 - setup Schema for messaging to K&C
 	- lane data create our own datatype
 		- list of points on coordinate system relative to car of center of line
