@@ -21,9 +21,9 @@ class MovementController : public rclcpp::Node
 		
 	private:
 		// Code to execute when receiving a movement command
-		void movement_instruction_callback(const lane_interfaces::msg::MovementInstruction & msg) {
+		void movement_instruction_callback(const lane_interfaces::msg::MovementInstruction::SharedPtr msg) {
 			// For now, just echo the string received.
-			RCLCPP_INFO(this->get_logger(), "Received message: %s\n---------------", msg.temp.c_str());	
+			RCLCPP_INFO(this->get_logger(), "Received message: %s\n---------------", msg->temp.c_str());
 		}
 
 		rclcpp::Subscription<lane_interfaces::msg::MovementInstruction>::SharedPtr subscription_;	
