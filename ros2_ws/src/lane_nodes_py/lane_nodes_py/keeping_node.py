@@ -5,7 +5,7 @@ from lane_interfaces.msg import LaneLocation, MovementInstruction
 
 from ackermann_msgs.msg import AckermannDrive
 
-import keeping
+from keeping import Keeping
 
 
 class KeepingNode(Node):
