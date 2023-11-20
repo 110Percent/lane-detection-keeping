@@ -4,6 +4,7 @@ from rclpy.node import Node
 
 from lane_interfaces.msg import LaneLocation, Image
 
+import Detection
 
 
 class DetectionNode(Node):
