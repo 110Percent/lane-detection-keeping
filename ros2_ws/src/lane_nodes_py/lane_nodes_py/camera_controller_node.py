@@ -16,10 +16,11 @@ from .camera_controller import CameraController
 cv_bridge = CvBridge()
 
 class CameraControllerNode(Node):
-    camera_controller = CameraController()
 
     def __init__(self):
         super().__init__('camera_controller')
+
+        self.camera_controller = CameraController()
         
         # Create the publisher for sending image data
         # self.image_publisher_ = self.create_publisher(Image, "image", 10)
@@ -38,7 +39,7 @@ class CameraControllerNode(Node):
         cv_image = cv_bridge.imgmsg_to_cv2(msg, "bgr8")
         
         cv_image = camera_controller.canny(cv_image)
-        camera_controller.show_image(cv_image)
+        self.camera_controller.show_image(cv_image)
 
         # self.image_publisher_.publish(msg)
 
