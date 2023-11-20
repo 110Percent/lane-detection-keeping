@@ -15,19 +15,19 @@ def generate_launch_description():
         Node(
             package='lane_nodes_py',
             namespace='test',
-            executable='camera_controller',
+            executable='camera_controller_node',
             name='camera_controller'
         ),
         Node(
             package='lane_nodes_py',
             namespace='test',
-            executable='detection',
+            executable='detection_node',
             name='detection'
         ),
         Node(
             package='lane_nodes_py',
             namespace='test',
-            executable='keeping',
+            executable='keeping_node',
             name='keeping'
         ),
         Node(

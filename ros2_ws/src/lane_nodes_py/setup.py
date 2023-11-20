@@ -20,9 +20,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'keeping = lane_nodes_py.keeping:main',
-            'detection = lane_nodes_py.detection:main',
-            'camera_controller = lane_nodes_py.camera_controller:main'
+            'keeping_node = lane_nodes_py.keeping_node:main',
+            'detection_node = lane_nodes_py.detection_node:main',
+            'camera_controller_node = lane_nodes_py.camera_controller_node:main'
         ],
     },
 )
