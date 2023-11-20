@@ -10,7 +10,7 @@ import cv2
 
 from cv_bridge import CvBridge, CvBridgeError
 
-import CameraController 
+import camera_controller 
 
 
 cv_bridge = CvBridge()
