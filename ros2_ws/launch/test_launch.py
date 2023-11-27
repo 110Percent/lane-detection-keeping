@@ -84,6 +84,18 @@ def generate_launch_description():
                 'role_name': launch.substitutions.LaunchConfiguration('role_name'),
                 'control_id': launch.substitutions.LaunchConfiguration('control_id')
             }.items()
+        ),
+        launch_ros.actions.Node(
+            package='carla_manual_control',
+            executable='carla_manual_control',
+            name=['carla_manual_control_', launch.substitutions.LaunchConfiguration('role_name')],
+            output='screen',
+            emulate_tty=True,
+            parameters=[
+                {
+                    'role_name': launch.substitutions.LaunchConfiguration('role_name')
+                }
+            ]
         )
     ])
 
