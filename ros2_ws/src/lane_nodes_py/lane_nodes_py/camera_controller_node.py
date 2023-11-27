@@ -38,7 +38,7 @@ class CameraControllerNode(Node):
         # self.get_logger().info('Received message: "%s"' % msg)
         cv_image = cv_bridge.imgmsg_to_cv2(msg, "bgr8")
         
-        cv_image = camera_controller.canny(cv_image)
+        cv_image = self.camera_controller.canny(cv_image)
         self.camera_controller.show_image(cv_image)
 
         # self.image_publisher_.publish(msg)
