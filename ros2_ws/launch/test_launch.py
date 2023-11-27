@@ -18,7 +18,6 @@ def generate_launch_description():
                 # 'carla_spawn_objects') + '/config/objects.json'
             default_value=get_package_share_directory(
                 'lane_nodes_py') + '/config/objects.json'
-                )
             ),
         launch.actions.DeclareLaunchArgument(
             name='spawn_point_ego_vehicle',
