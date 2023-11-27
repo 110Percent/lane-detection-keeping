@@ -14,7 +14,7 @@ def generate_launch_description():
             ),
         launch.actions.DeclareLaunchArgument(
             name='objects_definition_file',
-            default_value='../carla_config/objects.json'
+            default_value='~/lane-detection-keeping/carla_config/objects.json'
             ),
         launch.actions.DeclareLaunchArgument(
             name='spawn_point_ego_vehicle',
