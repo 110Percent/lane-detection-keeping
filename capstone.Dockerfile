@@ -12,4 +12,4 @@ COPY ./src/ros_entrypoint.sh /
 
 RUN /bin/bash -c "python3 -m pip install --force-reinstall 'simple-pid==1.0.1'"
 
-CMD /bin/bash -c "bash ./run.sh"
+CMD /bin/bash -c "echo 'Sleeping for a few seconds to allow CARLA to start...' && sleep 8 && bash ./run.sh"
