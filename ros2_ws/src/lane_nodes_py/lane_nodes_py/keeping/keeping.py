@@ -48,11 +48,7 @@ class Keeping:
         output = self.pid.update(error)
 
         # Use the output of the PID controller with the grid data to determine the next control
-        msg = self.generateAckermannControls(output, self.path_grid)
-
-        self.get_logger().info("%s" % msg)
-        self.movement_publisher_.publish(msg)
-        self.timer.reset()
+        return self.generate_ackerman_control(output, self.path_grid)
 
     def calculate_error(self, path_grid: PathData):
         # TODO: Implement the calculation of the error
