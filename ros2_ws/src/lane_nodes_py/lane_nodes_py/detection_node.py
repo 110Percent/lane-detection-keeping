@@ -1,4 +1,6 @@
 import rclpy
+import torch
+
 
 from clrnet.utils.config import Config
 

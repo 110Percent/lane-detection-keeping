@@ -8,7 +8,6 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
-    hexapod_nodes_path = get_package_share_path('hexapod_nodes')
 
     detection_node = Node(
             package='lane_nodes_py',
