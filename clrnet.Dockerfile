@@ -26,4 +26,7 @@ RUN wget -q 'https://github.com/Turoad/CLRNet/releases/download/models/tusimple_
 RUN unzip tusimple_r18.pth.zip
 RUN rm tusimple_r18.pth.zip
 
+RUN mkdir -p /root/.cache/torch/hub/checkpoints
+RUN wget -q -O /root/.cache/torch/hub/checkpoints/resnet18-5c106cde.pth https://download.pytorch.org/models/resnet18-5c106cde.pth
+
 WORKDIR /opt/clrnet
