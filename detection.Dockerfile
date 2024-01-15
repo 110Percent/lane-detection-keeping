@@ -2,8 +2,8 @@ FROM clrnet:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-COPY ./src/detection /opt/detection
-WORKDIR /opt/detection
+COPY ./ros2_ws /opt/lane-capstone
+WORKDIR /opt/lane-capstone
 
 # Install ROS 2 Foxy
 
@@ -12,8 +12,9 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" \
     | tee /etc/apt/sources.list.d/ros2.list > /dev/null
 RUN apt-get update
-RUN apt-get install -y ros-foxy-ros-base python3-argcomplete
+RUN apt-get install -y ros-foxy-ros-base python3-argcomplete ros-dev-tools
 
-RUN echo "Hi :)"
+RUN /bin/bash -c "source /opt/ros/foxy/setup.bash && \
+    colcon build --symlink-install"
 
-ENTRYPOINT ["python3", "main.py"]
+CMD /bin/bash -c "bash ./run_detection.sh"
