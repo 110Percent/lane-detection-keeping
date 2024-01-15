@@ -40,12 +40,6 @@ def generate_launch_description():
         Node(
             package='lane_nodes_py',
             namespace='test',
-            executable='detection_node',
-            name='detection'
-            ),
-        Node(
-            package='lane_nodes_py',
-            namespace='test',
             executable='keeping_node',
             name='keeping'
             ),
