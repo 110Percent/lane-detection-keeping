@@ -34,11 +34,11 @@ class Keeping:
         print('Publishing movement instructions')
 
         print('Exiting for testing purposes')
-        return
 
         # If the data is not fresh, meaning we're using old data, use the last message sent to update our
         # "expected" model
         if not self.path_grid.is_fresh():
+            print('Grid path is not fresh')
             self.path_grid.update(self.last_message)
 
         # Calculate our error using the grid data
@@ -55,10 +55,12 @@ class Keeping:
         self.timer.reset()
 
     def calculate_error(self, path_grid: PathData):
+        # TODO: Implement the calculation of the error
         return 0
 
     def generate_ackerman_control(self, output, path_grid: PathData):
         """Generates default controls, but in practice will incorporate the output, and the mathematical model"""
+        # TODO: Actually implement a proper calculation of controls
         msg = AckermannWrapper()
         msg.steering_angle = 1.22
         msg.steering_angle_velocity = 0.0
