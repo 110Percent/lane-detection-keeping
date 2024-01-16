@@ -9,6 +9,7 @@ import numpy as np
 
 POLYNOMIAL_DEGREE = 3
 
+ROTATION_LIMIT = 1000
 
 def calculate_path(calculated_path: LaneData) -> list[tuple[float, float]] | None:
     """
@@ -101,6 +102,20 @@ def polish_path(calculated_path: list[tuple[float, float]]) -> list[tuple[float,
 
     return new_points
 
+def intersection(L1, L2):
+    """
+    Source: https://stackoverflow.com/a/20679579
+    """
+
+    D  = L1[0] * L2[1] - L1[1] * L2[0]
+    Dx = L1[2] * L2[1] - L1[1] * L2[2]
+    Dy = L1[0] * L2[2] - L1[2] * L2[0]
+    if D != 0:
+        x = Dx / D
+        y = Dy / D
+        return x,y
+    else:
+        return False
 
 class PathData:
     # Path to follow as a list of (x,y) coordinates
@@ -120,18 +135,51 @@ class PathData:
         self.vehicle_size = size
         self.fresh = True
 
-    def update(self, last_message: AckermannWrapper):
+    def update(self, last_message: AckermannWrapper, time):
         # TODO: Implement the update of the mathematical model
         """
         Step 1: Figure out the center of pivot from the size of the vehicle and the turning angle
+        Step 2: Determine how far the vehicle travels
+        Step 3: Determine how many radians the vehicle has moved
+        Step 4: Determine vehicle's new position
         :param last_message:
         :return:
         """
+
+        # Step 1
         fx = self.position[0]
         fy = self.position[1]
         bx = math.cos(math.pi + self.car_direction) * self.vehicle_size + fx
         by = math.sin(math.pi + self.car_direction) * self.vehicle_size + fy
 
+        fp = self.car_direction + last_message.steering_angle - (math.pi/2)
+        fm = math.tan(fp)
+        fb = fy - (fm * fx)
+
+        bp = self.car_direction - (math.pi/2)
+        bm = math.tan(bp)
+        bb = by - (bm * bx)
+
+        intersection_result = intersection((-fm, 1, fb), (-bm, 1, bb))
+        if intersection_result:
+            # Step 2
+            distance_traveled = time * last_message.speed
+
+            radius = math.dist(intersection_result, self.position)
+
+            if radius > ROTATION_LIMIT:
+                nfx = math.cos(self.car_direction) * distance_traveled + fx
+                nfy = math.sin(self.car_direction) * distance_traveled + fy
+                self.position = (nfx, nfy)
+
+            else:
+                radians_traversed = distance_traveled/radius
+
+
+
+
+        else:
+            print("No determinant found")
 
 
         print("Updating the mathematical model")

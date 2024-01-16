@@ -1,3 +1,5 @@
+import time
+
 from ackerman_wrapper import AckermannWrapper
 
 from pid_controller import PID
@@ -22,7 +24,10 @@ class Keeping:
         self.last_message.steering_angle_velocity = 0.0
         self.last_message.speed = 0.0
         self.last_message.acceleration = 0.0
-        self.last_message.jerk = 0.0
+        self.last_message.jerk = 0.
+
+        # Set a default time
+        self.last_time = time.time()
 
     # Callback for receiving lane data. At the moment, just echoes it down the pipeline without any further processing.
     def lane_location_callback(self, msg: LaneData):
@@ -37,9 +42,12 @@ class Keeping:
 
         # If the data is not fresh, meaning we're using old data, use the last message sent to update our
         # "expected" model
+        current_time = time.time()
         if not self.path_grid.is_fresh():
             print('Grid path is not fresh')
-            self.path_grid.update(self.last_message)
+            self.path_grid.update(self.last_message, current_time - self.last_time)
+
+        self.last_time = current_time
 
         # Calculate our error using the grid data
         error = self.calculate_error(self.path_grid)
