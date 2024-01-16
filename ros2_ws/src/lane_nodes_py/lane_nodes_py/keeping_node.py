@@ -34,7 +34,7 @@ class KeepingNode(Node):
     def movement_output_callback(self):
         self.get_logger().info('Publishing movement instructions')
         msg = AckermannDrive()
-        msg.steering_angle = 1.22
+        msg.steering_angle = 0.0
         msg.steering_angle_velocity = 0.0
         msg.speed = 10.0
         msg.acceleration = 0.0
