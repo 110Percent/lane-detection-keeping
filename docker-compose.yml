@@ -4,6 +4,7 @@ services:
       context: .
       dockerfile: capstone.Dockerfile
     network_mode: host
+    hostname: capstone-main
     deploy:
       resources:
         reservations:
@@ -17,19 +18,19 @@ services:
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ~/.Xauthority:/root/.Xauthority
+      - /dev/shm:/dev/shm:rw
     stdin_open: true
     tty: true
-    depends_on:
-      - carla
   detection:
     build:
       context: .
       dockerfile: detection.Dockerfile
       ulimits:
         nofile:
-          soft: 65536
-          hard: 65536
+          soft: 1024
+          hard: 1024
     network_mode: host
+    hostname: capstone-detection
     deploy:
       resources:
         reservations:
@@ -43,13 +44,13 @@ services:
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ~/.Xauthority:/root/.Xauthority
-    stdin_open: true
+      - /dev/shm:/dev/shm:rw
     tty: true
-    depends_on:
-      - carla
   carla:
     image: carlasim/carla:0.9.13
-    command: /bin/bash ./CarlaUE4.sh -RenderOffScreen
+    command: /bin/bash ./CarlaUE4.sh -quality-level=Low -RenderOffScreen
+    environment:
+      - DISPLAY=$DISPLAY
     privileged: true
     deploy:
       resources:

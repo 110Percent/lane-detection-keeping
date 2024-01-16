@@ -20,6 +20,8 @@ RUN python3 -m pip install -r requirements.txt
 
 RUN python3 setup.py build develop
 
+RUN sed -i "s|cv2.waitKey(0)|cv2.waitKey(10)|g" /opt/clrnet/clrnet/utils/visualization.py
+
 RUN mkdir -p /opt/clrnet/models
 WORKDIR /opt/clrnet/models
 RUN wget -q 'https://github.com/Turoad/CLRNet/releases/download/models/tusimple_r18.pth.zip'

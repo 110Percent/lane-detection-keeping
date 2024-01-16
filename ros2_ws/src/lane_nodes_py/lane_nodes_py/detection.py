@@ -19,6 +19,7 @@ from tqdm import tqdm
 
 class Detection(object):
     def __init__(self, cfg):
+        self.processing = False
         self.cfg = cfg
         self.processes = Process(cfg.val_process, cfg)
         self.net = build_net(self.cfg)
@@ -34,6 +35,14 @@ class Detection(object):
         data = self.processes(data)
         data['img'] = data['img'].unsqueeze(0)
         data.update({'img_path': img_path, 'ori_img': ori_img})
+        return data
+
+    def preprocess_raw(self, img):
+        img = cv2.resize(img, (self.cfg.ori_img_w, self.cfg.ori_img_h))
+        img = img[self.cfg.cut_height:, :, :].astype(np.float32)
+        data = {'img': img, 'lanes': []}
+        data = self.processes(data)
+        data['img'] = data['img'].unsqueeze(0)
         return data
 
     def inference(self, data):
@@ -54,6 +63,19 @@ class Detection(object):
         data['lanes'] = self.inference(data)[0]
         if self.cfg.show or self.cfg.savedir:
             self.show(data)
+        return data
+
+    def run_raw(self, img):
+        if self.processing:
+            return None
+        self.processing = True
+        data = self.preprocess_raw(img)
+        data['lanes'] = self.inference(data)[0]
+        if self.cfg.show:
+            lanes = [lane.to_array(self.cfg) for lane in data['lanes']]
+            imshow_lanes(img, lanes, show=self.cfg.show)
+            cv2.waitKey(10)
+        self.processing = False
         return data
 
 
