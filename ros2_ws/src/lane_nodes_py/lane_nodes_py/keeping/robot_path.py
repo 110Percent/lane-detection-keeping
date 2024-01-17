@@ -11,6 +11,7 @@ POLYNOMIAL_DEGREE = 3
 
 ROTATION_LIMIT = 1000
 
+
 def calculate_path(calculated_path: LaneData) -> list[tuple[float, float]] | None:
     """
         Pseudo-code
@@ -102,20 +103,22 @@ def polish_path(calculated_path: list[tuple[float, float]]) -> list[tuple[float,
 
     return new_points
 
+
 def intersection(L1, L2):
     """
     Source: https://stackoverflow.com/a/20679579
     """
 
-    D  = L1[0] * L2[1] - L1[1] * L2[0]
+    D = L1[0] * L2[1] - L1[1] * L2[0]
     Dx = L1[2] * L2[1] - L1[1] * L2[2]
     Dy = L1[0] * L2[2] - L1[2] * L2[0]
     if D != 0:
         x = Dx / D
         y = Dy / D
-        return x,y
+        return x, y
     else:
         return False
+
 
 class PathData:
     # Path to follow as a list of (x,y) coordinates
@@ -136,12 +139,13 @@ class PathData:
         self.fresh = True
 
     def update(self, last_message: AckermannWrapper, time):
-        # TODO: Implement the update of the mathematical model
+        # TODO: Break down the method for testing
         """
         Step 1: Figure out the center of pivot from the size of the vehicle and the turning angle
         Step 2: Determine how far the vehicle travels
         Step 3: Determine how many radians the vehicle has moved
         Step 4: Determine vehicle's new position
+        :param time:
         :param last_message:
         :return:
         """
@@ -152,19 +156,20 @@ class PathData:
         bx = math.cos(math.pi + self.car_direction) * self.vehicle_size + fx
         by = math.sin(math.pi + self.car_direction) * self.vehicle_size + fy
 
-        fp = self.car_direction + last_message.steering_angle - (math.pi/2)
+        fp = self.car_direction + last_message.steering_angle - (math.pi / 2)
         fm = math.tan(fp)
         fb = fy - (fm * fx)
 
-        bp = self.car_direction - (math.pi/2)
+        bp = self.car_direction - (math.pi / 2)
         bm = math.tan(bp)
         bb = by - (bm * bx)
 
         intersection_result = intersection((-fm, 1, fb), (-bm, 1, bb))
-        if intersection_result:
-            # Step 2
-            distance_traveled = time * last_message.speed
 
+        # Step 2
+        distance_traveled = time * last_message.speed
+
+        if intersection_result:
             radius = math.dist(intersection_result, self.position)
 
             if radius > ROTATION_LIMIT:
@@ -173,14 +178,24 @@ class PathData:
                 self.position = (nfx, nfy)
 
             else:
-                radians_traversed = distance_traveled/radius
-
-
-
+                # Steps 3 and 4
+                theta = distance_traveled / radius
+                if np.cross((self.position[0] - intersection_result[0], self.position[0] - intersection_result[0]), (math.cos(self.car_direction), math.sin(self.car_direction))) < 0:
+                    theta = -theta
+                a = intersection_result[0]
+                b = intersection_result[1]
+                x = self.position[0]
+                y = self.position[1]
+                # Source for equation: https://math.stackexchange.com/a/4434146
+                nfx, nfy = a + (x - a) * math.cos(theta) - (y - b) * math.sin(theta), b + (x - a) * math.sin(theta) + (
+                            y - b) * math.cos(theta)
+                self.position = (nfx, nfy)
+                self.car_direction = self.car_direction + theta
 
         else:
-            print("No determinant found")
-
+            nfx = math.cos(self.car_direction) * distance_traveled + fx
+            nfy = math.sin(self.car_direction) * distance_traveled + fy
+            self.position = (nfx, nfy)
 
         print("Updating the mathematical model")
         self.fresh = False
@@ -197,3 +212,12 @@ class PathData:
         self.path = data
         self.position = (0, 0)
         self.car_direction = 0
+
+    def get_distance_to_line(self):
+        # Source: https://stackoverflow.com/a/39840218
+        p1 = np.array([1, -4 / 3])
+        p2 = np.array([3, 0])
+        p3 = np.array(self.position)
+        norm = np.linalg.norm
+        d = np.abs(norm(np.cross(p2 - p1, p1 - p3))) / norm(p2 - p1)
+        return d

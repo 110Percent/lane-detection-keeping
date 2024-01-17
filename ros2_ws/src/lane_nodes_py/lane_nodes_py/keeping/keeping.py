@@ -60,7 +60,7 @@ class Keeping:
 
     def calculate_error(self, path_grid: PathData):
         # TODO: Implement the calculation of the error
-        return 0
+        return path_grid.get_distance_to_line()
 
     def generate_ackerman_control(self, output, path_grid: PathData):
         """Generates default controls, but in practice will incorporate the output, and the mathematical model"""
