@@ -180,7 +180,8 @@ class PathData:
             else:
                 # Steps 3 and 4
                 theta = distance_traveled / radius
-                if np.cross((self.position[0] - intersection_result[0], self.position[0] - intersection_result[0]), (math.cos(self.car_direction), math.sin(self.car_direction))) < 0:
+                if np.cross((self.position[0] - intersection_result[0], self.position[1] - intersection_result[1]),
+                            (math.cos(self.car_direction), math.sin(self.car_direction))) < 0:
                     theta = -theta
                 a = intersection_result[0]
                 b = intersection_result[1]
@@ -188,7 +189,7 @@ class PathData:
                 y = self.position[1]
                 # Source for equation: https://math.stackexchange.com/a/4434146
                 nfx, nfy = a + (x - a) * math.cos(theta) - (y - b) * math.sin(theta), b + (x - a) * math.sin(theta) + (
-                            y - b) * math.cos(theta)
+                        y - b) * math.cos(theta)
                 self.position = (nfx, nfy)
                 self.car_direction = self.car_direction + theta
 
@@ -215,9 +216,37 @@ class PathData:
 
     def get_distance_to_line(self):
         # Source: https://stackoverflow.com/a/39840218
-        p1 = np.array([1, -4 / 3])
-        p2 = np.array([3, 0])
+
+        p1 = None
+        p2 = None
+
+        # Get the closest two points to the cars position
+        for point in self.path:
+            if p1 is None:
+                p1 = point
+                continue
+            if dist(point, self.position) < dist(p1, self.position):
+                p2 = p1
+                p1 = point
+                continue
+            if p2 is None or dist(point, self.position) < dist(p2, self.position):
+                p2 = point
+                continue
+
+        p1 = np.array(p1)
+        p2 = np.array(p2)
         p3 = np.array(self.position)
         norm = np.linalg.norm
-        d = np.abs(norm(np.cross(p2 - p1, p1 - p3))) / norm(p2 - p1)
+        n = p2 - p1
+        v = p3 - p1
+        p4 = p1 + n*(np.dot(v, n)/np.dot(n, n))
+        d = dist(p4, p3)
+        if np.cross((self.position[0] - p4[0], self.position[1] - p4[1]),
+                    (math.cos(self.car_direction), math.sin(self.car_direction))) < 0:
+            d = -d
+
         return d
+
+
+def dist(p1, p2) -> float:
+    return math.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
