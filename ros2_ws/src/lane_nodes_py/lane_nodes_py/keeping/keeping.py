@@ -58,17 +58,17 @@ class Keeping:
         # Use the output of the PID controller with the grid data to determine the next control
         return self.generate_ackerman_control(output, self.path_grid)
 
-    def calculate_error(self, path_grid: PathData):
-        # TODO: Implement the calculation of the error
+    @staticmethod
+    def calculate_error(path_grid: PathData):
         return path_grid.get_distance_to_line()
 
     def generate_ackerman_control(self, output, path_grid: PathData):
         """Generates default controls, but in practice will incorporate the output, and the mathematical model"""
         # TODO: Actually implement a proper calculation of controls
         msg = AckermannWrapper()
-        msg.steering_angle = 1.22
+        msg.steering_angle = output
         msg.steering_angle_velocity = 0.0
-        msg.speed = 10.0
+        msg.speed = 1.0
         msg.acceleration = 0.0
         msg.jerk = 0.0
         self.last_message = msg
