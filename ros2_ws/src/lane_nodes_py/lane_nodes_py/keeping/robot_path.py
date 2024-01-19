@@ -7,11 +7,14 @@ from ackerman_wrapper import AckermannWrapper
 
 import numpy as np
 
+import warnings
+
 POLYNOMIAL_DEGREE = 3
 
 ROTATION_LIMIT = 1000
 
 
+# Sufficiently tested to Liam's satisfaction with manual testing
 def calculate_path(calculated_path: LaneData) -> list[tuple[float, float]] | None:
     """
         Pseudo-code
@@ -31,22 +34,33 @@ def calculate_path(calculated_path: LaneData) -> list[tuple[float, float]] | Non
         y_axis_list = []
         for j in range(len(calculated_path.coordinates)):
             if calculated_path.paths[i][j] != 'N':
-                x_axis_list += calculated_path.coordinates[j]
-                y_axis_list += calculated_path.paths[i][j]
+                x_axis_list += [calculated_path.coordinates[j]]
+                y_axis_list += [calculated_path.paths[i][j]]
         x_axis = np.array(x_axis_list)
         y_axis = np.array(y_axis_list)
 
-        z = np.polyfit(x_axis, y_axis, POLYNOMIAL_DEGREE)
-        if directly_left is None | (z[POLYNOMIAL_DEGREE] > 0 & z[POLYNOMIAL_DEGREE] < directly_left[POLYNOMIAL_DEGREE]):
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore', np.RankWarning)
+            z = np.polyfit(x_axis, y_axis, POLYNOMIAL_DEGREE)
+
+        print("Index " + str(i) + ": " + str(z))
+        print("y-intercept: " + str(z[POLYNOMIAL_DEGREE]))
+        if (directly_left is None and 0 <= z[POLYNOMIAL_DEGREE]) or (
+                0 <= z[POLYNOMIAL_DEGREE] < directly_left[POLYNOMIAL_DEGREE]):
+            print("Adding above")
             directly_left = z
             directly_left_index = i
 
-        if directly_right is None | (
-                z[POLYNOMIAL_DEGREE] < 0 & z[POLYNOMIAL_DEGREE] > directly_right[POLYNOMIAL_DEGREE]):
+        if (directly_right is None and 0 > z[POLYNOMIAL_DEGREE]) or (
+                0 > z[POLYNOMIAL_DEGREE] > directly_right[POLYNOMIAL_DEGREE]):
+            print("Adding below")
             directly_right = z
             directly_right_index = i
 
-    if directly_right_index == -1 & directly_left_index == -1:
+    print("Above index: " + str(directly_left_index))
+    print("Below index: " + str(directly_right_index))
+
+    if directly_right_index == -1 and directly_left_index == -1:
         print("Error: no lines were found that could be used")
         return None
 
@@ -55,8 +69,8 @@ def calculate_path(calculated_path: LaneData) -> list[tuple[float, float]] | Non
         y_axis_list = []
         for j in range(len(calculated_path.coordinates)):
             if calculated_path.paths[directly_left_index][j] != 'N':
-                x_axis_list += calculated_path.coordinates[j]
-                y_axis_list += calculated_path.paths[directly_left_index][j]
+                x_axis_list += [calculated_path.coordinates[j]]
+                y_axis_list += [calculated_path.paths[directly_left_index][j]]
         return list(map(lambda x, y: (x, y), x_axis_list, y_axis_list))
 
     elif directly_left_index == -1:
@@ -64,22 +78,24 @@ def calculate_path(calculated_path: LaneData) -> list[tuple[float, float]] | Non
         y_axis_list = []
         for j in range(len(calculated_path.coordinates)):
             if calculated_path.paths[directly_right_index][j] != 'N':
-                x_axis_list += calculated_path.coordinates[j]
-                y_axis_list += calculated_path.paths[directly_right_index][j]
+                x_axis_list += [calculated_path.coordinates[j]]
+                y_axis_list += [calculated_path.paths[directly_right_index][j]]
         return list(map(lambda x, y: (x, y), x_axis_list, y_axis_list))
 
     else:
+        print("setting path to between the two lines")
         x_axis_list = []
         y_axis_list = []
         for j in range(len(calculated_path.coordinates)):
-            if ((calculated_path.paths[directly_right_index][j] != 'N') &
+            if ((calculated_path.paths[directly_right_index][j] != 'N') and
                     (calculated_path.paths[directly_left_index][j] != 'N')):
-                x_axis_list += calculated_path.coordinates[j]
-                y_axis_list += (calculated_path.paths[directly_right_index][j] +
-                                calculated_path.paths[directly_right_index][j]) / 2
+                x_axis_list += [calculated_path.coordinates[j]]
+                y_axis_list += [(calculated_path.paths[directly_right_index][j] +
+                                calculated_path.paths[directly_left_index][j]) / 2]
         return list(map(lambda x, y: (x, y), x_axis_list, y_axis_list))
 
 
+# Sufficiently tested to Liam's satisfaction with manual testing
 def polish_path(calculated_path: list[tuple[float, float]]) -> list[tuple[float, float]]:
     """
     Takes a list path in the form of [(x, y)] and formats it to include 11 evenly periodic points
@@ -92,18 +108,20 @@ def polish_path(calculated_path: list[tuple[float, float]]) -> list[tuple[float,
     x_axis = np.array(x_vals)
     y_axis = np.array(y_vals)
 
-    degrees = np.polyfit(x_axis, y_axis, POLYNOMIAL_DEGREE)
-    equation = np.poly1d(degrees)
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', np.RankWarning)
+        degrees = np.polyfit(x_axis, y_axis, POLYNOMIAL_DEGREE)
+        equation = np.poly1d(degrees)
 
     new_points = []
     point_distance = max_val / 10
     for i in range(-1, 11):
         x_test = (i * point_distance)
-        new_points += [x_test, equation(x_test)]
+        new_points += [(x_test, equation(x_test))]
 
     return new_points
 
-
+# No plan to test since it's not my code
 def intersection(L1, L2):
     """
     Source: https://stackoverflow.com/a/20679579
@@ -213,7 +231,9 @@ class PathData:
         self.path = data
         self.position = (0, 0)
         self.car_direction = 0
+        self.fresh = True
 
+    # Sufficiently tested to Liam's satisfaction with manual testing
     def get_distance_to_line(self):
         # Source: https://stackoverflow.com/a/39840218
 
@@ -234,13 +254,21 @@ class PathData:
                 continue
 
         p1 = np.array(p1)
+        print(p1)
         p2 = np.array(p2)
+        print(p2)
         p3 = np.array(self.position)
-        norm = np.linalg.norm
+        print(p2)
         n = p2 - p1
+        print(n)
         v = p3 - p1
+        print(v)
         p4 = p1 + n*(np.dot(v, n)/np.dot(n, n))
+        print(p4)
         d = dist(p4, p3)
+
+        # This section can actually be reached but the intellisense is very highly regarded
+        # noinspection PyUnreachableCode
         if np.cross((self.position[0] - p4[0], self.position[1] - p4[1]),
                     (math.cos(self.car_direction), math.sin(self.car_direction))) < 0:
             d = -d
@@ -248,5 +276,6 @@ class PathData:
         return d
 
 
+# Sufficiently tested to Liam's satisfaction with manual testing
 def dist(p1, p2) -> float:
     return math.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
