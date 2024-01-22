@@ -107,8 +107,11 @@ def main():
     print("Vehicle History: " + str(keeping.path_grid.history))
     x1, y1 = zip(*path)
     x2, y2 = zip(*keeping.path_grid.history)
-    plt.plot(x1, y1, c='#4CAF50', ls=':')
-    plt.plot(x2, y2, color='r', ls=':')
+    plt.plot(x1, y1, c='#4CAF50', label="Desired Path")
+    plt.plot(x2, y2, color='r', ls=':', label="Vehicle Path")
+    plt.ylabel('y')
+    plt.xlabel('x')
+    plt.legend(loc='upper right')
     plt.show()
 
 
