@@ -1,0 +1,65 @@
+services:
+  main:
+    build:
+      context: .
+      dockerfile: capstone.Dockerfile
+    network_mode: host
+    hostname: capstone-main
+    deploy:
+      resources:
+        reservations:
+          devices:
+              - driver: nvidia
+                count: all
+                capabilities:
+                  - gpu
+    environment:
+      - DISPLAY=$DISPLAY
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ~/.Xauthority:/root/.Xauthority
+      - /dev/shm:/dev/shm:rw
+    stdin_open: true
+    tty: true
+  detection:
+    build:
+      context: .
+      dockerfile: detection.Dockerfile
+      ulimits:
+        nofile:
+          soft: 1024
+          hard: 1024
+    network_mode: host
+    hostname: capstone-detection
+    deploy:
+      resources:
+        reservations:
+          devices:
+              - driver: nvidia
+                count: all
+                capabilities:
+                  - gpu
+    environment:
+      - DISPLAY=$DISPLAY
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ~/.Xauthority:/root/.Xauthority
+      - /dev/shm:/dev/shm:rw
+    tty: true
+  carla:
+    image: carlasim/carla:0.9.13
+    command: /bin/bash ./CarlaUE4.sh -quality-level=Low -RenderOffScreen
+    environment:
+      - DISPLAY=$DISPLAY
+    privileged: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+              - driver: nvidia
+                count: all
+                capabilities:
+                  - gpu
+    network_mode: host
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw

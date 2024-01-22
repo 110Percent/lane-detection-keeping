@@ -17,9 +17,14 @@ from clrnet.utils.net_utils import load_network
 from pathlib import Path
 from tqdm import tqdm
 
-class Detection(object):
+CONFIG = '/opt/clrnet/configs/clrnet/clr_resnet18_tusimple.py'
+MODEL = '/opt/clrnet/models/tusimple_r18.pth'
+IMAGE_DIR = '/imgs/in'
+OUTPUT_DIR = '/imgs/out'
+
+
+class Detect(object):
     def __init__(self, cfg):
-        self.processing = False
         self.cfg = cfg
         self.processes = Process(cfg.val_process, cfg)
         self.net = build_net(self.cfg)
@@ -35,14 +40,6 @@ class Detection(object):
         data = self.processes(data)
         data['img'] = data['img'].unsqueeze(0)
         data.update({'img_path': img_path, 'ori_img': ori_img})
-        return data
-
-    def preprocess_raw(self, img):
-        img = cv2.resize(img, (self.cfg.ori_img_w, self.cfg.ori_img_h))
-        img = img[self.cfg.cut_height:, :, :].astype(np.float32)
-        data = {'img': img, 'lanes': []}
-        data = self.processes(data)
-        data['img'] = data['img'].unsqueeze(0)
         return data
 
     def inference(self, data):
@@ -65,19 +62,6 @@ class Detection(object):
             self.show(data)
         return data
 
-    def run_raw(self, img):
-        if self.processing:
-            return None
-        self.processing = True
-        data = self.preprocess_raw(img)
-        data['lanes'] = self.inference(data)[0]
-        if self.cfg.show:
-            lanes = [lane.to_array(self.cfg) for lane in data['lanes']]
-            imshow_lanes(img, lanes, show=self.cfg.show)
-            cv2.waitKey(10)
-        self.processing = False
-        return data
-
 
 def get_img_paths(path):
     p = str(Path(path).absolute())  # os-agnostic absolute path
@@ -91,3 +75,16 @@ def get_img_paths(path):
         raise Exception(f'ERROR: {p} does not exist')
     return paths
 
+
+if __name__ == '__main__':
+    cfg = Config.fromfile(CONFIG)
+    cfg.show = False
+    cfg.savedir = OUTPUT_DIR
+    cfg.load_from = MODEL
+    cfg.cut_height = 320
+    detect = Detect(cfg)
+    paths = get_img_paths(IMAGE_DIR)
+    for p in tqdm(paths):
+        print(f'Detecting lines on {p}')
+        detect.run(p)
+    print('Done!')
