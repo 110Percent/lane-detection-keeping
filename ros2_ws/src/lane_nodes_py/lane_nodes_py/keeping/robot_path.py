@@ -91,7 +91,7 @@ def calculate_path(calculated_path: LaneData) -> list[tuple[float, float]] | Non
                     (calculated_path.paths[directly_left_index][j] != 'N')):
                 x_axis_list += [calculated_path.coordinates[j]]
                 y_axis_list += [(calculated_path.paths[directly_right_index][j] +
-                                calculated_path.paths[directly_left_index][j]) / 2]
+                                 calculated_path.paths[directly_left_index][j]) / 2]
         return list(map(lambda x, y: (x, y), x_axis_list, y_axis_list))
 
 
@@ -120,6 +120,7 @@ def polish_path(calculated_path: list[tuple[float, float]]) -> list[tuple[float,
         new_points += [(x_test, equation(x_test))]
 
     return new_points
+
 
 # No plan to test since it's not my code
 def intersection(L1, L2):
@@ -152,9 +153,13 @@ class PathData:
     # Size of the vehicle in meters
     vehicle_size: float
 
+    # History for a given set of data
+    history: list[tuple[float, float]]
+
     def __init__(self, size):
         self.vehicle_size = size
         self.fresh = True
+        self.history = [(0, 0)]
 
     def update(self, last_message: AckermannWrapper, time):
         # TODO: Break down the method for testing
@@ -183,6 +188,8 @@ class PathData:
         bb = by - (bm * bx)
 
         intersection_result = intersection((-fm, 1, fb), (-bm, 1, bb))
+
+        print("Rotation point: " + str(intersection_result))
 
         # Step 2
         distance_traveled = time * last_message.speed
@@ -217,6 +224,7 @@ class PathData:
             self.position = (nfx, nfy)
 
         print("Updating the mathematical model")
+        self.history += [self.position]
         self.fresh = False
 
     def is_fresh(self):
@@ -232,6 +240,7 @@ class PathData:
         self.position = (0, 0)
         self.car_direction = 0
         self.fresh = True
+        self.history = [(0, 0)]
 
     # Sufficiently tested to Liam's satisfaction with manual testing
     def get_distance_to_line(self):
@@ -254,17 +263,11 @@ class PathData:
                 continue
 
         p1 = np.array(p1)
-        print(p1)
         p2 = np.array(p2)
-        print(p2)
         p3 = np.array(self.position)
-        print(p2)
         n = p2 - p1
-        print(n)
         v = p3 - p1
-        print(v)
-        p4 = p1 + n*(np.dot(v, n)/np.dot(n, n))
-        print(p4)
+        p4 = p1 + n * (np.dot(v, n) / np.dot(n, n))
         d = dist(p4, p3)
 
         # This section can actually be reached but the intellisense is very highly regarded
@@ -274,6 +277,34 @@ class PathData:
             d = -d
 
         return d
+
+    def get_heading_offset(self):
+        p1 = None
+        p2 = None
+
+        # Get the closest two points to the cars position
+        for point in self.path:
+            if p1 is None:
+                p1 = point
+                continue
+            if dist(point, self.position) < dist(p1, self.position):
+                p2 = p1
+                p1 = point
+                continue
+            if p2 is None or dist(point, self.position) < dist(p2, self.position):
+                p2 = point
+                continue
+
+        p1 = np.array(p1)
+        p2 = np.array(p2)
+
+        if p1[0] > p2[0]:
+            temp = p1
+            p1 = p2
+            p2 = temp
+
+        angle = np.arctan((p2[1] - p1[1]) / (p2[0] - p1[0]))
+        return angle - self.car_direction
 
 
 # Sufficiently tested to Liam's satisfaction with manual testing
