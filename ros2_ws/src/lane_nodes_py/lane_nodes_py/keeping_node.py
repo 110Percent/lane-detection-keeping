@@ -31,13 +31,27 @@ class KeepingNode(Node):
 
         # Create the subscriber for receiving lane data
         self.lane_subscription = self.create_subscription(
-            LaneLocation,
-            'lane_location_data',
-            self.keeping.lane_location_callback,
-            10)
+                LaneLocation,
+                'lane_location_data',
+                self.lane_location_callback,
+                10)
+        self.lane_subscription # prevent unused variable warning
 
+    # Callback for receiving lane data. At the moment, just echoes it down the pipeline without any further processing.
+    def lane_location_callback(self, msg):
+        self.get_logger().info('Received message: "%s"' % msg.temp)
 
-
+    def movement_output_callback(self):
+        self.get_logger().info('Publishing movement instructions')
+        msg = AckermannDrive()
+        msg.steering_angle = 0.0
+        msg.steering_angle_velocity = 0.0
+        msg.speed = 10.0
+        msg.acceleration = 0.0
+        msg.jerk = 0.0
+        self.get_logger().info("%s" % msg)
+        self.movement_publisher_.publish(msg)
+        self.timer.reset()
 
 
 def main(args=None):
