@@ -4,7 +4,6 @@ import time
 class PID:
 
     def __init__(self, Kp, Ki, Kd):
-
         # initialize the three PID values
         self.Kp = Kp
         self.Ki = Ki
@@ -23,7 +22,6 @@ class PID:
         # Last Error needed for hte derivative calculation
         self.last_error = 0.0
 
-
     def update(self, error):
         """Calculates PID value for given reference feedback"""
 
@@ -32,7 +30,7 @@ class PID:
         delta_error = error - self.last_error
 
         # The proportional term is just hte error
-        self.PTerm =  error
+        self.PTerm = error
 
         # The integral term is just the cumulative sum of the change in time times the current error
         self.ITerm += error * delta_time
@@ -44,7 +42,7 @@ class PID:
 
         # calculate PID output
         # print("Error: " + str(error)+ ", components of output: "+ str(self.Kp *self.PTerm) + ", " + str((self.Ki * self.ITerm)) + ", " + str(self.Kd * DTerm))
-        output = (self.Kp *self.PTerm) + (self.Ki * self.ITerm) + (self.Kd * DTerm)
+        output = (self.Kp * self.PTerm) + (self.Ki * self.ITerm) + (self.Kd * DTerm)
 
         # Remember last time and last error for next calculation
         self.last_time = current_time
@@ -68,11 +66,10 @@ if __name__ == '__main__':
     y_val = 0
     goal = 1
     vertical_velocity = 0
-    while(1 in range(10)):
+    while (1 in range(10)):
         error = goal - y_val
         print("Current y_val: " + str(y_val))
         time.sleep(0.1)
         output = test_pid.update(error)
         vertical_velocity += output
-        y_val = y_val + vertical_velocity/100
-
+        y_val = y_val + vertical_velocity / 100
