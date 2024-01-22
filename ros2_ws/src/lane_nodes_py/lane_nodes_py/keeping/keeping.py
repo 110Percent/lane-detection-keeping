@@ -98,9 +98,7 @@ def test():
 
 def main():
     keeping = Keeping(1)
-    path: list[tuple[float, float]] = []
-    for i in range(-1, 110):
-        path += [(i/10, -np.cos(0.62831853071*(i/10)) + 1)]
+    path: list[tuple[float, float]] = perabola()
     keeping.path_grid.set_path(path)
     schedule(keeping.movement_output_callback, interval=0.1)
     run_loop(return_after=10)
@@ -113,6 +111,20 @@ def main():
     plt.xlabel('x')
     plt.legend(loc='upper right')
     plt.show()
+
+
+def sinusodal_curve():
+    path: list[tuple[float, float]] = []
+    for i in range(-1, 110):
+        path += [(i / 10, -np.cos(0.62831853071 * (i / 10)) + 1)]
+    return path
+
+
+def perabola():
+    path: list[tuple[float, float]] = []
+    for i in range(-1, 110):
+        path += [(i / 10, (-1/2)*((i/10) - 5)**2 + 5)]
+    return path
 
 
 if __name__ == '__main__':
