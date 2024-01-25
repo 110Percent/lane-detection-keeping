@@ -1,0 +1,23 @@
+# calculate_path() Test Suite
+## Test 1: Default simple test for straight line along y=0
+lane_data = LaneData()
+lane_data.paths = [[1, 1, 1], [-1, -1, -1]]
+lane_data.coordinates = [0, 1, 2]
+calculate_path(lane_data)
+
+## Test 2: Simple test for partially straight line that jerks upwards at the end
+lane_data = LaneData()
+lane_data.paths = [[1, 1, 2], [-1, -1, 0]]
+lane_data.coordinates = [0, 1, 2]
+calculate_path(lane_data)
+
+## Test 3: Add a third line above the first one that should NOT be used
+lane_data = LaneData()
+lane_data.paths = [[2, 2, 3], [1, 1, 2], [-1, -1, 0]]
+lane_data.coordinates = [0, 1, 2]
+calculate_path(lane_data)
+
+# polish_path(path) Test Suite
+## Test 1: Default simple test for a straight line along y = 0
+calculated_path = [(0, 0.0), (1, 0.0), (2, 0.0)]
+polish_path(calculated_path)
