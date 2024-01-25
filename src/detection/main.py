@@ -13,6 +13,7 @@ from clrnet.models.registry import build_net
 from clrnet.utils.config import Config
 from clrnet.utils.visualization import imshow_lanes
 from clrnet.utils.net_utils import load_network
+from src.messaging.messaging import Message
 
 from pathlib import Path
 from tqdm import tqdm
@@ -86,5 +87,6 @@ if __name__ == '__main__':
     paths = get_img_paths(IMAGE_DIR)
     for p in tqdm(paths):
         print(f'Detecting lines on {p}')
-        detect.run(p)
+        msg = Message(detect.run(p), 'detection', 'k&c')
+        msg.send()
     print('Done!')
