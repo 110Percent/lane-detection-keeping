@@ -1,3 +1,5 @@
+import datetime
+
 import rclpy
 import torch
 
@@ -8,7 +10,7 @@ from rclpy.node import Node
 
 from lane_interfaces.msg import LaneLocation
 
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import Image, Header
 
 from cv_bridge import CvBridge, CvBridgeError
 
@@ -53,7 +55,17 @@ class DetectionNode(Node):
         self.get_logger().info('Received image')
         lanes = self.detection.run_raw(cv_image)
 
-        # TODO: call detect.run() on the received image
+        msg = LaneLocation()
+        header = Header()
+        header.stamp = datetime.now()
+        header.frame_id = "FILENAME"
+        header.seq = 0
+
+        msg.header = header
+        msg.lanes = lanes
+
+        self.lane_publisher_.publish(msg)
+
 
 def main(args=None):
     rclpy.init(args=args)
