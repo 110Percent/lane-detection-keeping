@@ -10,7 +10,7 @@ from rclpy.node import Node
 
 from lane_interfaces.msg import LaneLocation
 
-from sensor_msgs.msg import Image, Header
+from sensor_msgs.msg import Image
 
 from cv_bridge import CvBridge, CvBridgeError
 
@@ -43,7 +43,7 @@ class DetectionNode(Node):
         # Create the subscriber for receiving images 
         self.image_subscription = self.create_subscription(
                 Image,
-                'image',
+                "raw_input_images",
                 self.image_callback,
                 10)
         self.image_subscription # prevent unused variable warning
@@ -56,12 +56,8 @@ class DetectionNode(Node):
         lanes = self.detection.run_raw(cv_image)
 
         msg = LaneLocation()
-        header = Header()
-        header.stamp = datetime.now()
-        header.frame_id = "FILENAME"
-        header.seq = 0
-
-        msg.header = header
+        msg.stamp = str(datetime.now())
+        msg.frame_id = "FILENAME"
         msg.lanes = lanes
 
         self.lane_publisher_.publish(msg)
