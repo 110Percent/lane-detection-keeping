@@ -1,3 +1,4 @@
 string stamp
 string frame_id
-Lane[] lanes
+float32[] lanes
+int32 row_length
