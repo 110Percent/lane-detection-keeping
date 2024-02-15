@@ -1,8 +1,8 @@
-import datetime
+from datetime import datetime
 
 import rclpy
 import torch
-
+import numpy as np
 
 from clrnet.utils.config import Config
 
@@ -29,7 +29,7 @@ class DetectionNode(Node):
         super().__init__('detection')
 
         cfg = Config.fromfile(CONFIG)
-        cfg.show = True
+        cfg.show = False
         cfg.savedir = OUTPUT_DIR
         cfg.load_from = MODEL
         cfg.ori_img_w = 800
@@ -53,14 +53,35 @@ class DetectionNode(Node):
 
         cv_image = cv_bridge.imgmsg_to_cv2(msg, "bgr8")
         self.get_logger().info('Received image')
-        lanes = self.detection.run_raw(cv_image)
+        detected = self.detection.run_raw(cv_image)
 
-        msg = LaneLocation()
-        msg.stamp = str(datetime.now())
-        msg.frame_id = "FILENAME"
-        msg.lanes = lanes
+        lanes = detected['lanes']
+        flat_lanes = self.flatten_lanes(lanes)
+        
+        self.get_logger().info('len lanes:' + str(len(lanes)))
+        self.get_logger().info('len lanes[0]: ' + str(len(lanes[0].points)))
 
-        self.lane_publisher_.publish(msg)
+        self.get_logger().info('lanes:' + str(lanes))
+        self.get_logger().info('lanes[0]:' + str(lanes[0].points))
+
+        self.get_logger().info('len flat:' + str(len(flat_lanes)))
+        self.get_logger().info('flat=' + str(flat_lanes))
+
+        #self.get_logger().info('lane1:' + str(lanes[0]))
+        #self.get_logger().info('lane2:' + str(lanes[1]))
+
+        lane_date = LaneLocation()
+        lane_date.stamp = str(datetime.now())
+        lane_date.frame_id = "FILENAME"
+        lane_date.lanes = lanes
+
+        self.lane_publisher_.publish(lane_date)
+    
+    def flatten_lanes(self, lanes):
+        flattened = []
+        for row in lanes:
+            flattened += row
+        return flattened
 
 
 def main(args=None):

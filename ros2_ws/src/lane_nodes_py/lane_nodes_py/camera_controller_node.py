@@ -46,18 +46,19 @@ class CameraControllerNode(Node):
         cv_image = cv_bridge.imgmsg_to_cv2(msg, "bgr8")
         
         cv_image = self.camera_controller.canny(cv_image)
-        self.camera_controller.show_image(cv_image)
+        #self.camera_controller.show_image(cv_image)
 
-        self.get_logger().info('Publishing image')
+        #self.get_logger().info('Publishing image')
         self.image_publisher_.publish(msg)
 
     def send_test_image(self):
-        cv_image = cv2.imread("/opt/lane-capstone/src/lane_nodes_py/lane_nodes_py/test_images/ikea.png")
+        cv_image = cv2.imread("/opt/lane-capstone/src/lane_nodes_py/lane_nodes_py/test_images/ikea.png", cv2.IMREAD_COLOR)
 
         if cv_image is None:
             raise Exception("Could not load test image.............................................", cv_image, os.getcwd())
-        image_message = cv_bridge.cv2_to_imgmsg(cv_image, encoding="passthrough")
+        image_message = cv_bridge.cv2_to_imgmsg(cv_image, encoding='bgr8')
 
+        self.get_logger().info('TEST IMAGE MSG: ' + str(image_message)[:100])
         self.image_publisher_.publish(image_message)
 
 
