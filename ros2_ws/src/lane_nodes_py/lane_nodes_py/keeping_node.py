@@ -5,11 +5,11 @@ from lane_interfaces.msg import LaneLocation
 
 from ackermann_msgs.msg import AckermannDrive
 
-from ros2_ws.src.lane_nodes_py.lane_nodes_py.keeping.keeping import Keeping
+from lane_nodes_py.keeping.keeping import Keeping
 
-from ros2_ws.src.lane_nodes_py.lane_nodes_py.keeping.pid_controller import PID
+from lane_nodes_py.keeping.pid_controller import PID
 
-from ros2_ws.src.lane_nodes_py.lane_nodes_py.keeping.robot_path import PathData
+from lane_nodes_py.keeping.robot_path import PathData
 
 PID_FREQUENCY = 2
 
