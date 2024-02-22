@@ -1,8 +1,6 @@
 import math
 from typing import List, Tuple
 
-from lane_nodes_py.keeping.lane_location_interface import LaneData
-
 from lane_nodes_py.keeping.ackerman_wrapper import AckermannWrapper
 
 import numpy as np
@@ -15,7 +13,7 @@ ROTATION_LIMIT = 1000
 
 
 # Sufficiently tested to Liam's satisfaction with manual testing
-def calculate_path(calculated_path: LaneData) :
+def calculate_path(calculated_path) :
     """
         Pseudo-code
         for each line in the LaneData, create a 3rd degree polynomial equation for it.
@@ -230,7 +228,7 @@ class PathData:
     def is_fresh(self):
         return self.fresh
 
-    def set_grid(self, message_data: LaneData):
+    def set_grid(self, message_data):
         calculated_path = calculate_path(message_data)
         polished_path = polish_path(calculated_path)
         self.set_path(polished_path)
