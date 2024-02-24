@@ -1,0 +1,4 @@
+
+class LaneWrapper:
+    paths = []
+    coordinates = []
