@@ -56,16 +56,17 @@ class DetectionNode(Node):
         detected = self.detection.run_raw(cv_image)
 
         lanes = detected['lanes']
+        self.get_logger().info('lanes type=' + str(type(lanes)))
         flat_lanes = self.flatten_lanes(lanes)
         
         self.get_logger().info('len lanes:' + str(len(lanes)))
-        self.get_logger().info('len lanes[0]: ' + str(len(lanes[0].points)))
-
         self.get_logger().info('lanes:' + str(lanes))
-        self.get_logger().info('lanes[0]:' + str(lanes[0].points))
+        # self.get_logger().info('lanes[0]:' + str(lanes[0].points))
 
         self.get_logger().info('len flat:' + str(len(flat_lanes)))
         self.get_logger().info('flat=' + str(flat_lanes))
+        # self.get_logger().info('lanes type=' + str(type(lanes)))
+
 
         #self.get_logger().info('lane1:' + str(lanes[0]))
         #self.get_logger().info('lane2:' + str(lanes[1]))
@@ -73,14 +74,21 @@ class DetectionNode(Node):
         lane_date = LaneLocation()
         lane_date.stamp = str(datetime.now())
         lane_date.frame_id = "FILENAME"
-        lane_date.lanes = lanes
+        lane_date.row_lengths = [len(lane.points) for lane in lanes]
+        lane_date.lanes = flat_lanes
 
+        # self.get_logger().info('Sent: ' + str(lane_date))
         self.lane_publisher_.publish(lane_date)
     
     def flatten_lanes(self, lanes):
         flattened = []
         for row in lanes:
-            flattened += row
+            for point in row:
+                # self.get_logger().info('flattend=' + str(flattened))
+                # self.get_logger().info('point=' + str(point[0]) + ',' + str(point[1]))
+                # self.get_logger().info('point=' + str(type(point)))
+                flattened.append(point[0])
+                flattened.append(point[1])
         return flattened
 
 
