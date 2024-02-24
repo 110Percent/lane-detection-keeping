@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 
-from lane_interfaces.msg import LaneLocation
+from lane_interfaces.msg import LaneLocation, LaneLocation2
 
 from ackermann_msgs.msg import AckermannDrive
 
@@ -10,6 +10,8 @@ from lane_nodes_py.keeping.keeping import Keeping
 from lane_nodes_py.keeping.pid_controller import PID
 
 from lane_nodes_py.keeping.robot_path import PathData
+
+from lane_nodes_py.keeping.lane_wrapper import LaneWrapper
 
 PID_FREQUENCY = 2
 
@@ -35,10 +37,22 @@ class KeepingNode(Node):
                 'lane_location_data',
                 self.lane_location_callback,
                 10)
-        self.lane_subscription # prevent unused variable warning
+
+        self.eval_lane_subscription = self.create_subscription(
+                LaneLocation,
+                'lane_location_data_eval',
+                self.lane_location_callback_eval,
+                10)
 
     # Callback for receiving lane data. At the moment, just echoes it down the pipeline without any further processing.
     def lane_location_callback(self, msg):
+        self.get_logger().info('Received message: "%s"' % msg.temp)
+
+    def lane_location_callback_eval(self, msg):
+        lane_data: LaneWrapper = LaneWrapper()
+        lane_data.paths = [msg.y_vals1, msg.y_vals2]
+        lane_data.coordinates = [msg.x_vals]
+        self.keeping.lane_location_callback(lane_data)
         self.get_logger().info('Received message: "%s"' % msg.temp)
 
     def movement_output_callback(self):

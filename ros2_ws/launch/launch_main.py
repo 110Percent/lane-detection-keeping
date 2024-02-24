@@ -44,6 +44,12 @@ def generate_launch_description():
             name='keeping'
             ),
         Node(
+            package='lane_nodes_py',
+            namespace='test',
+            executable='evaluation_keeping_node',
+            name='evaluation_keeping'
+            ),
+        Node(
             package='lane_nodes_cpp',
             namespace='test',
             executable='movement_controller',
