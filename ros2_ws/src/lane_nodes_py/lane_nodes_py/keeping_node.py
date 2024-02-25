@@ -39,7 +39,7 @@ class KeepingNode(Node):
             10)
 
         self.eval_lane_subscription = self.create_subscription(
-            LaneLocation,
+            LaneLocation2,
             'lane_location_data_eval',
             self.lane_location_callback_eval,
             10)
