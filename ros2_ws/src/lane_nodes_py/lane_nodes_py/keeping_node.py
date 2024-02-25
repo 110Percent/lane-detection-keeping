@@ -33,16 +33,16 @@ class KeepingNode(Node):
 
         # Create the subscriber for receiving lane data
         self.lane_subscription = self.create_subscription(
-                LaneLocation,
-                'lane_location_data',
-                self.lane_location_callback,
-                10)
+            LaneLocation,
+            'lane_location_data',
+            self.lane_location_callback,
+            10)
 
         self.eval_lane_subscription = self.create_subscription(
-                LaneLocation,
-                'lane_location_data_eval',
-                self.lane_location_callback_eval,
-                10)
+            LaneLocation,
+            'lane_location_data_eval',
+            self.lane_location_callback_eval,
+            10)
 
     # Callback for receiving lane data. At the moment, just echoes it down the pipeline without any further processing.
     def lane_location_callback(self, msg):
@@ -57,12 +57,16 @@ class KeepingNode(Node):
 
     def movement_output_callback(self):
         self.get_logger().info('Publishing movement instructions')
+
+        ackermann_msg = self.keeping.movement_output_callback()
+
         msg = AckermannDrive()
-        msg.steering_angle = 0.0
-        msg.steering_angle_velocity = 0.0
-        msg.speed = 10.0
-        msg.acceleration = 0.0
-        msg.jerk = 0.0
+
+        msg.steering_angle = ackermann_msg.steering_angle
+        msg.steering_angle_velocity = ackermann_msg.steering_angle_velocity
+        msg.speed = ackermann_msg.speed
+        msg.acceleration = ackermann_msg.acceleration
+        msg.jerk = ackermann_msg.jerk
         self.get_logger().info("%s" % msg)
         self.movement_publisher_.publish(msg)
         self.timer.reset()
