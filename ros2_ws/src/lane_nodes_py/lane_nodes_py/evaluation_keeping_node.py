@@ -5,7 +5,7 @@ from rclpy.node import Node
 
 from nav_msgs.msg import Path, Odometry
 
-from evaluation_helper import quaternion_to_euler, dist, in_front_arc, polish_path
+from lane_nodes_py.evaluation_helper import quaternion_to_euler, dist, in_front_arc, polish_path
 
 from lane_interfaces.msg import LaneLocation2
 
