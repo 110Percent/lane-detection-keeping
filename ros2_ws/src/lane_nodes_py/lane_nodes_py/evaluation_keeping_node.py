@@ -11,7 +11,7 @@ from lane_interfaces.msg import LaneLocation2
 
 
 class EvaluationKeeping(Node):
-    FREQUENCY = 15
+    FREQUENCY = 5
 
     vehicle_path_total = []
 
@@ -101,12 +101,10 @@ class EvaluationKeeping(Node):
             if dist(self.current_location, point) > 20:
                 continue
             points_in_range += [point]
-        self.get_logger().info('Total point count within range: ' + str(len(points_in_range)))
         points_in_view = []
         for point in points_in_range:
             if in_front_arc(self.current_location, self.yaw, point, 30):
                 points_in_view += [point]
-        self.get_logger().info('Total point count within view: ' + str(len(points_in_view)))
         return points_in_view
 
 
