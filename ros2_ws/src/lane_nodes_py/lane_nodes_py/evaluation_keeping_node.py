@@ -53,7 +53,7 @@ class EvaluationKeeping(Node):
         poses = msg.poses
         waypoints = []
         for pose in poses:
-            waypoints += (pose.pose.position.x, pose.pose.position.y)
+            waypoints += [(pose.pose.position.x, pose.pose.position.y)]
 
         self.get_logger().info(str(waypoints))
 
@@ -67,6 +67,10 @@ class EvaluationKeeping(Node):
 
         transformed_points_to_front_view = self.transform_points(points_in_range)
 
+        if not transformed_points_to_front_view:
+            self.get_logger().info("No waypoint points found?")
+            return
+
         created_path = polish_path(transformed_points_to_front_view)
 
         y_upper = [i[1] + 2 for i in created_path]
@@ -78,7 +82,7 @@ class EvaluationKeeping(Node):
         msg.y_vals1 = y_upper
         msg.y_vals2 = y_lower
 
-        lane_pair = msg
+        self.lane_pair = msg
 
 
     def transform_points(self, points):
