@@ -20,7 +20,7 @@ class EvaluationKeeping(Node):
     current_location = None
     yaw = None
 
-    lane_pair: LaneLocation2 = 'You should kill yourself, NOW'
+    lane_pair: LaneLocation2 = None
 
     def __init__(self):
         super().__init__('evaluation_keeping')
@@ -43,6 +43,8 @@ class EvaluationKeeping(Node):
     def publish_latest_path(self):
         self.get_logger().info('Publishing the latest generated path')
         msg = self.lane_pair
+        if msg is None:
+            return
         self.vehicle_path_total += [self.current_location]
         self.lane_publisher_.publish(msg)
 

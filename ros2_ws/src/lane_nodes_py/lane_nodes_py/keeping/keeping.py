@@ -40,7 +40,7 @@ class Keeping:
     def movement_output_callback(self):
         # Logs for the log god
         print('Publishing movement instructions')
-        if self.path_grid.data is None:
+        if self.path_grid.path is None:
             return AckermannWrapper()
         # If the data is not fresh, meaning we're using old data, use the last message sent to update our
         # "expected" model
