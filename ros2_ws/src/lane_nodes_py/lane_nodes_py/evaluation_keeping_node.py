@@ -64,8 +64,7 @@ class EvaluationKeeping(Node):
         direction = msg.pose.pose.orientation
         self.yaw = get_2d_direction_from_quaternion(direction.x, direction.y, direction.z, direction.w)
 
-        points_in_range = self.find_points_in_range()
-        self.get_logger().info('Total point count within range: ' + str(len(points_in_range)))
+        points_in_range = self.find_points_in_view()
 
         transformed_points_to_front_view = self.transform_points(points_in_range)
 
@@ -96,14 +95,19 @@ class EvaluationKeeping(Node):
             transformed_points += [rotated]
         return transformed_points
 
-    def find_points_in_range(self):
+    def find_points_in_view(self):
         points_in_range = []
         for point in self.waypoints:
             if dist(self.current_location, point) > 20:
                 continue
+            points_in_range += [point]
+        self.get_logger().info('Total point count within range: ' + str(len(points_in_range)))
+        points_in_view = []
+        for point in points_in_range:
             if in_front_arc(self.current_location, self.yaw, point, 30):
-                points_in_range += [point]
-        return points_in_range
+                points_in_view += [point]
+        self.get_logger().info('Total point count within view: ' + str(len(points_in_view)))
+        return points_in_view
 
 
 def get_2d_direction_from_quaternion(x, y, z, w):
