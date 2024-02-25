@@ -5,7 +5,7 @@ from rclpy.node import Node
 
 from nav_msgs.msg import Path, Odometry
 
-from lane_nodes_py.evaluation_helper import quaternion_to_euler, dist, in_front_arc, polish_path
+from lane_nodes_py.evaluation_helper import quaternion_to_euler, dist, in_front_arc, polish_path, transform_points
 
 from lane_interfaces.msg import LaneLocation2
 
@@ -60,9 +60,9 @@ class EvaluationKeeping(Node):
     def odometry_callback(self, msg):
         # self.get_logger().info(str(msg))
         self.current_location = (msg.pose.pose.position.x, msg.pose.pose.position.y)
-        self.get_logger().info('New location: ' + str(self.current_location))
         direction = msg.pose.pose.orientation
         self.yaw = get_2d_direction_from_quaternion(direction.x, direction.y, direction.z, direction.w)
+        self.get_logger().info('New location: ' + str(self.current_location) + ", with a yaw of " + str(self.yaw))
 
         points_in_range = self.find_points_in_view()
 
@@ -87,13 +87,7 @@ class EvaluationKeeping(Node):
 
 
     def transform_points(self, points):
-        transformed_points = []
-        for point in points:
-            new_x,  new_y= (point[0] - self.current_location[0], point[1] - self.current_location[1])
-            radians = -self.yaw
-            rotated = new_x * math.cos(radians) + new_y * math.sin(radians), -new_x * math.sin(radians) + new_y * math.cos(radians)
-            transformed_points += [rotated]
-        return transformed_points
+        return transform_points(points, self.current_location, self.yaw)
 
     def find_points_in_view(self):
         points_in_range = []
