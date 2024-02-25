@@ -51,11 +51,11 @@ class EvaluationKeeping(Node):
     def test_callback(self, msg):
         # self.get_logger().info(str(msg))
         poses = msg.poses
-        waypoints = []
+        self.waypoints = []
         for pose in poses:
-            waypoints += [(pose.pose.position.x, pose.pose.position.y)]
+            self.waypoints += [(pose.pose.position.x, pose.pose.position.y)]
 
-        self.get_logger().info(str(waypoints))
+        self.get_logger().info(str(self.waypoints))
 
     def odometry_callback(self, msg):
         # self.get_logger().info(str(msg))
