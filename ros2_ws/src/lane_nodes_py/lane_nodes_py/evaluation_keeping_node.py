@@ -60,10 +60,12 @@ class EvaluationKeeping(Node):
     def odometry_callback(self, msg):
         # self.get_logger().info(str(msg))
         self.current_location = (msg.pose.pose.position.x, msg.pose.pose.position.y)
+        self.get_logger().info('New location: ' + str(self.current_location))
         direction = msg.pose.pose.orientation
         self.yaw = get_2d_direction_from_quaternion(direction.x, direction.y, direction.z, direction.w)
 
         points_in_range = self.find_points_in_range()
+        self.get_logger().info('Total point count within range: ' + str(len(points_in_range)))
 
         transformed_points_to_front_view = self.transform_points(points_in_range)
 
