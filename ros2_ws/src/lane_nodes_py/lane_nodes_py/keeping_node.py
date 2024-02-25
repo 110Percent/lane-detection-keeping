@@ -9,19 +9,15 @@ from lane_nodes_py.keeping.keeping import Keeping
 
 from lane_nodes_py.keeping.pid_controller import PID
 
-from lane_nodes_py.keeping.robot_path import PathData
-
 from lane_nodes_py.keeping.lane_wrapper import LaneWrapper
 
 PID_FREQUENCY = 2
 
 
 class KeepingNode(Node):
-    keeping = Keeping()
+    keeping = Keeping(1)
 
     pid = PID(1.0, 0, 0)
-
-    path_grid = PathData()
 
     def __init__(self):
         super().__init__('keeping')

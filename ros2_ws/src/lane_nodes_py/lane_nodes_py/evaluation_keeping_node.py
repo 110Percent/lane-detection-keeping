@@ -23,7 +23,7 @@ class EvaluationKeeping(Node):
     lane_pair: LaneLocation2 = 'You should kill yourself, NOW'
 
     def __init__(self):
-        super().__init__('evaluation-keeping')
+        super().__init__('evaluation_keeping')
 
         self.timer = self.create_timer(1 / self.FREQUENCY, self.publish_latest_path)
         self.waypoint_subscription = self.create_subscription(
