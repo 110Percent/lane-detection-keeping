@@ -13,7 +13,7 @@ OUTPUT_FREQUENCY = 10
 
 
 class KeepingNode(Node):
-    keeping: Keeping
+    # keeping = Keeping(1)
 
     def __init__(self, target_velocity, control_constant):
         super().__init__('keeping')
@@ -21,9 +21,9 @@ class KeepingNode(Node):
         self.keeping =  Keeping(1, target_velocity, control_constant)
 
         # Create the publisher for sending movement instructions
-        self.movement_publisher_ = self.create_publisher(AckermannDrive, "/carla/ego_vehicle/ackermann_cmd", 10)
+        #self.movement_publisher_ = self.create_publisher(AckermannDrive, "/carla/ego_vehicle/ackermann_cmd", 10)
 
-        self.timer = self.create_timer(1 / OUTPUT_FREQUENCY, self.movement_output_callback)
+        #self.timer = self.create_timer(1 / PID_FREQUENCY, self.movement_output_callback)
 
         # Create the subscriber for receiving lane data
         if os.environ['EVAL_MODE'] != "FULL":
@@ -123,4 +123,3 @@ def main(args=None):
 
 
 if __name__ == '__main__':
-    main()
