@@ -47,7 +47,7 @@ class KeepingNode(Node):
     def lane_location_callback_eval(self, msg):
         lane_data: LaneWrapper = LaneWrapper()
         lane_data.paths = [msg.y_vals1, msg.y_vals2]
-        lane_data.coordinates = [msg.x_vals]
+        lane_data.coordinates = msg.x_vals
         self.keeping.lane_location_callback(lane_data)
         self.get_logger().info('Received message: "%s"' % msg.temp)
 

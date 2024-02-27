@@ -75,7 +75,7 @@ def transform_points(points, current_location, yaw):
     transformed_points = []
     for point in points:
         new_x, new_y = (point[0] - current_location[0], point[1] - current_location[1])
-        radians = -yaw
+        radians = yaw
         rotated = (
             new_x * math.cos(radians) + new_y * math.sin(radians),
             -new_x * math.sin(radians) + new_y * math.cos(radians))
