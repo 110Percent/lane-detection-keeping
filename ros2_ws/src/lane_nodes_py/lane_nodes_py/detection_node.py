@@ -52,24 +52,19 @@ class DetectionNode(Node):
     def image_callback(self, msg):
 
         cv_image = cv_bridge.imgmsg_to_cv2(msg, "bgr8")
-        self.get_logger().info('Received image')
+        #self.get_logger().info('Received image')
         detected = self.detection.run_raw(cv_image)
 
         lanes = detected['lanes']
-        self.get_logger().info('lanes type=' + str(type(lanes)))
         flat_lanes = self.flatten_lanes(lanes)
         
-        self.get_logger().info('len lanes:' + str(len(lanes)))
-        self.get_logger().info('lanes:' + str(lanes))
-        # self.get_logger().info('lanes[0]:' + str(lanes[0].points))
+        # self.get_logger().info('len lanes:' + str(len(lanes)))
+        # self.get_logger().info('lanes:' + str(lanes))
 
-        self.get_logger().info('len flat:' + str(len(flat_lanes)))
-        self.get_logger().info('flat=' + str(flat_lanes))
-        # self.get_logger().info('lanes type=' + str(type(lanes)))
+        # self.get_logger().info('len flat:' + str(len(flat_lanes)))
 
-
-        #self.get_logger().info('lane1:' + str(lanes[0]))
-        #self.get_logger().info('lane2:' + str(lanes[1]))
+        # self.get_logger().info('lane1:' + str(lanes[0]))
+        # self.get_logger().info('lane2:' + str(lanes[1]))
 
         lane_date = LaneLocation()
         lane_date.stamp = str(datetime.now())
