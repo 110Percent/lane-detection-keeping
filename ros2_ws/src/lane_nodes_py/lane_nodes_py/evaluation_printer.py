@@ -1,13 +1,17 @@
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
-from lane_nodes_py.evaluation_helper import quaternion_to_euler, dist, in_front_arc, polish_path, transform_points, euler_to_quaternion
+from evaluation_helper import quaternion_to_euler, dist, euler_to_quaternion
 import numpy as np
+
 
 def print_measurement_diagrams(vehicle_path, waypoints):
     pass
 
+
 def print_path_diagram(vehicle_path, waypoints):
-    pass
+    plt.plot(list(zip(*waypoints))[0], list(zip(*waypoints))[1])
+    plt.show()
+
 
 def get_maximum_errors(vehicle_path, waypoints):
     # Get the closest two points to the cars position
@@ -65,8 +69,6 @@ def get_maximum_errors(vehicle_path, waypoints):
     return max_heading_error, max_distance
 
 
-
-
 class orient():
     x: float
     y: float
@@ -105,13 +107,31 @@ class pose_obj():
         self.pose = pose_obj2()
 
 
+class stamp():
+    sec: float
+    nanosec: float
+
+    def __init(self):
+        self.sec = 0.0
+        self.nanosec = 0.0
+
+
+class heada():
+    stamp: stamp
+
+    def __init__(self):
+        self.stamp = stamp()
+
+
 class vehicle_path_point():
     pose: pose_obj
+    header: heada
 
     def __init__(self):
         self.pose = pose_obj()
 
-test_waypoints = [(0, 0), (1, 0), (2, 1), (3, 2), (3, 3), (3, 4), (3, 5)]
+
+test_waypoints = [(0, 0), (1, 0), (2, 1), (3, 2), (3, 3), (3, 4), (3, 5), (0, 5)]
 
 test_vehicle_points = []
 
@@ -119,10 +139,10 @@ point1 = vehicle_path_point()
 point1.pose.pose.position.x = 0.5
 point1.pose.pose.position.y = -2.0
 
-point1.pose.pose.orientation.x=0.0
-point1.pose.pose.orientation.y=0.0
-point1.pose.pose.orientation.z=0.0
-point1.pose.pose.orientation.w=1.0
+point1.pose.pose.orientation.x = 0.0
+point1.pose.pose.orientation.y = 0.0
+point1.pose.pose.orientation.z = 0.0
+point1.pose.pose.orientation.w = 1.0
 
 test_vehicle_points += [point1]
 
@@ -130,9 +150,9 @@ point2 = vehicle_path_point()
 point2.pose.pose.position.x = 3
 point2.pose.pose.position.y = 4.5
 
-point2.pose.pose.orientation.x=0.0
-point2.pose.pose.orientation.y=0.0
-point2.pose.pose.orientation.z=-0.24740395925452294
-point2.pose.pose.orientation.w=0.9689124217106447
+point2.pose.pose.orientation.x = 0.0
+point2.pose.pose.orientation.y = 0.0
+point2.pose.pose.orientation.z = -0.24740395925452294
+point2.pose.pose.orientation.w = 0.9689124217106447
 
 test_vehicle_points += [point2]
