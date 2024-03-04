@@ -11,7 +11,7 @@ from lane_nodes_py.keeping.pid_controller import PID
 
 from lane_nodes_py.keeping.lane_wrapper import LaneWrapper
 
-PID_FREQUENCY = 2
+OUTPUT_FREQUENCY = 10
 
 
 class KeepingNode(Node):
@@ -25,7 +25,7 @@ class KeepingNode(Node):
         # Create the publisher for sending movement instructions
         self.movement_publisher_ = self.create_publisher(AckermannDrive, "/carla/ego_vehicle/ackermann_cmd", 10)
 
-        self.timer = self.create_timer(1 / PID_FREQUENCY, self.movement_output_callback)
+        self.timer = self.create_timer(1 / OUTPUT_FREQUENCY, self.movement_output_callback)
 
         # Create the subscriber for receiving lane data
         self.lane_subscription = self.create_subscription(
@@ -49,7 +49,7 @@ class KeepingNode(Node):
         lane_data.paths = [msg.y_vals1, msg.y_vals2]
         lane_data.coordinates = msg.x_vals
         self.keeping.lane_location_callback(lane_data)
-        self.get_logger().info('Received message: "%s"' % msg.temp)
+        self.get_logger().info('Received message: "%s"' % str(msg))
 
     def movement_output_callback(self):
         self.get_logger().info('Publishing movement instructions')
