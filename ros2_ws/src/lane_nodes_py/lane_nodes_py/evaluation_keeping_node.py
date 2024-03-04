@@ -59,8 +59,7 @@ class EvaluationKeeping(Node):
         self.get_logger().info(str(self.waypoints))
 
     def odometry_callback(self, msg):
-        self.get_logger().info(str(msg.header.stamp.nsecs))
-        self.get_logger().info(str(msg.header.stamp.secs))
+        self.get_logger().info(str(msg.header.stamp))
         self.vehicle_path_total += [msg]
         self.current_location = (msg.pose.pose.position.x, msg.pose.pose.position.y)
 
