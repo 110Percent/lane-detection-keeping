@@ -1,8 +1,13 @@
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
-from evaluation_helper import quaternion_to_euler, dist, in_front_arc, polish_path, transform_points, euler_to_quaternion
+from lane_nodes_py.evaluation_helper import quaternion_to_euler, dist, in_front_arc, polish_path, transform_points, euler_to_quaternion
 import numpy as np
 
+def print_measurement_diagrams(vehicle_path, waypoints):
+    pass
+
+def print_path_diagram(vehicle_path, waypoints):
+    pass
 
 def get_maximum_errors(vehicle_path, waypoints):
     # Get the closest two points to the cars position
