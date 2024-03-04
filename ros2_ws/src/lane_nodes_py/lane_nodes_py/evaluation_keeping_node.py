@@ -7,6 +7,8 @@ from nav_msgs.msg import Path, Odometry
 
 from lane_nodes_py.evaluation_helper import quaternion_to_euler, dist, in_front_arc, polish_path, transform_points
 
+from lane_nodes_py.evaluation_printer import print_path_diagram, print_measurement_diagrams, get_maximum_errors
+
 from lane_interfaces.msg import LaneLocation2
 
 
@@ -45,7 +47,6 @@ class EvaluationKeeping(Node):
         msg = self.lane_pair
         if msg is None:
             return
-        self.vehicle_path_total += [self.current_location]
         self.lane_publisher_.publish(msg)
 
     def test_callback(self, msg):
@@ -58,8 +59,16 @@ class EvaluationKeeping(Node):
         self.get_logger().info(str(self.waypoints))
 
     def odometry_callback(self, msg):
-        # self.get_logger().info(str(msg))
+        self.vehicle_path_total += [msg]
         self.current_location = (msg.pose.pose.position.x, msg.pose.pose.position.y)
+
+        if dist(self.current_location, self.waypoints[-1]) < 5:
+            self.get_logger().info("Reached destination, publishing data and exiting")
+            self.publish_data_and_close()
+        else:
+            self.respond_to_callback(msg)
+
+    def respond_to_callback(self, msg):
         direction = msg.pose.pose.orientation
         self.yaw = get_2d_direction_from_quaternion(direction.x, direction.y, direction.z, direction.w)
         self.get_logger().info('New location: ' + str(self.current_location) + ", with a yaw of " + str(self.yaw))
@@ -86,6 +95,18 @@ class EvaluationKeeping(Node):
         self.lane_pair = msg
 
 
+    def publish_data_and_close(self):
+        self.get_logger().info("Printing the vehicle path")
+        print_path_diagram(self.vehicle_path_total, self.waypoints)
+
+        self.get_logger().info("Printing diagrams")
+        print_measurement_diagrams(self.vehicle_path_total, self.waypoints)
+
+        self.get_logger().info("Printing maximum lateral deviation and maximum heading error")
+        max_heading_error, max_lateral_deviation = get_maximum_errors(self.vehicle_path_total, self.waypoints)
+
+        pass
+
     def transform_points(self, points):
         return transform_points(points, self.current_location, self.yaw)
 
@@ -105,7 +126,7 @@ class EvaluationKeeping(Node):
 def get_2d_direction_from_quaternion(x, y, z, w):
     roll, pitch, yaw = quaternion_to_euler(x, y, z, w)
 
-    # We kinda only care about the yaw so the other two attributes can politely f off i hate math
+    # We kinda only care about the yaw so the other two attributes can politely f off
     return yaw
 
 
