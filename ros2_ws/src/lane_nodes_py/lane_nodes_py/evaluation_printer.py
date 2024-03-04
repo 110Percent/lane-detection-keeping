@@ -9,7 +9,11 @@ def print_measurement_diagrams(vehicle_path, waypoints):
 
 
 def print_path_diagram(vehicle_path, waypoints):
+    vehicle_path_points = []
+    for p in vehicle_path:
+        vehicle_path_points += [(p.pose.pose.position.x, p.pose.pose.position.y)]
     plt.plot(list(zip(*waypoints))[0], list(zip(*waypoints))[1])
+    plt.plot(list(zip(*vehicle_path_points))[0], list(zip(*vehicle_path_points))[1])
     plt.show()
 
 
@@ -152,7 +156,17 @@ point2.pose.pose.position.y = 4.5
 
 point2.pose.pose.orientation.x = 0.0
 point2.pose.pose.orientation.y = 0.0
-point2.pose.pose.orientation.z = -0.24740395925452294
-point2.pose.pose.orientation.w = 0.9689124217106447
-
+point2.pose.pose.orientation.z = 0.0
+point2.pose.pose.orientation.w = 1.0
 test_vehicle_points += [point2]
+
+point3 = vehicle_path_point()
+point3.pose.pose.position.x = 1.5
+point3.pose.pose.position.y = 5
+
+point3.pose.pose.orientation.x = 0.0
+point3.pose.pose.orientation.y = 0.0
+point3.pose.pose.orientation.z = 0.0
+point3.pose.pose.orientation.w = 1.0
+
+test_vehicle_points += [point3]
