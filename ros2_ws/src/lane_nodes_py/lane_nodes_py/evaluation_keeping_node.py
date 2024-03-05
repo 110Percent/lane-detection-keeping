@@ -54,13 +54,13 @@ class EvaluationKeeping(Node):
         poses = msg.poses
         self.waypoints = []
         for pose in poses:
-            self.waypoints += [(pose.pose.position.x, pose.pose.position.y)]
+            self.waypoints += [(pose.pose.position.x, pose.pose.position.y, pose.pose.position.z)]
 
         self.get_logger().info(str(self.waypoints))
 
     def odometry_callback(self, msg):
         self.vehicle_path_total += [msg]
-        self.current_location = (msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.y)
+        self.current_location = (msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z)
 
         if dist(self.current_location, self.waypoints[-1]) < 5:
             self.get_logger().info("Reached destination, publishing data and exiting")
@@ -113,7 +113,7 @@ class EvaluationKeeping(Node):
     def find_points_in_view(self):
         points_in_range = []
         for point in self.waypoints:
-            if dist(self.current_location, point) > 20:
+            if dist(self.current_location, point) > 20 or abs(self.current_location[2]-point[2]) > 5:
                 continue
             points_in_range += [point]
         points_in_view = []
