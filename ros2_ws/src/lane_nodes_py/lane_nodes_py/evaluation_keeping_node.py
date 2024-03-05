@@ -11,6 +11,7 @@ from lane_nodes_py.evaluation_printer import print_path_diagram, print_measureme
 
 from lane_interfaces.msg import LaneLocation2
 
+from lane_nodes_py.evaluation_printer import wp
 
 class EvaluationKeeping(Node):
     FREQUENCY = 5
@@ -50,14 +51,8 @@ class EvaluationKeeping(Node):
         self.lane_publisher_.publish(msg)
 
     def test_callback(self, msg):
-        # self.get_logger().info(str(msg))
 
-        self.waypoints = []
-
-        file = open("waypoints.txt", "r")
-        for line in file.readlines():
-            self.waypoints += [(int(line[0])), (int(line[1])), (int(line[2]))]
-        file.close()
+        self.waypoints = wp
 
         self.get_logger().info(str(self.waypoints))
 
