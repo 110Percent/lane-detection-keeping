@@ -51,10 +51,13 @@ class EvaluationKeeping(Node):
 
     def test_callback(self, msg):
         # self.get_logger().info(str(msg))
-        poses = msg.poses
+
         self.waypoints = []
-        for pose in poses:
-            self.waypoints += [(pose.pose.position.x, pose.pose.position.y, pose.pose.position.z)]
+
+        file = open("waypoints.txt", "r")
+        for line in file.readlines():
+            self.waypoints += [(int(line[0])), (int(line[1])), (int(line[2]))]
+        file.close()
 
         self.get_logger().info(str(self.waypoints))
 
