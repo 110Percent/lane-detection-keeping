@@ -29,23 +29,23 @@ def get_maximum_errors(vehicle_path, waypoints):
             waypoint = waypoints[i]
             if closest is None:
                 closest = i
-            elif dist(waypoint, current_location) < dist(waypoints[closest], current_location):
+            elif dist(waypoint, current_location) < dist(waypoints[closest], current_location) and abs(waypoint[2] - current_location[2]) < 5:
                 closest = i
         front = None
         back = None
         if closest == 0:
-            front = np.array(waypoints[1])
-            back = np.array(waypoints[0])
+            front = np.array((waypoints[1][0], waypoints[1][1]))
+            back = np.array((waypoints[0][0], waypoints[0][1]))
         elif closest == (len(waypoints) - 1):
-            front = np.array(waypoints[closest])
-            back = np.array(waypoints[closest - 1])
+            front = np.array((waypoints[closest][0], waypoints[closest][1]))
+            back = np.array((waypoints[closest-1][0], waypoints[closest-1][1]))
         else:
             if dist(current_location, waypoints[closest - 1]) < dist(current_location, waypoints[closest + 1]):
-                front = np.array(waypoints[closest])
-                back = np.array(waypoints[closest - 1])
+                front = np.array((waypoints[closest][0], waypoints[closest][1]))
+                back = np.array((waypoints[closest-1][0], waypoints[closest-1][1]))
             else:
-                front = np.array(waypoints[closest + 1])
-                back = np.array(waypoints[closest])
+                front = np.array((waypoints[closest-1][0], waypoints[closest-1][1]))
+                back = np.array((waypoints[closest][0], waypoints[closest][1]))
 
         p3 = np.array(current_location)
         n = back - front
