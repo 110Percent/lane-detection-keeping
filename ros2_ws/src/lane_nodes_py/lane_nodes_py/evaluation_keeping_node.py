@@ -11,7 +11,7 @@ from lane_nodes_py.evaluation_printer import print_path_diagram, print_measureme
 
 from lane_interfaces.msg import LaneLocation2
 
-from lane_nodes_py.evaluation_printer import wp
+from lane_nodes_py.waypoints import wp
 
 class EvaluationKeeping(Node):
     FREQUENCY = 5
