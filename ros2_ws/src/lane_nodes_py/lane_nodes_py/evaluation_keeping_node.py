@@ -59,10 +59,8 @@ class EvaluationKeeping(Node):
         self.get_logger().info(str(self.waypoints))
 
     def odometry_callback(self, msg):
-        self.get_logger().info(str(msg.header.stamp.sec))
-        self.get_logger().info(str(msg.header.stamp.nanosec))
         self.vehicle_path_total += [msg]
-        self.current_location = (msg.pose.pose.position.x, msg.pose.pose.position.y)
+        self.current_location = (msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.y)
 
         if dist(self.current_location, self.waypoints[-1]) < 5:
             self.get_logger().info("Reached destination, publishing data and exiting")
@@ -108,8 +106,6 @@ class EvaluationKeeping(Node):
         max_heading_error, max_lateral_deviation = get_maximum_errors(self.vehicle_path_total, self.waypoints)
         self.get_logger().info("Maximum Heading Error(rads): " + str(max_heading_error))
         self.get_logger().info("Maximum Lateral Deviation: " + str(max_lateral_deviation))
-
-        pass
 
     def transform_points(self, points):
         return transform_points(points, self.current_location, self.yaw)

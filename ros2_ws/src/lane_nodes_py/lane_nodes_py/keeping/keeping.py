@@ -39,14 +39,12 @@ class Keeping:
 
     def movement_output_callback(self):
         # Logs for the log god
-        print('Publishing movement instructions')
         if self.path_grid.path is None:
             return AckermannWrapper()
         # If the data is not fresh, meaning we're using old data, use the last message sent to update our
         # "expected" model
         current_time = time.time()
         if not self.path_grid.is_fresh():
-            print('Grid path is not fresh')
             self.path_grid.update(self.last_message, current_time - self.last_time)
 
         self.last_time = current_time
@@ -61,11 +59,6 @@ class Keeping:
 
         # Figure out the new heading from the error
         new_heading = self.calculate_heading(cross_track_error, heading_error, v, self.path_grid)
-
-        print("Vehicle position in grid: " + str(self.path_grid.position))
-        print("Cross track error: " + str(cross_track_error))
-        print("Heading error: " + str(heading_error))
-        print("Steering Yaw: " + str(new_heading))
 
         # Use the output of the PID controller with the grid data to determine the next control
         return self.generate_ackerman_control(new_heading, self.path_grid)
@@ -82,7 +75,7 @@ class Keeping:
         msg = AckermannWrapper()
         msg.steering_angle = output
         msg.steering_angle_velocity = 0.0
-        msg.speed = 7.0
+        msg.speed = 5.0
         msg.acceleration = 0.0
         msg.jerk = 0.0
         self.last_message = msg

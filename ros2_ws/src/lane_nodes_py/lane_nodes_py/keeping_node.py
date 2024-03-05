@@ -49,10 +49,10 @@ class KeepingNode(Node):
         lane_data.paths = [msg.y_vals1, msg.y_vals2]
         lane_data.coordinates = msg.x_vals
         self.keeping.lane_location_callback(lane_data)
-        self.get_logger().info('Received message: "%s"' % str(msg))
+        self.get_logger().info('Received new lane data')
 
     def movement_output_callback(self):
-        self.get_logger().info('Publishing movement instructions')
+        self.get_logger().info('Publishing movement instructions to Carla')
 
         ackermann_msg = self.keeping.movement_output_callback()
 
@@ -63,7 +63,6 @@ class KeepingNode(Node):
         msg.speed = ackermann_msg.speed
         msg.acceleration = ackermann_msg.acceleration
         msg.jerk = ackermann_msg.jerk
-        self.get_logger().info("%s" % msg)
         self.movement_publisher_.publish(msg)
         self.timer.reset()
 
