@@ -17,19 +17,21 @@ def print_path_diagram(vehicle_path, waypoints):
     #plt.show()
 
 
-def get_maximum_errors(vehicle_path, waypoints):
+def get_maximum_errors(vehicle_path, waypoints, logga):
     # Get the closest two points to the cars position
     max_distance = None
     max_heading_error = None
     for vehicle_point in vehicle_path:
         closest = None
 
-        current_location = (vehicle_point.pose.pose.position.x, vehicle_point.pose.pose.position.y, vehicle_point.pose.pose.position.z)
+        current_location = (vehicle_point.pose.pose.position.x, vehicle_point.pose.pose.position.y,
+                            vehicle_point.pose.pose.position.z)
         for i in range(len(waypoints)):
             waypoint = waypoints[i]
             if closest is None:
                 closest = i
-            elif dist(waypoint, current_location) < dist(waypoints[closest], current_location) and abs(waypoint[2] - current_location[2]) < 5:
+            elif (dist(waypoint, current_location) < dist(waypoints[closest], current_location) and
+                  abs(waypoint[2] - current_location[2]) < 5):
                 closest = i
         front = None
         back = None
@@ -72,8 +74,10 @@ def get_maximum_errors(vehicle_path, waypoints):
 
 
         if max_heading_error is None:
+            logga.info('New max Heading Error of ' + str(heading_error) + 'at the point of ' + str(current_location))
             max_heading_error = abs(heading_error)
         elif abs(heading_error) > max_heading_error:
+            logga.info('New max Heading Error of ' + str(heading_error) + 'at the point of ' + str(current_location))
             max_heading_error = abs(heading_error)
     return max_heading_error, max_distance
 
