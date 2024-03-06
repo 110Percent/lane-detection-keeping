@@ -47,7 +47,7 @@ def get_maximum_errors(vehicle_path, waypoints):
                 front = np.array((waypoints[closest-1][0], waypoints[closest-1][1]))
                 back = np.array((waypoints[closest][0], waypoints[closest][1]))
 
-        p3 = np.array(current_location)
+        p3 = np.array((current_location[0], current_location[1]))
         n = back - front
         v = p3 - front
         p4 = front + n * (np.dot(v, n) / np.dot(n, n))
