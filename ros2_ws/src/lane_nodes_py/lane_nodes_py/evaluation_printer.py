@@ -66,9 +66,9 @@ def get_maximum_errors(vehicle_path, waypoints):
 
         heading_error = angle - yaw
         while heading_error > np.pi:
-            heading_error = heading_error - np.pi
+            heading_error = heading_error - (2 * np.pi)
         while heading_error < -np.pi:
-            heading_error = heading_error + np.pi
+            heading_error = heading_error + (2 * np.pi)
 
 
         if max_heading_error is None:
