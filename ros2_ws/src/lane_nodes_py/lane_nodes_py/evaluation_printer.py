@@ -24,7 +24,7 @@ def get_maximum_errors(vehicle_path, waypoints):
     for vehicle_point in vehicle_path:
         closest = None
 
-        current_location = (vehicle_point.pose.pose.position.x, vehicle_point.pose.pose.position.y)
+        current_location = (vehicle_point.pose.pose.position.x, vehicle_point.pose.pose.position.y, vehicle_point.pose.pose.position.z)
         for i in range(len(waypoints)):
             waypoint = waypoints[i]
             if closest is None:
