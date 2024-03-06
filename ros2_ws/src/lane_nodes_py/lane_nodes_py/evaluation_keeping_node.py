@@ -101,7 +101,7 @@ class EvaluationKeeping(Node):
         print_measurement_diagrams(self.vehicle_path_total, self.waypoints)
 
         self.get_logger().info("Printing maximum lateral deviation and maximum heading error")
-        max_heading_error, max_lateral_deviation = get_maximum_errors(self.vehicle_path_total, self.waypoints)
+        max_heading_error, max_lateral_deviation = get_maximum_errors(self.vehicle_path_total, self.waypoints, self.get_logger())
         self.get_logger().info("Maximum Heading Error(rads): " + str(max_heading_error))
         self.get_logger().info("Maximum Lateral Deviation: " + str(max_lateral_deviation))
 
