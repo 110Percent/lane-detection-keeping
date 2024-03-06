@@ -46,7 +46,7 @@ def get_maximum_errors(vehicle_path, waypoints, logga):
                 front = np.array((waypoints[closest][0], waypoints[closest][1]))
                 back = np.array((waypoints[closest-1][0], waypoints[closest-1][1]))
             else:
-                front = np.array((waypoints[closest-1][0], waypoints[closest-1][1]))
+                front = np.array((waypoints[closest+1][0], waypoints[closest+1][1]))
                 back = np.array((waypoints[closest][0], waypoints[closest][1]))
 
         p3 = np.array((current_location[0], current_location[1]))
