@@ -1,4 +1,4 @@
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 from lane_nodes_py.evaluation_helper import quaternion_to_euler, dist, euler_to_quaternion
 import numpy as np
@@ -12,9 +12,9 @@ def print_path_diagram(vehicle_path, waypoints):
     vehicle_path_points = []
     for p in vehicle_path:
         vehicle_path_points += [(p.pose.pose.position.x, p.pose.pose.position.y)]
-    #plt.plot(list(zip(*waypoints))[0], list(zip(*waypoints))[1])
-    #plt.plot(list(zip(*vehicle_path_points))[0], list(zip(*vehicle_path_points))[1])
-    #plt.show()
+    plt.plot(list(zip(*waypoints))[0], list(zip(*waypoints))[1])
+    plt.plot(list(zip(*vehicle_path_points))[0], list(zip(*vehicle_path_points))[1])
+    plt.show()
 
 
 def get_maximum_errors(vehicle_path, waypoints, logga):
