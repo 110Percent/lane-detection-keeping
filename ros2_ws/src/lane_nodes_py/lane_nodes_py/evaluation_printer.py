@@ -79,7 +79,7 @@ def get_maximum_errors(vehicle_path, waypoints, logga):
             max_heading_error = abs(heading_error)
         elif abs(heading_error) > max_heading_error:
             logga.info('New max Heading Error of ' + str(heading_error) + 'at the point of ' + str(current_location))
-            logga.info('Back point: ' + str(back) + ', front point: ' + str(front) + ', Yaw' + yaw)
+            logga.info('Back point: ' + str(back) + ', front point: ' + str(front) + ', Yaw' + str(yaw))
             max_heading_error = abs(heading_error)
     return max_heading_error, max_distance
 
