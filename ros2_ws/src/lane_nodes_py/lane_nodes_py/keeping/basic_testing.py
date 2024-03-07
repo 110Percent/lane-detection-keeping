@@ -7,7 +7,7 @@ from ischedule import schedule, run_loop
 import matplotlib.pyplot as plt
 
 def main():
-    keeping = Keeping(1)
+    keeping = Keeping(1, 1, 1)
     path: List[Tuple[float, float]] = perabola()
     keeping.path_grid.set_path(path)
     schedule(keeping.movement_output_callback, interval=0.1)

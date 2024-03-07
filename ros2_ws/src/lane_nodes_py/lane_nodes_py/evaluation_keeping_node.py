@@ -13,6 +13,8 @@ from lane_interfaces.msg import LaneLocation2
 
 from lane_nodes_py.waypoints import wp
 
+import os
+
 class EvaluationKeeping(Node):
     FREQUENCY = 5
 
@@ -129,6 +131,9 @@ def get_2d_direction_from_quaternion(x, y, z, w):
 
 
 def main(args=None):
+    if os.environ['ENABLE_EVALUATION'] == 1:
+        return
+
     rclpy.init(args=args)
 
     eval_keeping_node = EvaluationKeeping()

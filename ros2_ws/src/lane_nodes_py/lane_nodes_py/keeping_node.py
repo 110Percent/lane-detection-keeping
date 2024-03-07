@@ -11,16 +11,20 @@ from lane_nodes_py.keeping.pid_controller import PID
 
 from lane_nodes_py.keeping.lane_wrapper import LaneWrapper
 
+import os
+
 OUTPUT_FREQUENCY = 10
 
 
 class KeepingNode(Node):
-    keeping = Keeping(1)
+    keeping: Keeping
 
     pid = PID(1.0, 0, 0)
 
-    def __init__(self):
+    def __init__(self, target_velocity, control_constant):
         super().__init__('keeping')
+
+        keeping =  Keeping(1, target_velocity, control_constant)
 
         # Create the publisher for sending movement instructions
         self.movement_publisher_ = self.create_publisher(AckermannDrive, "/carla/ego_vehicle/ackermann_cmd", 10)
@@ -70,7 +74,7 @@ class KeepingNode(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    keeping_node = KeepingNode()
+    keeping_node = KeepingNode(os.environ['VEHICLE_VELOCITY'], os.environ['CONTROL_CONSTANT'])
 
     rclpy.spin(keeping_node)
 

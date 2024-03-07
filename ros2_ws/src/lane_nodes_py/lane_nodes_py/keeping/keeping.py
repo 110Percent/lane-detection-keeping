@@ -14,9 +14,13 @@ from typing import Tuple, List
 class Keeping:
     pid = PID(1.0, 0, 0)
 
-    def __init__(self, size: float):
+    target_velocity: float
+
+    def __init__(self, size: float, target_velocity, control_constant: float):
         # Initialize the mathematical model
         self.path_grid = PathData(size)
+
+        self.target_velocity = target_velocity
 
         # Set a default last message for the ackerman drive, defaulting to remaining stationary
         self.last_message = AckermannWrapper()
@@ -30,7 +34,7 @@ class Keeping:
         self.last_time = time.time()
 
         # Set a stanley constant
-        self.k = 1
+        self.k = control_constant
 
     # Callback for receiving lane data. At the moment, just echoes it down the pipeline without any further processing.
     def lane_location_callback(self, msg):
