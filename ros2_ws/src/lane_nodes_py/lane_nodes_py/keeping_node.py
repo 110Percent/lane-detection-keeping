@@ -24,7 +24,7 @@ class KeepingNode(Node):
     def __init__(self, target_velocity, control_constant):
         super().__init__('keeping')
 
-        keeping =  Keeping(1, target_velocity, control_constant)
+        self.keeping =  Keeping(1, target_velocity, control_constant)
 
         # Create the publisher for sending movement instructions
         self.movement_publisher_ = self.create_publisher(AckermannDrive, "/carla/ego_vehicle/ackermann_cmd", 10)
