@@ -74,7 +74,7 @@ class KeepingNode(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    keeping_node = KeepingNode(os.environ['VEHICLE_VELOCITY'], os.environ['CONTROL_CONSTANT'])
+    keeping_node = KeepingNode(float(os.environ['VEHICLE_VELOCITY']), float(os.environ['CONTROL_CONSTANT']))
 
     rclpy.spin(keeping_node)
 
