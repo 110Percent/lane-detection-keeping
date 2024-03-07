@@ -7,13 +7,14 @@ from nav_msgs.msg import Path, Odometry
 
 from lane_nodes_py.evaluation_helper import quaternion_to_euler, dist, in_front_arc, polish_path, transform_points
 
-from lane_nodes_py.evaluation_printer import print_path_diagram, print_measurement_diagrams, get_maximum_errors
+from lane_nodes_py.evaluation_printer import DataAnalyzer
 
 from lane_interfaces.msg import LaneLocation2
 
 from lane_nodes_py.waypoints import wp
 
 import os
+
 
 class EvaluationKeeping(Node):
     FREQUENCY = 5
@@ -94,16 +95,17 @@ class EvaluationKeeping(Node):
 
         self.lane_pair = msg
 
-
     def publish_data_and_close(self):
+        anal = DataAnalyzer(self.vehicle_path_total, self.waypoints)
+
         self.get_logger().info("Printing the vehicle path")
-        print_path_diagram(self.vehicle_path_total, self.waypoints)
+        anal.print_path_diagram()
 
         self.get_logger().info("Printing diagrams")
-        print_measurement_diagrams(self.vehicle_path_total, self.waypoints)
+        anal.print_measurement_diagrams()
 
         self.get_logger().info("Printing maximum lateral deviation and maximum heading error")
-        max_heading_error, max_lateral_deviation = get_maximum_errors(self.vehicle_path_total, self.waypoints, self.get_logger())
+        max_heading_error, max_lateral_deviation = anal.get_maximum_errors()
         self.get_logger().info("Maximum Heading Error(rads): " + str(max_heading_error))
         self.get_logger().info("Maximum Lateral Deviation: " + str(max_lateral_deviation))
 
@@ -113,7 +115,7 @@ class EvaluationKeeping(Node):
     def find_points_in_view(self):
         points_in_range = []
         for point in self.waypoints:
-            if dist(self.current_location, point) > 20 or abs(self.current_location[2]-point[2]) > 5:
+            if dist(self.current_location, point) > 20 or abs(self.current_location[2] - point[2]) > 5:
                 continue
             points_in_range += [point]
         points_in_view = []
