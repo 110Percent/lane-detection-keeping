@@ -55,9 +55,6 @@ class DataAnalyzer():
 
             # TODO: Figure out a way to differentiate between which side of the waypoint the lad is on
 
-            self.lateral_error += [
-                (vehicle_point.header.stamp.sec + (0.000000001 * vehicle_point.header.stamp.nanosec), d)]
-
             angle = np.arctan2((front[1] - back[1]), (front[0] - back[0]))
 
             direction = vehicle_point.pose.pose.orientation
@@ -71,21 +68,41 @@ class DataAnalyzer():
                 heading_error = heading_error + (2 * np.pi)
             self.heading_error += [
                 (vehicle_point.header.stamp.sec + (0.000000001 * vehicle_point.header.stamp.nanosec), heading_error)]
+            if heading_error < 0:
+                d = -d
+            self.lateral_error += [
+                (vehicle_point.header.stamp.sec + (0.000000001 * vehicle_point.header.stamp.nanosec), d)]
 
-    def print_measurement_diagrams(self):
+    def print_measurement_diagrams(self, k, v):
         plt.plot(list(zip(*self.lateral_error))[0], list(zip(*self.lateral_error))[1])
+        plt.title('Lateral Error with k='+str(k)+' and base velocity of '+str(v)+'m/s Over Time')
+        plt.xlabel('Time(seconds)')
+        plt.ylabel('Lateral Error')
         plt.show()
+        plt.savefig('Lateral_Error.jpg')
 
         plt.plot(list(zip(*self.heading_error))[0], list(zip(*self.heading_error))[1])
+        plt.title('Heading Error with k='+str(k)+' and base velocity of '+str(v)+'m/s Over Time')
+        plt.xlabel('Time(seconds)')
+        plt.ylabel('Heading Error')
         plt.show()
+        plt.savefig('Heading_Error.jpg')
+
 
     def print_path_diagram(self):
         vehicle_path_points = []
         for p in self.vehicle_path:
             vehicle_path_points += [(p.pose.pose.position.x, p.pose.pose.position.y)]
-        plt.plot(list(zip(*self.waypoints))[0], list(zip(*self.waypoints))[1])
-        plt.plot(list(zip(*vehicle_path_points))[0], list(zip(*vehicle_path_points))[1])
+        plt.plot(list(zip(*self.waypoints))[0], list(zip(*self.waypoints))[1], label='Waypoint Path')
+        plt.plot(list(zip(*vehicle_path_points))[0], list(zip(*vehicle_path_points))[1], label='Vehicle Path')
+        plt.tick_params(
+            axis='both',  # changes apply to the x-axis
+            which='both',  # both major and minor ticks are affected
+            bottom=False,  # ticks along the bottom edge are off
+            top=False,  # ticks along the top edge are off
+            labelbottom=False)  # labels along the bottom edge are off
         plt.show()
+        plt.savefig('Vehicle_Path.jpg')
 
     def get_maximum_errors(self):
         # Get the closest two points to the cars position

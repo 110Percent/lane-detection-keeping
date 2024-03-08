@@ -102,7 +102,7 @@ class EvaluationKeeping(Node):
         anal.print_path_diagram()
 
         self.get_logger().info("Printing diagrams")
-        anal.print_measurement_diagrams()
+        anal.print_measurement_diagrams(os.environ['CONTROL_CONSTANT'], os.environ['VEHICLE_VELOCITY'])
 
         self.get_logger().info("Printing maximum lateral deviation and maximum heading error")
         max_heading_error, max_lateral_deviation = anal.get_maximum_errors()
