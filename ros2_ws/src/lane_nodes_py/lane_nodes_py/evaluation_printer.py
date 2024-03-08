@@ -99,7 +99,11 @@ class DataAnalyzer():
             which='both',  # both major and minor ticks are affected
             bottom=False,  # ticks along the bottom edge are off
             top=False,  # ticks along the top edge are off
+            left=False,
+            right=False,
+            labelleft=False,
             labelbottom=False)  # labels along the bottom edge are off
+        plt.legend()
         plt.show()
         plt.savefig('Vehicle_Path.jpg')
 
