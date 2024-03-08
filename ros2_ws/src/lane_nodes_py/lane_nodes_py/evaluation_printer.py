@@ -72,7 +72,7 @@ class DataAnalyzer():
             self.lateral_error += [
                 (vehicle_point.header.stamp.sec + (0.000000001 * vehicle_point.header.stamp.nanosec), heading_error)]
 
-    def print_measurement_diagrams(self, vehicle_path, waypoints):
+    def print_measurement_diagrams(self):
         plt.plot(list(zip(*self.lateral_error))[0], list(zip(*self.lateral_error))[1])
         plt.show()
 
