@@ -76,14 +76,14 @@ class DataAnalyzer():
         plt.plot(list(zip(*self.lateral_error))[0], list(zip(*self.lateral_error))[1])
         plt.title('Lateral Error with k='+str(k)+' and base velocity of '+str(v)+'m/s Over Time')
         plt.xlabel('Time(seconds)')
-        plt.ylabel('Lateral Error')
+        plt.ylabel('Lateral Error(meters)')
         plt.show()
         plt.savefig('Lateral_Error.jpg')
 
         plt.plot(list(zip(*self.heading_error))[0], list(zip(*self.heading_error))[1])
         plt.title('Heading Error with k='+str(k)+' and base velocity of '+str(v)+'m/s Over Time')
         plt.xlabel('Time(seconds)')
-        plt.ylabel('Heading Error')
+        plt.ylabel('Heading Error(radians)')
         plt.show()
         plt.savefig('Heading_Error.jpg')
 
@@ -94,6 +94,7 @@ class DataAnalyzer():
             vehicle_path_points += [(p.pose.pose.position.x, p.pose.pose.position.y)]
         plt.plot(list(zip(*self.waypoints))[0], list(zip(*self.waypoints))[1], label='Waypoint Path')
         plt.plot(list(zip(*vehicle_path_points))[0], list(zip(*vehicle_path_points))[1], label='Vehicle Path')
+        plt.title('Vehicle Path compared to Waypoints for k='+str(k)+' and base velocity of '+str(v)+'m/s')
         plt.tick_params(
             axis='both',  # changes apply to the x-axis
             which='both',  # both major and minor ticks are affected
