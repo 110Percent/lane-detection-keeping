@@ -69,7 +69,7 @@ class DataAnalyzer():
                 heading_error = heading_error - (2 * np.pi)
             while heading_error < -np.pi:
                 heading_error = heading_error + (2 * np.pi)
-            self.lateral_error += [
+            self.heading_error += [
                 (vehicle_point.header.stamp.sec + (0.000000001 * vehicle_point.header.stamp.nanosec), heading_error)]
 
     def print_measurement_diagrams(self):
