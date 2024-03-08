@@ -68,8 +68,7 @@ class DataAnalyzer():
                 heading_error = heading_error + (2 * np.pi)
             self.heading_error += [
                 (vehicle_point.header.stamp.sec + (0.000000001 * vehicle_point.header.stamp.nanosec), heading_error)]
-            if heading_error < 0:
-                d = -d
+
             self.lateral_error += [
                 (vehicle_point.header.stamp.sec + (0.000000001 * vehicle_point.header.stamp.nanosec), d)]
 
