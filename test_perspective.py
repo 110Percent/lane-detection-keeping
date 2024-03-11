@@ -8,23 +8,28 @@ import numpy as np
 import pickle as pickle
 import glob
 import lane
+import sys
+from PIL import Image
 
 ORIGINAL_SIZE = 695, 1263
-UNWARPED_SIZE = 695, 1263
+UNWARPED_SIZE = ORIGINAL_SIZE
 
 
-example_images = ['./test_images/straight_lines1.jpg', './test_images/straight_lines2.jpg']
-roi_points = np.array([[0, ORIGINAL_SIZE[1] - 50],
-                        [ORIGINAL_SIZE[0], ORIGINAL_SIZE[1] - 50],
-                        [ORIGINAL_SIZE[0]//2, ORIGINAL_SIZE[1]//2+50]], np.int32)
-print('roi_points: ', roi_points)
-# Find the region of interest
-roi = np.zeros((720, 1280), np.uint8)
-print('roi: ', roi.shape)
-cv2.fillPoly(roi, [roi_points], 1)
+# example_images = ['./test_images/straight_lines1.jpg', './test_images/straight_lines2.jpg']
+# roi_points = np.array([[0, ORIGINAL_SIZE[1] - 50],
+#                         [ORIGINAL_SIZE[0], ORIGINAL_SIZE[1] - 50],
+#                         [ORIGINAL_SIZE[0]//2, ORIGINAL_SIZE[1]//2+50]], np.int32)
+# print('roi_points: ', roi_points)
+# # Find the region of interest
+# roi = np.zeros((720, 1280), np.uint8)
+# print('roi: ', roi.shape)
+# cv2.fillPoly(roi, [roi_points], (255,0,0))
 
 
-img = mpimg.imread('ikea.png')
+# img = mpimg.imread('ikea.png')
+img = np.asarray(Image.open('truckcrash.jpg')).copy()
+ORIGINAL_SIZE = img.shape[0], img.shape[1]
+UNWARPED_SIZE = ORIGINAL_SIZE
 
 plt.imshow(img)
 
@@ -66,7 +71,7 @@ for line in lanes:
         Lhs += outer
         Rhs += np.matmul(outer, pt) #use matmul for matrix multiply and not dot product
 
-        cv2.line(img, (x1, y1), (x2, y2), (255, 0, 0), thickness = 1)
+        cv2.line(np.int32(img), (x1, y1), (x2, y2), (255, 0, 0), thickness = 1)
         
         x_iter_max = max(x1, x2)
         x_iter_min = min(x1, x2)
@@ -101,10 +106,10 @@ def find_pt_inline(p1, p2, y):
     x = p1[0] + m_inv * Δy
     return [x, y]
 
-top = vp[1] + 65
+top = vp[1] + 40
 bottom = ORIGINAL_SIZE[1] - 40
 
-width = 500
+width = 600
 
 print('vp[0]', vp[0], type(vp[0][0]))
 print('vp[1]', vp[1], type(vp[1][0]))
@@ -114,47 +119,51 @@ p2 = [vp[0] + width/2, top]
 p3 = find_pt_inline(p2, vp, bottom)
 p4 = find_pt_inline(p1, vp, bottom)
 
-print('******\n', p1, p2, p3, p4, '\n**********************')
+print('**********************\n{}\n{}\n{}\n{}\n**********************'.format(p1, p2, p3, p4))
 print(len(p1), len(p2), len(p3), len(p4))
 
 src_pts = np.array([p1, p2, p3, p4], dtype=object)
+
+print('src_pts: ', src_pts.astype(np.int32))
+print('*********')
 
 dst_pts = np.float32([[0, 0], [UNWARPED_SIZE[0], 0],
                         [UNWARPED_SIZE[0], UNWARPED_SIZE[1]],
                         [0, UNWARPED_SIZE[1]]])
 
-cv2.polylines(img, [src_pts.astype(np.int32)],True, (0,200,100), thickness=5)
+# cv2.polylines(img, [src_pts.astype(np.int32)],True, (0,200,100), thickness=5)
 plt.plot(p1[0], p1[1], 'r+')
-plt.plot(p2[0], p2[1], 'c^')
+plt.plot(p2[0], p2[1], 'r+')
 plt.plot(p3[0], p3[1], 'r^')
 plt.plot(p4[0], p4[1], 'g^')
 plt.title('Trapezoid For Perspective Transform')
 plt.imshow(img)
 
-# H is the homography matrix
+# M is the homography matrix
 
 src_pts = np.float32(src_pts)
 M_inv = cv2.getPerspectiveTransform(dst_pts, src_pts)
 M = cv2.getPerspectiveTransform(src_pts, dst_pts)
+print('M.shape=',M.shape)
+print('M',M)
 warped = cv2.warpPerspective(img, M, UNWARPED_SIZE)
-# warped_lines = cv2.warpPerspective(lanes, M, UNWARPED_SIZE)
-plt.clf()
-# plt.imshow(warped)
+print('warped.shape=',warped.shape)
+print('warped: ', warped)
 
+
+# this is very gross and I don't like it either, but it works for now, the formatting of the input is difficult :(
+lines = []
 for line in lanes:
-    warped_line = cv2.warpPerspective(np.array(line), M, UNWARPED_SIZE)
-    print('warped line: ', warped_line.shape)
-    print('warped line: ', warped_line)
-    x_list = warped_line[::2]
-    y_list = warped_line[1::2]
-    for point1, point2 in zip(x_list, y_list):
-        x1, y1 = point1
-        x2, y2 = point2
-        
-        x1 = int(x1 *ORIGINAL_SIZE[1])
-        x2 = int(x2 *ORIGINAL_SIZE[1])
-        y1 = int(y1 *ORIGINAL_SIZE[0])
-        y2 = int(y2 *ORIGINAL_SIZE[0])
-        cv2.line(warped, (x1, y1), (x1, y1), (255, 0, 0), thickness = 5)
+    points = [(x*ORIGINAL_SIZE[1], y*ORIGINAL_SIZE[0]) for x,y in line]
+    t_points = []
+    for point in points:
+        t_point = cv2.perspectiveTransform(np.float32([[[point[0],point[1]]]]), M)
+        print(t_point)
+        t_points.append(t_point[0][0])
+    lines.append(t_points)
 
+print(t_points)
+plt.clf()
+for line in lines:
+    cv2.polylines(warped, [np.array(line).astype(np.int32)], False, (255,0,0), thickness=10)
 plt.imshow(warped)
