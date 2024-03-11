@@ -79,7 +79,7 @@ class Keeping:
         msg = AckermannWrapper()
         msg.steering_angle = output
         msg.steering_angle_velocity = 0.0
-        msg.speed = 8.0
+        msg.speed = self.target_velocity
         msg.acceleration = 0.0
         msg.jerk = 0.0
         self.last_message = msg
