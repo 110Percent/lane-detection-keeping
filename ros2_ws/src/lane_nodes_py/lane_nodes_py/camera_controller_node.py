@@ -44,7 +44,7 @@ class CameraControllerNode(Node):
         cv_image = self.camera_controller.canny(cv_image)
         self.camera_controller.show_image(cv_image)
 
-        # self.get_logger().info('Publishing image')
+        self.get_logger().info('Publishing image')
         self.image_publisher_.publish(msg)
 
 def main(args=None):
