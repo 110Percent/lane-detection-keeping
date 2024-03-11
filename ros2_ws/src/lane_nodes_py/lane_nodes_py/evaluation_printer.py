@@ -88,7 +88,7 @@ class DataAnalyzer():
         plt.savefig('Heading_Error.jpg')
 
 
-    def print_path_diagram(self):
+    def print_path_diagram(self, k, v):
         vehicle_path_points = []
         for p in self.vehicle_path:
             vehicle_path_points += [(p.pose.pose.position.x, p.pose.pose.position.y)]

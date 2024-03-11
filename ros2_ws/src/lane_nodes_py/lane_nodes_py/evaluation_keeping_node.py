@@ -99,7 +99,7 @@ class EvaluationKeeping(Node):
         anal = DataAnalyzer(self.vehicle_path_total, self.waypoints)
 
         self.get_logger().info("Printing the vehicle path")
-        anal.print_path_diagram()
+        anal.print_path_diagram(os.environ['CONTROL_CONSTANT'], os.environ['VEHICLE_VELOCITY'])
 
         self.get_logger().info("Printing diagrams")
         anal.print_measurement_diagrams(os.environ['CONTROL_CONSTANT'], os.environ['VEHICLE_VELOCITY'])
