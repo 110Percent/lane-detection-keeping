@@ -14,9 +14,13 @@ from typing import Tuple, List
 class Keeping:
     pid = PID(1.0, 0, 0)
 
-    def __init__(self, size: float):
+    target_velocity: float
+
+    def __init__(self, size: float, target_velocity, control_constant: float):
         # Initialize the mathematical model
         self.path_grid = PathData(size)
+
+        self.target_velocity = target_velocity
 
         # Set a default last message for the ackerman drive, defaulting to remaining stationary
         self.last_message = AckermannWrapper()
@@ -30,7 +34,7 @@ class Keeping:
         self.last_time = time.time()
 
         # Set a stanley constant
-        self.k = 1
+        self.k = control_constant
 
     # Callback for receiving lane data. At the moment, just echoes it down the pipeline without any further processing.
     def lane_location_callback(self, msg):
@@ -39,13 +43,12 @@ class Keeping:
 
     def movement_output_callback(self):
         # Logs for the log god
-        print('Publishing movement instructions')
-
+        if self.path_grid.path is None:
+            return AckermannWrapper()
         # If the data is not fresh, meaning we're using old data, use the last message sent to update our
         # "expected" model
         current_time = time.time()
         if not self.path_grid.is_fresh():
-            print('Grid path is not fresh')
             self.path_grid.update(self.last_message, current_time - self.last_time)
 
         self.last_time = current_time
@@ -60,11 +63,6 @@ class Keeping:
 
         # Figure out the new heading from the error
         new_heading = self.calculate_heading(cross_track_error, heading_error, v, self.path_grid)
-
-        print("Vehicle position in grid: " + str(self.path_grid.position))
-        print("Cross track error: " + str(cross_track_error))
-        print("Heading error: " + str(heading_error))
-        print("Steering Yaw: " + str(new_heading))
 
         # Use the output of the PID controller with the grid data to determine the next control
         return self.generate_ackerman_control(new_heading, self.path_grid)
@@ -81,7 +79,7 @@ class Keeping:
         msg = AckermannWrapper()
         msg.steering_angle = output
         msg.steering_angle_velocity = 0.0
-        msg.speed = 1.0
+        msg.speed = self.target_velocity
         msg.acceleration = 0.0
         msg.jerk = 0.0
         self.last_message = msg

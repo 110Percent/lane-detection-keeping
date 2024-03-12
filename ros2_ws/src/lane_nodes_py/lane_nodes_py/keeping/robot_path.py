@@ -139,7 +139,7 @@ def intersection(L1, L2):
 
 class PathData:
     # Path to follow as a list of (x,y) coordinates
-    path: List[Tuple[float, float]]
+    path: List[Tuple[float, float]] = None
 
     # Position of the car in the form of (x,y)
     position: Tuple[float, float]
