@@ -1,3 +1,8 @@
+# This Dockerfile is used to build the Docker container that runs the Detection subsystem.
+
+# The Detection subsystem needs to run in its own container, as it relies on the dependencies provided by the NVIDIA CUDA image,
+# which are not provided by the ROS Bridge container on which the rest of the system runs.
+
 FROM clrnet:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
