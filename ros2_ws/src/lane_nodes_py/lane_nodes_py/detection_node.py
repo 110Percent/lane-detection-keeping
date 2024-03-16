@@ -92,8 +92,6 @@ class DetectionNode(Node):
     def lanes_to_birds_eye(self, lanes, img):
         ORIGINAL_SIZE = img.shape[0], img.shape[1]
         UNWARPED_SIZE = ORIGINAL_SIZE
-        low_thresh = 100
-        high_thresh = 200
 
         Lhs = np.zeros((2, 2), dtype = np.float32)
         Rhs = np.zeros((2, 1), dtype = np.float32)
@@ -175,13 +173,12 @@ class DetectionNode(Node):
                         [0, UNWARPED_SIZE[1]]])
 
         src_pts = np.float32(src_pts)
-        M_inv = cv2.getPerspectiveTransform(dst_pts, src_pts)
         M = cv2.getPerspectiveTransform(src_pts, dst_pts)
-        print('M.shape=',M.shape)
-        print('M',M)
+        # print('M.shape=',M.shape)
+        # print('M',M)
         warped = cv2.warpPerspective(img, M, UNWARPED_SIZE)
-        print('warped.shape=',warped.shape)
-        print('warped: ', warped)
+        # print('warped.shape=',warped.shape)
+        # print('warped: ', warped)
 
         # this is very gross and I don't like it either, but it works for now, the formatting of the input is difficult :(
         lines = []
@@ -190,13 +187,10 @@ class DetectionNode(Node):
             t_points = []
             for point in points:
                 t_point = cv2.perspectiveTransform(np.float32([[[point[0],point[1]]]]), M)
-                print(t_point)
+                t_point[0][0][0] = t_point[0][0][0]  - ORIGINAL_SIZE[0] / 2
+                t_point[0][0][1] = -1*(t_point[0][0][1]  - ORIGINAL_SIZE[1])
                 t_points.append(t_point[0][0])
             lines.append(t_points)
-
-        print(t_points)
-        for line in lines:
-            cv2.polylines(warped, [np.array(line).astype(np.int32)], False, (255,0,0), thickness=10)
 
 
 def main(args=None):
@@ -208,7 +202,7 @@ def main(args=None):
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
-       # when the garbage collector destroys the node object)
+    # when the garbage collector destroys the node object)
     detection_node.destroy_node()
     rclpy.shutdown()
 
