@@ -1,65 +1,80 @@
 import rclpy
 from rclpy.node import Node
 
-from lane_interfaces.msg import LaneLocation
+from lane_interfaces.msg import LaneLocation, LaneLocation2
 
-PID_FREQUENCY = 2
+from ackermann_msgs.msg import AckermannDrive
+
+from lane_nodes_py.keeping.keeping import Keeping
+
+from lane_nodes_py.keeping.pid_controller import PID
+
+from lane_nodes_py.keeping.lane_wrapper import LaneWrapper
+
+import os
+
+OUTPUT_FREQUENCY = 10
 
 
 class KeepingNode(Node):
-    # keeping = Keeping(1)
+    keeping: Keeping
 
-    # pid = PID(1.0, 0, 0)
+    pid = PID(1.0, 0, 0)
 
-    def __init__(self):
+    def __init__(self, target_velocity, control_constant):
         super().__init__('keeping')
 
-        # Create the publisher for sending movement instructions
-        #self.movement_publisher_ = self.create_publisher(AckermannDrive, "/carla/ego_vehicle/ackermann_cmd", 10)
+        self.keeping =  Keeping(1, target_velocity, control_constant)
 
-        #self.timer = self.create_timer(1 / PID_FREQUENCY, self.movement_output_callback)
+        # Create the publisher for sending movement instructions
+        self.movement_publisher_ = self.create_publisher(AckermannDrive, "/carla/ego_vehicle/ackermann_cmd", 10)
+
+        self.timer = self.create_timer(1 / OUTPUT_FREQUENCY, self.movement_output_callback)
 
         # Create the subscriber for receiving lane data
         self.lane_subscription = self.create_subscription(
             LaneLocation,
-            'lane_location_data',
+            'bev_lane_location_data',
             self.lane_location_callback,
             10)
-        
+
+        self.eval_lane_subscription = self.create_subscription(
+            LaneLocation2,
+            'lane_location_data_eval',
+            self.lane_location_callback_eval,
+            10)
+
+    # Callback for receiving lane data. At the moment, just echoes it down the pipeline without any further processing.
     def lane_location_callback(self, msg):
-        stamp = msg.stamp
-        id = msg.frame_id
-        lanes = msg.lanes
-        row_lengths = msg.row_lengths
+        self.get_logger().info('Received message: "%s"' % msg.temp)
 
-        self.get_logger().info('msg: ' + str(msg))
+    def lane_location_callback_eval(self, msg):
+        lane_data: LaneWrapper = LaneWrapper()
+        lane_data.paths = [msg.y_vals1, msg.y_vals2]
+        lane_data.coordinates = msg.x_vals
+        self.keeping.lane_location_callback(lane_data)
+        self.get_logger().info('Received new lane data')
 
-        unflat = self.unflatten_lanes(lanes, row_lengths)
+    def movement_output_callback(self):
+        self.get_logger().info('Publishing movement instructions to Carla')
 
+        ackermann_msg = self.keeping.movement_output_callback()
 
+        msg = AckermannDrive()
 
-    def unflatten_lanes(self, lanes, row_lengths):
-        unflat = []
-        for length in row_lengths:
-            flat_lane = lanes[:length * 2]
-            del lanes[:length * 2]
-            x_vals = []
-            y_vals = []
-            for i, val in enumerate(flat_lane):
-                if i % 2 == 0:
-                    x_vals.append(val)
-                else:
-                    y_vals.append(val)
-            unflat.append(list(zip(x_vals, y_vals)))
-        # self.get_logger().info('parsed lanes: ' + str(unflat))
-        for i, lane in enumerate(unflat):
-            self.get_logger().info('lane ' + str(i) + ': length=' + str(len(lane)) + ' points=' + str(lane))
+        msg.steering_angle = ackermann_msg.steering_angle
+        msg.steering_angle_velocity = ackermann_msg.steering_angle_velocity
+        msg.speed = ackermann_msg.speed
+        msg.acceleration = ackermann_msg.acceleration
+        msg.jerk = ackermann_msg.jerk
+        self.movement_publisher_.publish(msg)
+        self.timer.reset()
 
 
 def main(args=None):
     rclpy.init(args=args)
 
-    keeping_node = KeepingNode()
+    keeping_node = KeepingNode(float(os.environ['VEHICLE_VELOCITY']), float(os.environ['CONTROL_CONSTANT']))
 
     rclpy.spin(keeping_node)
 
