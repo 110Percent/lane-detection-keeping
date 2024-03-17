@@ -13,17 +13,19 @@ OUTPUT_FREQUENCY = 10
 
 
 class KeepingNode(Node):
-    # keeping = Keeping(1)
+    keeping: Keeping
 
     def __init__(self, target_velocity, control_constant):
         super().__init__('keeping')
 
         self.keeping =  Keeping(1, target_velocity, control_constant)
 
-        # Create the publisher for sending movement instructions
-        #self.movement_publisher_ = self.create_publisher(AckermannDrive, "/carla/ego_vehicle/ackermann_cmd", 10)
+        self.keeping =  Keeping(1, target_velocity, control_constant)
 
-        #self.timer = self.create_timer(1 / PID_FREQUENCY, self.movement_output_callback)
+        # Create the publisher for sending movement instructions
+        self.movement_publisher_ = self.create_publisher(AckermannDrive, "/carla/ego_vehicle/ackermann_cmd", 10)
+
+        self.timer = self.create_timer(1 / OUTPUT_FREQUENCY, self.movement_output_callback)
 
         # Create the subscriber for receiving lane data
         if os.environ['EVAL_MODE'] != "FULL":
@@ -111,6 +113,7 @@ def translator(lanedata):
 def main(args=None):
     rclpy.init(args=args)
 
+    keeping_node = KeepingNode(float(os.environ['VEHICLE_VELOCITY']), float(os.environ['CONTROL_CONSTANT']))
     keeping_node = KeepingNode(float(os.environ['VEHICLE_VELOCITY']), float(os.environ['CONTROL_CONSTANT']))
 
     rclpy.spin(keeping_node)
