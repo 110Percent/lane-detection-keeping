@@ -12,4 +12,6 @@ COPY ./src/ros_entrypoint.sh /
 
 RUN /bin/bash -c "python3 -m pip install --force-reinstall 'simple-pid==1.0.1'"
 
+RUN /bin/bash -c "python3 -m pip install --force-reinstall 'matplotlib'"
+
 CMD /bin/bash -c "echo 'Sleeping for a few seconds to allow CARLA to start...' && sleep 5 && bash ./run_main.sh"

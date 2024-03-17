@@ -1,9 +1,7 @@
 import math
 from typing import List, Tuple
 
-from lane_location_interface import LaneData
-
-from ackerman_wrapper import AckermannWrapper
+from lane_nodes_py.keeping.ackerman_wrapper import AckermannWrapper
 
 import numpy as np
 
@@ -15,7 +13,7 @@ ROTATION_LIMIT = 1000
 
 
 # Sufficiently tested to Liam's satisfaction with manual testing
-def calculate_path(calculated_path: LaneData) -> list[tuple[float, float]] | None:
+def calculate_path(calculated_path) :
     """
         Pseudo-code
         for each line in the LaneData, create a 3rd degree polynomial equation for it.
@@ -96,7 +94,7 @@ def calculate_path(calculated_path: LaneData) -> list[tuple[float, float]] | Non
 
 
 # Sufficiently tested to Liam's satisfaction with manual testing
-def polish_path(calculated_path: list[tuple[float, float]]) -> list[tuple[float, float]]:
+def polish_path(calculated_path: List[Tuple[float, float]]) -> List[Tuple[float, float]]:
     """
     Takes a list path in the form of [(x, y)] and formats it to include 11 evenly periodic points
     """
@@ -141,10 +139,10 @@ def intersection(L1, L2):
 
 class PathData:
     # Path to follow as a list of (x,y) coordinates
-    path: list[tuple[float, float]]
+    path: List[Tuple[float, float]] = None
 
     # Position of the car in the form of (x,y)
-    position: tuple[float, float]
+    position: Tuple[float, float]
 
     # Direction of the car in radians, with zero representing "forward" across the x-axis
     # Positive direction means counter-clockwise
@@ -154,7 +152,7 @@ class PathData:
     vehicle_size: float
 
     # History for a given set of data
-    history: list[tuple[float, float]]
+    history: List[Tuple[float, float]]
 
     def __init__(self, size):
         self.vehicle_size = size
@@ -230,12 +228,12 @@ class PathData:
     def is_fresh(self):
         return self.fresh
 
-    def set_grid(self, message_data: LaneData):
+    def set_grid(self, message_data):
         calculated_path = calculate_path(message_data)
         polished_path = polish_path(calculated_path)
         self.set_path(polished_path)
 
-    def set_path(self, data: list[tuple[float, float]]):
+    def set_path(self, data: List[Tuple[float, float]]):
         self.path = data
         self.position = (0, 0)
         self.car_direction = 0

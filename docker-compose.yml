@@ -1,4 +1,9 @@
+# This file is used to start the project and manage the subprocesses involved in running it.
+# It is used to start the main container, the detection container, and the CARLA simulator.
+
 services:
+  # This container is the main container, running the keeping and control logic,
+  # as well as interfacing with the simulator/hardware.
   main:
     build:
       context: .
@@ -15,12 +20,16 @@ services:
                   - gpu
     environment:
       - DISPLAY=$DISPLAY
+      - ENABLE_EVALUATION=0
+      - VEHICLE_VELOCITY=8.0
+      - CONTROL_CONSTANT=1.0
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ~/.Xauthority:/root/.Xauthority
       - /dev/shm:/dev/shm:rw
     stdin_open: true
     tty: true
+  # This container is the detection container, running the detection logic and CLRNet
   detection:
     build:
       context: .
@@ -42,6 +51,7 @@ services:
       - ~/.Xauthority:/root/.Xauthority
       - /dev/shm:/dev/shm:rw
     tty: true
+  # This container runs the CARLA simulator for testing purposes.
   carla:
     image: carlasim/carla:0.9.13
     command: /bin/bash ./CarlaUE4.sh -quality-level=Low -RenderOffScreen

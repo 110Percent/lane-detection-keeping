@@ -28,6 +28,7 @@ find_package(rosidl_default_generators REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
 	"msg/Image.msg"
 	"msg/LaneLocation.msg"
+	"msg/LaneLocation2.msg"
 	"msg/MovementInstruction.msg"
 	"msg/Lane.msg"
 )

@@ -22,8 +22,10 @@ setup(
     entry_points={
         'console_scripts': [
             'keeping_node = lane_nodes_py.keeping_node:main',
+            'transform_node = lane_nodes_py.transform_node:main',
             'detection_node = lane_nodes_py.detection_node:main',
-            'camera_controller_node = lane_nodes_py.camera_controller_node:main'
+            'camera_controller_node = lane_nodes_py.camera_controller_node:main',
+            'evaluation_keeping_node = lane_nodes_py.evaluation_keeping_node:main'
         ],
     },
 )
