@@ -30,7 +30,6 @@ class EvaluationKeeping(Node):
 
     def __init__(self):
         super().__init__('evaluation_keeping')
-
         self.timer = self.create_timer(1 / self.FREQUENCY, self.publish_latest_path)
         self.waypoint_subscription = self.create_subscription(
             Path,
@@ -133,6 +132,7 @@ def get_2d_direction_from_quaternion(x, y, z, w):
 
 
 def main(args=None):
+    return
     if os.environ['ENABLE_EVALUATION'] == 1:
         return
 

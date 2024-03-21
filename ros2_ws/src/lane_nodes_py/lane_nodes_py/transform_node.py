@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 import numpy as np
 import cv2
+import matplotlib.pyplot as plt
 
 from lane_interfaces.msg import LaneLocation
 
@@ -49,8 +50,8 @@ class TransformNode(Node):
         lane_data.lanes = bev_flat
         lane_data.img_shape = img_shape
 
-        # self.get_logger().info('Sent: ' + str(lane_date))
         self.lane_publisher_.publish(lane_data)
+        self.get_logger().info('Sent Transformed lane')
 
     def lanes_to_birds_eye(self, lanes, img_shape):
         Lhs = np.zeros((2, 2), dtype = np.float32)
@@ -58,7 +59,7 @@ class TransformNode(Node):
         x_max = 0
         x_min = 2555
 
-        self.get_logger().info('lanes:' + str(lanes))
+        # self.get_logger().info('lanes:' + str(lanes))
         for line in lanes:
             x_list = line[::2]
             y_list = line[1::2]
@@ -144,6 +145,27 @@ class TransformNode(Node):
                 t_point[0][0][1] = -1*(t_point[0][0][1]  - img_shape[1])
                 t_points.append(t_point[0][0])
             lines.append(t_points)
+        
+        x_points = []
+        y_points = []
+        plt.clf()
+        # cv_image = cv2.imread("/opt/lane-capstone/src/lane_nodes_py/lane_nodes_py/test_images/drawn_lines.png", cv2.IMREAD_COLOR)
+        for line in lines:
+            for point in line:
+                x_points.append(point[0])
+                y_points.append(point[1])
+            # cv2.polylines(cv_image, [np.array(line).astype(np.int32)], False, (255,0,0), thickness=5)
+            plt.plot(x_points, y_points)
+            x_points = []
+            y_points = []
+        plt.savefig("/opt/lane-capstone/src/lane_nodes_py/lane_nodes_py/test_images/figure.png")
+        cv_image = cv2.imread("/opt/lane-capstone/src/lane_nodes_py/lane_nodes_py/test_images/figure.png", cv2.IMREAD_COLOR)
+        # self.get_logger().info('***********************show lines before**********')
+        fig = plt.figure()
+        cv2.imshow("lines on dumb image", cv_image)
+        cv2.waitKey(300)
+        # plt.show()
+        self.get_logger().info('***********************show lines after**********')
         return lines
 
     def flatten_lanes(self, lanes):

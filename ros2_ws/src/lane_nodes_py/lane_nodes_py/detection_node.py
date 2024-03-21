@@ -54,14 +54,20 @@ class DetectionNode(Node):
     def image_callback(self, msg):
 
         cv_image = cv_bridge.imgmsg_to_cv2(msg, "bgr8")
-        self.get_logger().info('img type' + str(type(cv_image)))
-        self.get_logger().info('img shape:' + str(cv_image.shape))
+        # self.get_logger().info('img type' + str(type(cv_image)))
+        # self.get_logger().info('img shape:' + str(cv_image.shape))
 
-        #self.get_logger().info('Received image')
+        self.get_logger().info('Received image')
         detected = self.detection.run_raw(cv_image)
 
         lanes = detected['lanes']
-        self.get_logger().info('type lanes[0]: ' + str(type(lanes[0])))
+        
+        if lanes is None:
+            return
+        if len(lanes) < 1:
+            return
+        
+        # self.get_logger().info('type lanes[0]: ' + str(type(lanes[0])))
         # self.get_logger().info('lanes:' + str(lanes))
         # bev_lanes = self.lanes_to_birds_eye(lanes, cv_image)
         flat_lanes = self.flatten_lanes(lanes)
