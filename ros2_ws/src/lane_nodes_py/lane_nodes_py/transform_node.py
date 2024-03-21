@@ -141,7 +141,7 @@ class TransformNode(Node):
             t_points = []
             for point in points:
                 t_point = cv2.perspectiveTransform(np.float32([[[point[0],point[1]]]]), M)
-                t_point[0][0][0] = t_point[0][0][0]  - img_shape[0] / 2
+                t_point[0][0][0] = (t_point[0][0][0]  - img_shape[0] / 2) * 20
                 t_point[0][0][1] = -1*(t_point[0][0][1]  - img_shape[1])
                 t_points.append(t_point[0][0])
             lines.append(t_points)
