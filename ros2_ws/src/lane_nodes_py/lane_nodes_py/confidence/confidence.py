@@ -1,3 +1,4 @@
+from numpy import who
 from .confidence_lane import ConfidenceLane
 
 LANE_DISTANCE_THRESHOLD = 20     # The maximum distance that a line can be from a lane and still be considered part of it. TODO: Tune this value
@@ -18,11 +19,15 @@ class Confidence(object):
             #   Find the existing lane closest to the line
             min_distance = 100000000000     # Initialize this to a ridiculous number
             candidate_lane = None
-            np_lane = ConfidenceLane.create_numpy_array(lane)
+            poly_coeffs = ConfidenceLane.create_polynomial(lane)
+            lane_points = ConfidenceLane.get_polynomial_points(poly_coeffs)
+            x_average = ConfidenceLane.get_line_x_average(lane)
+
             for conf_lane in self.confidence_lanes:
-                distance = conf_lane.lane_distance(np_lane)
-                if (distance < min_distance):
-                    min_distance = distance
+                
+                average_distance = abs(conf_lane.x_average - x_average)
+                if (average_distance < min_distance):
+                    min_distance = average_distance
                     candidate_lane = conf_lane
             
             # If there are no known lanes and no lines are detected
@@ -31,9 +36,9 @@ class Confidence(object):
 
             #   If the line is close enough (below some threshold), then add it to the lane.
             if (min_distance < LANE_DISTANCE_THRESHOLD):
-                candidate_lane.add_line(np_lane)
+                candidate_lane.add_line(lane_points)
             else:   # If the closest lane is still too far, initialize a new lane with this line.     
-                self.confidence_lanes.append(ConfidenceLane(np_lane))
+                self.confidence_lanes.append(ConfidenceLane(lane_points))
                 
         # Increase confidence in lanes that were found, decrease it in those that were not.
         for conf_lane in self.confidence_lanes:
