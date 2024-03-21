@@ -141,8 +141,8 @@ class TransformNode(Node):
             t_points = []
             for point in points:
                 t_point = cv2.perspectiveTransform(np.float32([[[point[0],point[1]]]]), M)
-                t_point[0][0][0] = (t_point[0][0][0]  - img_shape[0] / 2) * 20
-                t_point[0][0][1] = -1*(t_point[0][0][1]  - img_shape[1])
+                t_point[0][0][0] = (t_point[0][0][0]  - img_shape[0] / 2) / 25
+                t_point[0][0][1] = (-1*(t_point[0][0][1]  - img_shape[1])) / 25
                 t_points.append(t_point[0][0])
             lines.append(t_points)
         
@@ -150,22 +150,21 @@ class TransformNode(Node):
         y_points = []
         plt.clf()
         # cv_image = cv2.imread("/opt/lane-capstone/src/lane_nodes_py/lane_nodes_py/test_images/drawn_lines.png", cv2.IMREAD_COLOR)
-        for line in lines:
-            for point in line:
-                x_points.append(point[0])
-                y_points.append(point[1])
-            # cv2.polylines(cv_image, [np.array(line).astype(np.int32)], False, (255,0,0), thickness=5)
-            plt.plot(x_points, y_points)
-            x_points = []
-            y_points = []
-        plt.savefig("/opt/lane-capstone/src/lane_nodes_py/lane_nodes_py/test_images/figure.png")
-        cv_image = cv2.imread("/opt/lane-capstone/src/lane_nodes_py/lane_nodes_py/test_images/figure.png", cv2.IMREAD_COLOR)
-        # self.get_logger().info('***********************show lines before**********')
-        fig = plt.figure()
-        cv2.imshow("lines on dumb image", cv_image)
-        cv2.waitKey(300)
-        # plt.show()
-        self.get_logger().info('***********************show lines after**********')
+        # for line in lines:
+        #     for point in line:
+        #         x_points.append(point[0])
+        #         y_points.append(point[1])
+        #     # cv2.polylines(cv_image, [np.array(line).astype(np.int32)], False, (255,0,0), thickness=5)
+        #     plt.plot(x_points, y_points)
+        #     x_points = []
+        #     y_points = []
+        # plt.savefig("/opt/lane-capstone/src/lane_nodes_py/lane_nodes_py/test_images/figure.png")
+        # cv_image = cv2.imread("/opt/lane-capstone/src/lane_nodes_py/lane_nodes_py/test_images/figure.png", cv2.IMREAD_COLOR)
+        # # self.get_logger().info('***********************show lines before**********')
+        # fig = plt.figure()
+        # cv2.imshow("lines on dumb image", cv_image)
+        # cv2.waitKey(300)
+        # self.get_logger().info('***********************show lines after**********')
         return lines
 
     def flatten_lanes(self, lanes):

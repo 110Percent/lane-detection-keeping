@@ -123,7 +123,7 @@ def translator(lanedata):
         print(lane_dict)
         for coordinate in x_coordinates:
             if coordinate in lane_dict:
-                lanes[i] += [lane_dict.get(coordinate)]
+                lanes[i] += [-lane_dict.get(coordinate)]
             else:
                 lanes[i] += ['N']
 
