@@ -25,7 +25,8 @@ setup(
             'transform_node = lane_nodes_py.transform_node:main',
             'detection_node = lane_nodes_py.detection_node:main',
             'camera_controller_node = lane_nodes_py.camera_controller_node:main',
-            'evaluation_keeping_node = lane_nodes_py.evaluation_keeping_node:main'
+            'evaluation_keeping_node = lane_nodes_py.evaluation_keeping_node:main',
+            'confidence_node = lane_nodes_py.confidence_node:main'
         ],
     },
 )
