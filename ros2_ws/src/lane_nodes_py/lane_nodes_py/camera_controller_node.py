@@ -38,7 +38,7 @@ class CameraControllerNode(Node):
                 10)
         self.test_subscription # prevent unused variable warning
 
-        self.send_test_image()
+        # self.send_test_image()
 
     # Callback for testing that the ROS2 boilerplate works. In reality, this node will receive input from a camera.
     def test_callback(self, msg):
