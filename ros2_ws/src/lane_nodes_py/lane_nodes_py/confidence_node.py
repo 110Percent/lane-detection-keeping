@@ -1,26 +1,47 @@
 import rclpy
-from rclpy.node import node
+from rclpy.node import Node
 
-from sensor_msgs.msg import Image
+from lane_interfaces.msg import LaneLocation
 
-from cv_bridge import CvBridge
 from .confidence import Confidence
-import cv2
 
+# ROS 2 node for the confidence system
 class ConfidenceNode(Node):
     def __init__(self):
         super().__init__('confidence')
         
+        # Create subscriber for lane data
         self.image_subscriber = self.create_subscription(
-                Image,
-                '/video_frames',
-                self.image_callback,
+                LaneLocation,
+                'lane_location_data',
+                self.lane_callback,
                 10)
 
-        self.bridge = CvBridge()
+        # Create confidence object
         self.confidence = Confidence()
 
-    def image_callback(self, msg):
-        self.confidence.process_image(self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8"))
+    
+    # When a set of lanes are detected, process them and send only the lanes we are confident in the existence of along.
+    def lane_callback(self, msg):
+        confident_lanes = self.confidence.process_lanes(msg.lanes)
+        # TODO: Publish the confident lanes 
+
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    confidence_node = ConfidenceNode()
+
+    rclpy.spin(confidence_node)
+
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
+    confidence_node.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+
 
         
