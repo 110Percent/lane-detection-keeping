@@ -61,6 +61,12 @@ def generate_launch_description():
             executable='movement_controller',
             name='movement_controller'
             ),
+        Node(
+            package='lane_nodes_py',
+            namespace='test',
+            executable='confidence_node',
+            nsmr='confidence'
+            )
         launch.actions.IncludeLaunchDescription(
             launch.launch_description_sources.PythonLaunchDescriptionSource(
                 os.path.join(get_package_share_directory(
