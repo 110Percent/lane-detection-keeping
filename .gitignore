@@ -2,6 +2,8 @@
 ros2_ws/build/*
 ros2_ws/log/*
 ros2_ws/install/*
+ros2_ws/src/lane_nodes_py/lane_nodes_py/test_videos/*
+
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
