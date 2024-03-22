@@ -71,6 +71,7 @@ class ConfidenceNode(Node):
 
 
 def main(args=None):
+    return
     rclpy.init(args=args)
 
     confidence_node = ConfidenceNode()
