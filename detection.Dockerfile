@@ -7,10 +7,6 @@ FROM clrnet:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-COPY ./ros2_ws /opt/lane-capstone
-WORKDIR /opt/lane-capstone
-
-
 # Install ROS 2 Foxy
 
 RUN apt-get install curl -y
@@ -22,6 +18,9 @@ RUN apt-get install -y ros-foxy-ros-base python3-argcomplete ros-dev-tools ros-f
 
 RUN python3 -m pip uninstall -y opencv-python
 RUN python3 -m pip install opencv-python --upgrade
+
+COPY ./ros2_ws /opt/lane-capstone
+WORKDIR /opt/lane-capstone
 
 RUN /bin/bash -c "source /opt/ros/foxy/setup.bash && \
     colcon build --symlink-install"
