@@ -34,10 +34,6 @@ services:
     build:
       context: .
       dockerfile: detection.Dockerfile
-      ulimits:
-        nofile:
-          soft: 1024
-          hard: 1024
     network_mode: host
     hostname: capstone-detection
     deploy:
