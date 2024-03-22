@@ -67,6 +67,12 @@ def generate_launch_description():
             executable='confidence_node',
             name='confidence'
             ),
+        Node(
+            package='lane_nodes_py',
+            namespace='test',
+            executable='display_node',
+            name='display'
+            ),
         launch.actions.IncludeLaunchDescription(
             launch.launch_description_sources.PythonLaunchDescriptionSource(
                 os.path.join(get_package_share_directory(
