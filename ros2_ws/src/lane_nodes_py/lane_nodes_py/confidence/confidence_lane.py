@@ -22,9 +22,9 @@ class ConfidenceLane(object):
 
         self.add_line(initial_line)
 
-    # Takes a list of tuples and returns polynomial coefficients that fit the given data
+    # Rotates the data about the point (0.5, 0.5) by the given angle in degrees.
     @staticmethod
-    def create_polynomial(data):
+    def rotate_points(data, angle):
         # Rotate the data 90 degrees about the point (0.5, 0.5), right in the center of the range of acceptable values.
         # This is required to accurately model the distance of the line.
         points = np.array(data)
@@ -33,14 +33,19 @@ class ConfidenceLane(object):
         translated_points = points - pivot
         
         # Rotate the points 90 degrees about the origin
-        angle_rad = np.rad2deg(90)
+        angle_rad = np.rad2deg(angle)
         rotation_matrix = np.array([[np.cos(angle_rad), -np.sin(angle_rad)],
                                     [np.sin(angle_rad), np.cos(angle_rad)]])
         rotated_translated_points = np.dot(translated_points, rotation_matrix)
 
         # Translate the points so that they are in their final positions
-        rotated_points = rotated_translated_points + pivot
+        return rotated_translated_points + pivot
 
+
+    # Takes a list of tuples and returns polynomial coefficients that fit the given data
+    @staticmethod
+    def create_polynomial(data):
+        rotated_points = ConfidenceLane.rotate_points(data, 90)
 
         # Split the coordinates into separate numpy arrays
         x_coordinates = rotated_points[:, 0]

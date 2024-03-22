@@ -17,7 +17,7 @@ class Confidence(object):
         updated_lanes = []
         for lane in lanes:
             #   Find the existing lane closest to the line
-            min_distance = 100000000000     # Initialize this to a ridiculous number
+            min_distance = 100000     # Initialize this to a ridiculous number
             candidate_lane = None
             poly_coeffs = ConfidenceLane.create_polynomial(lane)
             lane_points = ConfidenceLane.get_polynomial_points(poly_coeffs)
@@ -53,7 +53,7 @@ class Confidence(object):
             if (conf_lane.confidence <= LANE_REMOVAL_THRESHOLD):
                 self.confidence_lanes.remove(conf_lane)
             elif(conf_lane.confidence >= LANE_CUTOFF_THRESHOLD):
-                result.append(conf_lane.get_last_lane())
+                result.append(ConfidenceLane.rotate_points(conf_lane.average_lane, -90))
 
         # Return a list of all lanes with confidence above a certain threshold
         return result
