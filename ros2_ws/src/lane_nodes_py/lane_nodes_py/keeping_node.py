@@ -54,17 +54,17 @@ class KeepingNode(Node):
         unflat = self.unflatten_lanes(lanes, row_lengths)
         lane_data = translator(unflat)
         self.keeping.lane_location_callback(lane_data)
-        self.get_logger().info('Received transformed lane')
+        # self.get_logger().info('Received transformed lane')
 
     def lane_location_callback_eval(self, msg):
         lane_data: LaneWrapper = LaneWrapper()
         lane_data.paths = [msg.y_vals1, msg.y_vals2]
         lane_data.coordinates = msg.x_vals
         self.keeping.lane_location_callback(lane_data)
-        self.get_logger().info('Received new lane data')
+        # self.get_logger().info('Received new lane data')
 
     def movement_output_callback(self):
-        self.get_logger().info('Publishing movement instructions')
+        # self.get_logger().info('Publishing movement instructions')
 
         ackermann_msg = self.keeping.movement_output_callback()
 

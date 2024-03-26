@@ -41,7 +41,7 @@ class ConfidenceNode(Node):
         lane_data.img_shape = img_shape
 
         self.lane_publisher_.publish(lane_data)
-        self.get_logger().info('Sent Confident lanes')
+        # self.get_logger().info('Sent Confident lanes')
     
     def flatten_lanes(self, lanes):
         flattened = []

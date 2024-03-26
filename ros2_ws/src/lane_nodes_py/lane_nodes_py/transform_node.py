@@ -51,7 +51,7 @@ class TransformNode(Node):
         lane_data.img_shape = img_shape
 
         self.lane_publisher_.publish(lane_data)
-        self.get_logger().info('Sent Transformed lane')
+        # self.get_logger().info('Sent Transformed lane')
 
     def lanes_to_birds_eye(self, lanes, img_shape):
         Lhs = np.zeros((2, 2), dtype = np.float32)

@@ -57,7 +57,7 @@ class DetectionNode(Node):
         # self.get_logger().info('img type' + str(type(cv_image)))
         # self.get_logger().info('img shape:' + str(cv_image.shape))
 
-        self.get_logger().info('Received image')
+        # self.get_logger().info('Received image')
         detected = self.detection.run_raw(cv_image)
 
         lanes = detected['lanes']
