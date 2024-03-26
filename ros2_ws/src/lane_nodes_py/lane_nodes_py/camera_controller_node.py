@@ -14,6 +14,8 @@ from .camera_controller import CameraController
 
 from lane_interfaces.msg import LaneLocation
 
+import os
+
 
 
 cv_bridge = CvBridge()
@@ -26,7 +28,7 @@ class CameraControllerNode(Node):
         self.camera_controller = CameraController()
         
         # Create the publisher for sending image data
-        self.image_publisher_ = self.create_publisher(Image, "image", 10)
+        self.image_publisher_ = self.create_publisher(Image, "raw_input_images", 10)
         
         # Create the subscriber for testing the ROS2 boilerplate. 
         self.test_subscription = self.create_subscription(
@@ -36,16 +38,29 @@ class CameraControllerNode(Node):
                 10)
         self.test_subscription # prevent unused variable warning
 
+        # self.send_test_image()
+
     # Callback for testing that the ROS2 boilerplate works. In reality, this node will receive input from a camera.
     def test_callback(self, msg):
         # .get_logger().info('Received message: "%s"' % msg)
         cv_image = cv_bridge.imgmsg_to_cv2(msg, "bgr8")
         
         cv_image = self.camera_controller.canny(cv_image)
-        self.camera_controller.show_image(cv_image)
+        #self.camera_controller.show_image(cv_image)
 
-        self.get_logger().info('Publishing image')
+        #self.get_logger().info('Publishing image')
         self.image_publisher_.publish(msg)
+
+    def send_test_image(self):
+        cv_image = cv2.imread("/opt/lane-capstone/src/lane_nodes_py/lane_nodes_py/test_images/ikea.png", cv2.IMREAD_COLOR)
+
+        if cv_image is None:
+            raise Exception("Could not load test image.............................................", cv_image, os.getcwd())
+        image_message = cv_bridge.cv2_to_imgmsg(cv_image, encoding='bgr8')
+
+        self.get_logger().info('TEST IMAGE MSG: ' + str(image_message)[:100])
+        self.image_publisher_.publish(image_message)
+
 
 def main(args=None):
     rclpy.init(args=args)

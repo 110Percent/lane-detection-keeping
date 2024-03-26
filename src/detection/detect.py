@@ -1,35 +1,43 @@
-import sys
-
-sys.path.append('/opt/clrnet')
-
 import numpy as np
 import torch
 import cv2
 import os
 import os.path as osp
 import glob
+import argparse
+import sys
+
+# Modded detect.py to drop into lanedet/tools/detect.py
+
+
+CLRNET_LOCATION = '/opt/clrnet'
+sys.path.append(CLRNET_LOCATION)
+
+
+'''
+from lanedet.datasets.process import Process
+from lanedet.models.registry import build_net
+from lanedet.utils.config import Config
+from lanedet.utils.visualization import imshow_lanes
+from lanedet.utils.net_utils import load_network
+'''
 from clrnet.datasets.process import Process
 from clrnet.models.registry import build_net
 from clrnet.utils.config import Config
 from clrnet.utils.visualization import imshow_lanes
 from clrnet.utils.net_utils import load_network
-from src.messaging.messaging import Message
+
 
 from pathlib import Path
 from tqdm import tqdm
-
-CONFIG = '/opt/clrnet/configs/clrnet/clr_resnet18_tusimple.py'
-MODEL = '/opt/clrnet/models/tusimple_r18.pth'
-IMAGE_DIR = '/imgs/in'
-OUTPUT_DIR = '/imgs/out'
-
 
 class Detect(object):
     def __init__(self, cfg):
         self.cfg = cfg
         self.processes = Process(cfg.val_process, cfg)
         self.net = build_net(self.cfg)
-        self.net = torch.nn.parallel.DataParallel(self.net, device_ids=range(1)).cuda()
+        self.net = torch.nn.parallel.DataParallel(
+                self.net, device_ids = range(1)).cuda()
         self.net.eval()
         load_network(self.net, self.cfg.load_from)
 
@@ -40,7 +48,7 @@ class Detect(object):
         data = {'img': img, 'lanes': []}
         data = self.processes(data)
         data['img'] = data['img'].unsqueeze(0)
-        data.update({'img_path': img_path, 'ori_img': ori_img})
+        data.update({'img_path':img_path, 'ori_img':ori_img})
         return data
 
     def inference(self, data):
@@ -63,7 +71,6 @@ class Detect(object):
             self.show(data)
         return data
 
-
 def get_img_paths(path):
     p = str(Path(path).absolute())  # os-agnostic absolute path
     if '*' in p:
@@ -76,17 +83,23 @@ def get_img_paths(path):
         raise Exception(f'ERROR: {p} does not exist')
     return paths
 
+def process(args):
+    cfg = Config.fromfile(args.config)
+    cfg.show = args.show
+    cfg.savedir = args.savedir
+    cfg.load_from = args.load_from
+    detect = Detect(cfg)
+    paths = get_img_paths(args.img)
+    for p in tqdm(paths):
+        detect.run(p)
 
 if __name__ == '__main__':
-    cfg = Config.fromfile(CONFIG)
-    cfg.show = False
-    cfg.savedir = OUTPUT_DIR
-    cfg.load_from = MODEL
-    cfg.cut_height = 320
-    detect = Detect(cfg)
-    paths = get_img_paths(IMAGE_DIR)
-    for p in tqdm(paths):
-        print(f'Detecting lines on {p}')
-        msg = Message(detect.run(p), 'detection', 'k&c')
-        msg.send()
-    print('Done!')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('config', help='The path of config file')
+    parser.add_argument('--img',  help='The path of the img (img file or img_folder), for example: data/*.png')
+    parser.add_argument('--show', action='store_true',
+            help='Whether to show the image')
+    parser.add_argument('--savedir', type=str, default=None, help='The root of save directory')
+    parser.add_argument('--load_from', type=str, default='best.pth', help='The path of model')
+    args = parser.parse_args()
+    process(args)

@@ -40,14 +40,14 @@ def generate_launch_description():
         Node(
             package='lane_nodes_py',
             namespace='test',
-            executable='keeping_node',
-            name='keeping'
+            executable='detection_node',
+            name='detection'
             ),
         Node(
             package='lane_nodes_py',
             namespace='test',
-            executable='evaluation_keeping_node',
-            name='evaluation_keeping'
+            executable='keeping_node',
+            name='keeping'
             ),
         Node(
             package='lane_nodes_py',
@@ -60,18 +60,6 @@ def generate_launch_description():
             namespace='test',
             executable='movement_controller',
             name='movement_controller'
-            ),
-        Node(
-            package='lane_nodes_py',
-            namespace='test',
-            executable='confidence_node',
-            name='confidence'
-            ),
-        Node(
-            package='lane_nodes_py',
-            namespace='test',
-            executable='display_node',
-            name='display'
             ),
         launch.actions.IncludeLaunchDescription(
             launch.launch_description_sources.PythonLaunchDescriptionSource(

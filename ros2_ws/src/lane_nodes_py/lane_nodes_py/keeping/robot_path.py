@@ -7,6 +7,9 @@ import numpy as np
 
 import warnings
 
+import matplotlib.pyplot as plt
+import cv2
+
 POLYNOMIAL_DEGREE = 3
 
 ROTATION_LIMIT = 1000
@@ -31,7 +34,7 @@ def calculate_path(calculated_path) :
         x_axis_list = []
         y_axis_list = []
         for j in range(len(calculated_path.coordinates)):
-            if calculated_path.paths[i][j] != 'N':
+            if calculated_path.paths[i][j] != 'N' and calculated_path.paths[i][j] < 40.0:
                 x_axis_list += [calculated_path.coordinates[j]]
                 y_axis_list += [calculated_path.paths[i][j]]
         x_axis = np.array(x_axis_list)
@@ -229,16 +232,39 @@ class PathData:
         return self.fresh
 
     def set_grid(self, message_data):
+        # for i in range(len(message_data.paths)):
+        #     x_vals = []
+        #     y_vals = []
+        #     for j in range(len(message_data.coordinates)):
+        #         if message_data.paths[i][j] != 'N':
+        #             x_vals += [message_data.coordinates[j]]
+        #             y_vals += [message_data.paths[i][j]]
+        #     plt.plot(x_vals, y_vals)
+        # plt.yticks([-2, -1, 0, 1, 2])
+        # plt.savefig("/opt/lane-capstone/src/lane_nodes_py/lane_nodes_py/test_images/figure2.png")
+        # cv_image = cv2.imread("/opt/lane-capstone/src/lane_nodes_py/lane_nodes_py/test_images/figure2.png", cv2.IMREAD_COLOR)
+        # # self.get_logger().info('***********************show lines before**********')
+        # fig = plt.figure()
+        # cv2.imshow("stuf given to meeeee", cv_image)
+        # cv2.waitKey(300)
+
         calculated_path = calculate_path(message_data)
         polished_path = polish_path(calculated_path)
         self.set_path(polished_path)
 
     def set_path(self, data: List[Tuple[float, float]]):
+        # plt.plot([i[0] for i in data], [i[1] for i in data])
+        # plt.savefig("/opt/lane-capstone/src/lane_nodes_py/lane_nodes_py/test_images/figure_wp.png")
+        # cv_image = cv2.imread("/opt/lane-capstone/src/lane_nodes_py/lane_nodes_py/test_images/figure_wp.png", cv2.IMREAD_COLOR)
+        # cv2.imshow("Waypoint path", cv_image)
+        # cv2.waitKey(300)
+
         self.path = data
         self.position = (0, 0)
         self.car_direction = 0
         self.fresh = True
         self.history = [(0, 0)]
+
 
     # Sufficiently tested to Liam's satisfaction with manual testing
     def get_distance_to_line(self):
