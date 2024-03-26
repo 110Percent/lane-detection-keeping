@@ -24,11 +24,11 @@ class DisplayNode(Node):
         self.timer = self.create_timer(FRAME_TIME, self.update_frame_callback)
 
     def background_callback(self, msg):
-        self.get_logger().info('Received image')
+        # self.get_logger().info('Received image')
         self.base_image = cv_bridge.imgmsg_to_cv2(msg, "bgr8")
 
     def lane_location_callback(self, msg):
-        self.get_logger().info('Received lane location data')
+        # self.get_logger().info('Received lane location data')
         self.lane_coords = self.unflatten_lanes(msg.lanes, msg.row_lengths, msg.img_shape)
 
 
@@ -53,7 +53,7 @@ class DisplayNode(Node):
     def update_frame_callback(self):
         if self.base_image is None or self.lane_coords is None:
             return
-        self.get_logger().info('Updating frame')
+        # self.get_logger().info('Updating frame')
         self.frame_contents = self.base_image.copy()
         for lane in self.lane_coords:
             for i in range(1, len(lane)):
