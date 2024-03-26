@@ -34,7 +34,7 @@ class KeepingNode(Node):
         # Create the subscriber for receiving lane data
         self.lane_subscription = self.create_subscription(
             LaneLocation,
-            'lane_location_data',
+            'bev_lane_location_data',
             self.lane_location_callback,
             10)
 
@@ -46,17 +46,25 @@ class KeepingNode(Node):
 
     # Callback for receiving lane data. At the moment, just echoes it down the pipeline without any further processing.
     def lane_location_callback(self, msg):
-        self.get_logger().info('Received message: "%s"' % msg.temp)
+        stamp = msg.stamp
+        id = msg.frame_id
+        lanes = msg.lanes
+        row_lengths = msg.row_lengths
+        img_shape = msg.img_shape
+        unflat = self.unflatten_lanes(lanes, row_lengths)
+        lane_data = translator(unflat)
+        self.keeping.lane_location_callback(lane_data)
+        # self.get_logger().info('Received transformed lane')
 
     def lane_location_callback_eval(self, msg):
         lane_data: LaneWrapper = LaneWrapper()
         lane_data.paths = [msg.y_vals1, msg.y_vals2]
         lane_data.coordinates = msg.x_vals
         self.keeping.lane_location_callback(lane_data)
-        self.get_logger().info('Received new lane data')
+        # self.get_logger().info('Received new lane data')
 
     def movement_output_callback(self):
-        self.get_logger().info('Publishing movement instructions to Carla')
+        # self.get_logger().info('Publishing movement instructions')
 
         ackermann_msg = self.keeping.movement_output_callback()
 
@@ -70,6 +78,58 @@ class KeepingNode(Node):
         self.movement_publisher_.publish(msg)
         self.timer.reset()
 
+    def unflatten_lanes(self, lanes, row_lengths):
+        unflat = []
+        for length in row_lengths:
+            flat_lane = lanes[:length * 2]
+            del lanes[:length * 2]
+            x_vals = []
+            y_vals = []
+            for i, val in enumerate(flat_lane):
+                if i % 2 == 0:
+                    x_vals.append(val)
+                else:
+                    y_vals.append(val)
+            unflat.append(list(zip(x_vals, y_vals)))
+        # self.get_logger().info('parsed lanes: ' + str(unflat))
+        # for i, lane in enumerate(unflat):
+        #     self.get_logger().info('lane ' + str(i) + ': length=' + str(len(lane)) + ' points=' + str(lane))
+        return unflat
+
+
+def translator(lanedata):
+    for i in range(len(lanedata)):
+        print(lanedata[i])
+        list1, list2 = zip(*lanedata[i])
+        lanedata[i] = list(zip(*(list2, list1)))
+
+    x_coordinates = set()
+    for lane in lanedata:
+        for point in lane:
+            x_coordinates.add(point[0])
+    x_coordinates = list(x_coordinates)
+    x_coordinates.sort()
+
+    lane_data: LaneWrapper = LaneWrapper()
+
+    lane_data.coordinates = x_coordinates
+
+    lanes = []
+    for lane in lanedata:
+        lanes += [[]]
+
+    for i in range(len(lanedata)):
+        lane_dict = dict(lanedata[i])
+        print(lane_dict)
+        for coordinate in x_coordinates:
+            if coordinate in lane_dict:
+                lanes[i] += [-lane_dict.get(coordinate)]
+            else:
+                lanes[i] += ['N']
+
+    lane_data.paths = lanes
+
+    return lane_data
 
 def main(args=None):
     rclpy.init(args=args)
