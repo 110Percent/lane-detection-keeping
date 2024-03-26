@@ -119,11 +119,16 @@ https://www.honda.ca/en/civic_sedan/specs
 \end{verbatim}
 
 
-	\item FR3: Real-time Processing
+	\item FR3: Real-time Processing.
 The system should complete the entire processing pipeline from video frame to hardware instruction in 150 milliseconds or less.
 
 TODO: Provide a reasoning for why 150 milliseconds is acceptable.
 
+
+	\item FR4: Loosely Coupled Software. The system must only interact with external hardware through dedicated bridges and require minimal configuration between deployment locations.
+
+	An important part of creating a lane following program is that it is usable in a wide variety of situations with minimal configuration. A lane assist system that is perfect for a single type of vehicle is less practical if it cannot be applied to other kinds of vehicles. Therefore, it is an important functional requirement for our software system to be as hardware-agnostic as possible, and that all interactions with external systems have consistent connections.
+	 
 \end{itemize}
 
 \subsubsection{Non-Functional Requirements}
@@ -389,6 +394,9 @@ Requirement from system-wide requirements:
 
 \begin{itemize}
 	\item FR2: Lane Following Precision. The system should maintain a deviation of no more than 0.45 meters from the center of its lane under normal driving conditions.
+	
+	As stated earlier, the ability to precisely follow the center of the lane is a very important functional requirement of the system. The primary purpose of this subsystem is therefore to fulfill that functional requirement by creating a control system that given the position of the lanes with respect to the vehicle, will be able to precisely follow their path.
+
 \end{itemize}
 Subsystem-specific requirements:
 \begin{itemize}
@@ -401,16 +409,20 @@ Subsystem-specific requirements:
 	\item FR2.2: Control Frequency.
 	The subsystem must produce movement command updates at a frequency of 50Hz.
 	
-	This frequency was agreed upon by the group and the project supervisors as sufficiently frequent to represent continuous feedback from the control system.
+	An important part of any real-time control system is that it must be able to reach deadlines. Additionally, a control system must exhibit continuous interaction with the environment which it is located within. To achieve these goals, the system must therefore be required to produce periodic movement commands that are frequent enough to give the appearance of continuous motion. The frequency of 50Hz was agreed upon by the group and the project supervisors as sufficiently frequent to represent continuous feedback from the control system.
 	
 	\item FR2.3: Closed Loop Properties.
 	The subsystem must produce movement commands using the most recent information available.
 
-	This functional requirement is required because the rate at which the subsystem receives new lane data is not the same rate at which movement commands are required to be produced from FR2.2. This means that the system must use historical data as part of the movement commands generated at each system tick.
+	In control systems, there are usually two kinds of control systems: open and closed systems. Open control systems typically involve no feedback being provided to the control system between output commands, whereas closed loop systems are fed information which is to be used as part of the command generation. It is our intention to make the control system closed loop because it is important that the subsystem is continuously fed data about its positioning for subsequent commands. 
+
+	However, one potential issue with a purely closed loop system is due to a timing concern. The rate at which lane data is received from the detection module may not be able to keep up with the rate of the desired control frequency defined in FR2.2. This means that there may be times which the system is required to produce an output without having received information about its position within the system, which represents an open control loop.
+
+	Therefore, it is important for our system to use as much closed loop properties as possible, and only rely on open loop properties when the latest data is not available.
 	
-	\item FR2.4: Output Attributes. The output of the subsystem should be system agnostic and easily modifiable to any steering mechanism. 
+	\item FR2.4: Output Attributes. The output commands produced by the subsystem must output the fewest parameters required for path execution.
 	
-	The system is not designed to be for any specific hardware system, and as such must be simple enough that it can be easily modified to fit another movement scheme.
+	One of the primary goals of the system is to be very easy to configure for new hardware environments. For the control system, this means that the system must be able to output movement commands that are easily interpretable for any hardware environment it might be in. This does not mean that it must automatically be compatible with every hardware setup, but it must provide sufficient information such that an adapter can be used to convert between the control systems movement command and the hardware's execution.
 \end{itemize}
 
 
@@ -425,20 +437,74 @@ Cars and car-like vehicles use an arrangement of linkages called an Ackermann st
 
 \subsubsection{Conceptualization}
 
-There are many different control loops that could be used to handle the lane keeping and control requirements for this sub-system. However, out of all these methods, there are two that have stood out for us as potential conceptual solutions.
+There are many control loops that could be used to handle the lane keeping and control requirements for this sub-system. However, out of all these methods, there are three that have stood out for us as potential conceptual solutions.
 
 PID Controller:
-This control loop relies on adjustable parameters and takes in an error signal, which measures the deviation between the vehicle's position and the center of its driving lane. It then produces a sinusoidal curve with the goal of minimizing this error as rapidly as possible while avoiding excessive overshooting[13]. The main advantage of this method lies in its user-friendliness. Implementing a PID controller is straightforward as it requires only three variables for configuration, making it a preferable control system. However, a PID controller has its limitations. The main limitation with a PID controller is the limitation from only being able to tune using three parameters[14]. We anticipate that it may not be the most optimal control system due to its relatively simple configurability and handling of unexpected changes in the road path.
+
+A PID controller is an error driven controller. This means it works by being fed a source of error, and outputs actions intended to minimize it. The output is calculated using three components: a proportional, a derivative, and an integral component. 
+
+First, the proportional component calculates an output value that is directly proportional to the source of error. The effect of the proportional controller on the output is typically a significant immediate reaction to the output of the device. Next is the derivative component, which calculates an output value using the derivative of the error at the current point in time. The derivative component in PID controllers is typically used as a means of dampening the oscillation in the source of error that arises from the proportional component. Lastly, the integral component works by outputting a value proportional to the total error up to the current point in time. Integral components are largely effective at reducing the steady state error of the system to ensure that it reaches the desired value faster.  Using the outputs of these three values, the PID controller adds them together and outputs a command that is intended to minimize the error, which then starts the next cycle of the PID controller.[13] Fig. 4.1 illustrates a diagram of a typical PID controller.
+
+One of the things that makes PID controllers desirable is its tuning process. PID controllers only have three tunable constants, being the proportional constant \((K_p)\), the integral component \((K_i)\), and the derivative component \((K_d)\). After the PID controller is implemented, these three constants are then used to tune the system to a desired effect. [14]
+
+The three main measurements used for evaluating a PID controller are the settling time, overshoot, and rise time. Within a PID controller, the settling time is typically defined as the time required to enter the 5\% error strip. The overshoot of the system is defined as the maximum amount by which the response overshoots the steady state value. Lastly, the rise time is typically defined as the time it takes for the controller to get from 10\% to 90\% of the steady state value. Each of these attributes are affected by the three constants in a PID controller, and the effect that each constant has on the overall controller can be found in Table 4.1.
 
 
-MPC Controller:
-The MPC controller is a more sophisticated control system compared to the PID controller, with use in various industries and areas in academia.[16] It utilizes a model of the system, a cost function, and an optimization algorithm to determine the optimal strategy for minimizing error, which in this case is the distance between the car’s center and the center of its lane. One significant advantage of this controller is its potential for high accuracy when implemented effectively. The MPC controller takes a wider array of variables and information into account when making decisions, offering greater potential for improved performance metrics. However, it comes with the drawback of increased complexity. Unlike a PID controller, which is relatively straightforward to set up and configure, implementing an MPC controller involves considering a larger set of variables and a model of the environment surrounding the system, making it more challenging during the initial stages of development. 
+\begin{center}
+	\begin{tabular}{|c | c | c | c | c |} 
+	 \hline
+	 Increase in Constant & Rise Time & Overshoot & Settling Time &S-S Error \\ [0.5ex] 
+	 \hline
+	 \(Kp\) & Decrease & Increase & Small Change & Decrease \\ 
+	 \hline
+	 \(Ki\) & Decrease & Increase & Increase & Decrease \\
+	 \hline
+	 \(Kd\) & Small Change & Decrease & Decrease & No Changes \\ 
+	 \hline
+	\end{tabular}
+	\end{center}
+
+
+
+Advantages and Disadvantages
+
+The main advantage with a PID controller is its simplicity, both with designing and with tuning the controller. For starters, a PID controller is very simple to implement. PID controllers are not very programmatically complicated compared to other control schemes, and many PID contorller packages already exist which could easily be used instead of creating a custom one. As a result, the only thing that needs to be detremined is the source of the error for the system, and how the output affects the system. Additionally, PID controllers are very straightforward to tune. A PID controller only has three constants, all three of which have predictable effects on the perfromance of the controller.
+
+Despite the advantages, there are numerous drawbacks to using a PID controller. For starters, the tuning of the controller can only be so effective. Since there are only three constants to tune, there is a much worse peak to the performance of the controller compared to more sophisticated models, such as the Model Predictive Control described next[14]. Additionally, since the model is error driven it is very sensitive to noise in the error, especially with respect to the derivative component.
+
+
+Model Predictive Control:
+The MPC controller is a more sophisticated control system compared to the PID controller, with use in various industries and areas in academia.[16] It utilizes a model of the system, a cost function, and an optimization algorithm to determine the optimal strategy for minimizing error, which in this case is the distance between the car’s center and the center of its lane. 
+
+Advantages and Disadvantages
+
+One significant advantage of this controller is its potential for high accuracy when implemented effectively. The MPC controller takes a wider array of variables and information into account when making decisions, offering greater potential for improved performance metrics. 
+
+However, MPC comes with the drawback of increased complexity. Unlike a PID controller, which is relatively straightforward to set up and configure, implementing an MPC controller involves considering a larger set of variables and a model of the environment surrounding the system, making it more challenging during the initial stages of development. 
 
 Standford Mathematical Model(Stanley Controller):
-The Stanley controller is a model based controller that calculates its recommended trajectory by using the vehicles distance to the center of the path and the heading error with the tangent line of the closest point.
+
+\begin{verbatim}
+https://ai.stanford.edu/\%7Egabeh/papers/hoffmann_stanley_control07.pdf
+\end{verbatim}
+
+The Stanley controller is a model based controller that calculates its recommended trajectory by using the vehicles distance to the center of the path and the heading error with the tangent line of the closest point. Most notably, it focuses on the trajectory of the vehicle with respect to the orientation of the front wheels as opposed to the entire vehicles body. 
+
+The Stanley controller is composed of two schemes that are used to model the vehicles motion. The first is the kinematic model, which works under the assumption that the vehicle has negligeable inertia, focuses on the position and heading of the vehicle's front axis with respect to the center of the lane. The second is the dynamic model which includes the additional inertial effects such as tire slip and steering actuation. These two models can be seen below in Fig. 4.3 and Fig. 4.4.
+
+Fig 4.3
+
+Fig 4.4
+
+The main advantage of the Stanley controller is that it can be very easy to implement, and can scale very well with complexity. The Stanley controller's two models allows for two different degrees of complexity within the model, ensuring that a simple approach can be used in addition to a more complicated model for futher improvement. Additioanlly, the complexity of the kinematic model is not programatically complex to implement. 
+
+However, a disadvantage with the control system is that the dynamic model is not interchangeable between environments. The dynamic model has a very strong relationship with the architecture of the vehicle, meaning that its not particularily interchangeable to new systems. 
 
 Chosen Solution:
-The original decision was to implement a PID controller because generally speaking, they are simple to design and implement. The intention was that after a quick PID controller was implemented, the more complex MPC controller would be implemented. Unfortunately, developing the PID controller resulted in some issues so further research was conducted and the team eventually settled on using the Stanley controller which proved to be very easy and straightforward to implement. 
+
+The original descision for which control system architecture to base the subsystem on was a PID controller. At that time, the two main control systems that were being considered was the PID controller and the MPC controller. Between these two options, it was significantly more difficult to try and implement the MPC controller due to the complexity associated with its implementation and the more complex theory associated with it. As a result, a PID controller was chosen as the starting point for development.
+
+However, after having spent some time trying to implement the PID controller it was determined that the theory of how to integrate PID control within the system proved to be more complex than originally anticipated. Further research was conducted, and the team discovered the Stanley controller. This model proved to be significantly easier for the team to implement, and the disadvantages of the model being that it had a lot stronger coupling was negligeable since we were more focused with getting any control system working. As a result, the descision was made to make this subsystem based on the Stanley controller.
 
 \subsubsection{Software Architecture}
 The Lane Keeping \& Control subsystem receives lane data from the Detection subsystem via a ROS topic using a publish-subscribe approach, allowing for asynchronous communication to accommodate different processing rates. The LaneDataListener component captures the lane position data and updates the LaneControl component. This component operates on a 50Hz timer, determining the optimal angle and velocity for the vehicle to stay centered in its lane. The output is formatted as an 
