@@ -476,9 +476,8 @@ The MPC controller is a more sophisticated control system compared to the PID co
 
 One significant advantage of this controller is its potential for high accuracy when implemented effectively. The MPC controller takes a wider array of variables and information into account when making decisions, offering greater potential for improved performance metrics. 
 
-However, MPC comes with the drawback of increased complexity. Unlike a PID controller, which is relatively straightforward to set up and configure, implementing an MPC controller involves considering a larger set of variables and a model of the environment surrounding the system, making it more challenging during the initial stages of development. 
-
-Standford Mathematical Model(Stanley Controller):
+However, MPC comes with the drawback of increased complexity. Unlike a PID controller, which is relatively straightforward to set up and configure, implementing an MPC controller involves considering a larger set of variables and a model of the environment surrounding the system, making it more challenging during the initial stages of development. \\~\\
+\underline{Standford Mathematical Model(Stanley Controller):}
 
 \begin{verbatim}
 https://ai.stanford.edu/\%7Egabeh/papers/hoffmann_stanley_control07.pdf
@@ -508,11 +507,13 @@ The original descision for which control system architecture to base the subsyst
 However, after having spent some time trying to implement the PID controller it was determined that the theory of how to integrate PID control within the system proved to be more complex than originally anticipated. Further research was conducted, and the team discovered the Stanley controller. This model proved to be significantly easier for the team to implement, and the disadvantages of the model being that it had a lot stronger coupling was negligeable since we were more focused with getting any control system working. As a result, the descision was made to make this subsystem based on the Stanley controller.
 
 \subsubsection{Software Architecture}
+
 The Lane Keeping \& Control subsystem receives lane data from the Detection subsystem via a ROS topic using a publish-subscribe approach, allowing for asynchronous communication to accommodate different processing rates. The LaneDataListener component captures the lane position data and updates the LaneControl component. This component operates on a 50Hz timer, determining the optimal angle and velocity for the vehicle to stay centered in its lane. The output is formatted as an 
 ackermann\_message
 \/
 AckermannDrive message, 
 a data type provided by ROS, and then published to a separate ROS topic. This data is subsequently utilized by either a hardware module (simulated or real) capable of responding to Ackermann steering signals, or a software component that interprets the Ackermann steering commands and converts them into a compatible format. Figures \ref{fig:control_class} and \ref{fig:control_sequence} further illustrate the architecture of the system.
+
 
 \begin{center}
 	\includegraphics[width=6in]{KnC_diagrams.png}\\
@@ -524,17 +525,46 @@ a data type provided by ROS, and then published to a separate ROS topic. This da
 	\captionof{figure}{UML Sequence Diagram of the K\&C Subsystem} \label{fig:control_sequence}
 \end{center}
 
+The subsystem makes use of a proxy pattern for handling and sending requests. The reason for this is due to containerization issues. In order to run the ROS node, the system needs to actually run on ROS or else the "Node" package fails to properly import. The use of a proxy pattern here helps allows for the testing of files without the need for importing the ROS packages, allowing for more efficient development.
+
 
 \subsubsection{Implementation}
-The build plan for this subsystem will begin with outlining the exact specification of the lane data that the system will receive and the exact format of the movement controls to export. This is because once these properties are established, every node in the system can be implemented in parallel rather than in series.
+\underline{Communication Schema}
 
-Following the decision of the ROS topic formats,  the listener for the lane data will be implemented. This will likely involve creating a listener for the published message, and storing it in a shared box that the PID controller can access, but the listener can write to in order to update it with the latest information.
+The first step in building the K\&C subsystem was by establishing the communication schema between this subsystem and the adjacent control systems. This was imperative since without an idea of how each subsystem would communicate with this one, it would be impossible to start the development process. This meant identifying the correct input to the system, and the correct output from the system to the environment.
 
-After the listener has been implemented, the PID controller will be configured as a stub. The purpose of this is so that while the controller is being implemented, other systems can still listen to topics published by this node and receive correct data.
+For the output of the system, the decision was made to use the built-in AckermannDrive message type that is already built into ROS. The reason for this was because it was already built into ROS, and was already integrated into the CARLA ROS Bridge which means it required less configuration to integrate the subsystem with CARLA. The AckermannDrive message asks for five parameters. The first parameter in the AckermannDrive message is the steering angle. This represents the desired steering angle that the vehicles front axis should be set to. The system will attempt to adjust the orientation of the wheels to that desired steering angle as quickly as possible. The second parameter is the steering angle velocity, which works in conjunction with the steering angle. This parameter specifies the maximum velocity that the yaw of the steering angle can achieve, where a zero represents no limit. This parameter is important as it prevents severe amounts of jerk with the steering, but it was not an important parameter for our system. The third parameter for the AckermannDrive message is the velocity. This represents the target velocity that the vehicle should aim to reach, to be achieved however the vehicle deems fit. The fourth and fifth parameters are the acceleration and jerk parameters, which set a maximum acceleration and jerk that the vehicle can achieve while attempting to adjust to the desired speed. The definition of this message type can be found in Fig. \ref{fig:ackermann}
 
-Next, the development of the PID controller will be performed. There are a lot of resources available for designing PID controllers, and the course notes on SYSC 3600 will provide a string foundation from which to build the controller. This is expected to take the most time to accomplish due to the high risk involved with learning and implementation. 
+\begin{center}
+	\includegraphics[width=2in]{ackeramnn_drive.PNG}\\
+	\captionof{figure}{Structure of the ROS AckermannDrive Message Type} \label{fig:ackermann}
+\end{center}
 
-Once an MVP is complete, a system for using Ackermann steering messages with mecanum-wheeled vehicles to simulate Ackermann steering will be designed and implemented in order to allow control of the Hiwonder JetAuto by this system.
+For the input to the system, a schema needed to be designed that allowed for a list of lane data points to be sent to the control subsystem. The first idea for this would be to have a list of list of tuples that contains the data points for each line. That is, a list of lanes where each lane is represented by a list of points, where each point is represented as a tuple. However, one problem that we had with this is that it was not the exact format that we thought that the detection subsystem would naturally produce. In research, it was determined that the output of the detection subsystem would more closely resemble the TuSimple schema which can be found in Fig. \ref{fig:tusimple_dataformat}. This is because we would be comparing the output of the detection to the TuSimple dataset, so our data would already be in this format. Furthermore, this format for the data is more efficient to send because it normalizes the data points by providing a list of Y-coordinates and each lane is instead represented by a list of X-coordinates, where points are generated by matching indexes. Due to the similarity with the TuSimple dataset output and the more efficient transformation method, this data scheme was chosen as the communication the subsystem would get from the detection subsystem.
+
+\begin{center}
+	\includegraphics[width=4in]{tusimple_data_example.PNG}\\
+	\captionof{figure}{Example of the Structure of the TuSimple Dataset} \label{fig:tusimple_dataformat}
+\end{center}\\
+
+\underline{Creating the PID Controller}
+
+After the control schema was established, the next step was to create the PID controller. The PID controller was originally chosen as the control system due to its simplicity of design, so this represented the next hurdle for implementing this subsystem.
+
+The first step in implementing the PID controller was actually creating the PID controller. In general, PID controllers are straightforward to create. Through the use of various tutorials and discussing PID controllers with fellow students, a functional PID controller was implemented. Afterwards, the PID controller was tested in a console environment to ensure that it worked as expected, and could theoretically be used for the control system.
+
+The implementation of the PID controller can be found within our project 
+repository at \texttt{/lane-detection-keeping/ros2\textunderscore ws/src/lane\textunderscore nodes\textunderscore py/lane\textunderscore odes\textunderscore py/keeping/pid\textunderscore controller.py}\\~\\
+\underline{Creating the Internal Map}
+
+After the PID controller was implemented, the next step was creating an internal representation of the vehicle's environment. This is important for two reasons. For starters, having an internal representation of the environment would be essential in calculating the error that needs to be fed into the PID controller for it to work. Without an appropriate model of the environment available, it would be hard to determine the error and the control system would have a hard time properly steering. Additionally, since the rate at which lane data is produced is much slower than the rate at which the control system must enact movement commands, the system must be able to track roughly how far the vehicle has moved through its environment as it generates movement commands. Without this, the subsystem would not be able to achieve its output frequency of 50Hz. 
+
+The first step in implementing the internal map was to identify the path for the vehicle to follow. This means that in order for a model of its environment to exist, it must be created from the passed lane data from the detection subsystem. To do this, the internal map parses the lane data received from the detection and attempts to map each lane into a polynomial. The purpose of this is to smooth the lane curve to get rid of any jagged shapes that might appear in the lane lines. Through a mild amount of testing, a degree of 3 was chosen for the polynomial fitting. This is because the shape of curves is rarely straight enough for a degree of 1 or 2, and a degree of 4 or higher starts to suffer from overfitting which destroys the accuracy of the polynomial. After the lanes are turned into polynomials, the system identifies the clsoest lane that appears on each side of the origin by comparing the y-intercepts of the lanes. The system finds the smallest y-intercept above 0 and sets that as the left lane, and the lane with the largest y-intercept below 0 and sets that as the right lane. Then, it averages the polynomials for the two lanes to determine the center of the two lanes, and stores that path as the center lane for the vehicle to follow. Fig. \ref{fig:lane_center_determination} illustrates this process.
+
+\begin{center}
+	\includegraphics[width=5in]{lane_center.png}\\
+	\captionof{figure}{Calculation of the Center of the Lanes} \label{fig:lane_center_determination}
+\end{center}
 
 \subsubsection{Evaluation}
 \textbf{Evaluating FR2}
