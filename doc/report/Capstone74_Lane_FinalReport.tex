@@ -92,70 +92,70 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
 \section{Introduction}
 
-The primary objective of this project is to create a system for autonomous vehicles that uses computer vision and hardware interfacing to allow the vehicle to monitor the position of lanes on its road and maintain a steady position within its own lane as it drives. 
+The primary objective of this project is to create a system for autonomous vehicles that uses computer vision and hardware interfacing to allow the vehicle to monitor the position of lanes on its road and maintain a steady position within its own lane as it drives.
 
 \subsection{Identification of the Need}
 Our project addresses a critical concern in autonomous vehicle development: the reliable detection and following of lanes in dynamic and diverse real-world environments. By enhancing the capabilities of autonomous vehicles to maintain their positions within lanes, our system aims to bolster road safety and reduce the need for human interaction for maintaining a steady course on trips in various kinds of roads and environmental conditions.
 
 
 \subsection{Definition of the Problem}
-The system is expected to function similarly to lane-following technologies in existing cars, such that they can autonomously maintain the vehicle’s position within its lane on the road on which it drives. The system is required to make the required calculations in real time and adjustments need to be smooth enough as to not introduce an unsafe level of jerk to the steering of the vehicle. 
+The system is expected to function similarly to lane-following technologies in existing cars, such that they can autonomously maintain the vehicle’s position within its lane on the road on which it drives. The system is required to make the required calculations in real time and adjustments need to be smooth enough as to not introduce an unsafe level of jerk to the steering of the vehicle.
 
 
 \subsubsection{Functional Requirements}
 \begin{itemize}
-	\item  FR1: Lane Detection Accuracy. The system should accurately detect all lane borders within 10 centimetres of their actual position on the road 75\% of the time lane positions are calculated in a given video frame. 
+	\item  FR1: Lane Detection Accuracy. The system should accurately detect all lane borders within 10 centimetres of their actual position on the road 75\% of the time lane positions are calculated in a given video frame.
 
-TODO: Need to confirm why this number is acceptable
+	      TODO: Need to confirm why this number is acceptable
 
 	\item FR2: Lane Following Precision. The system should maintain a deviation of no more than 0.45 meters from the center of its lane under normal driving conditions.
 
-In the City of Toronto, the lane width guidelines require that the minimum lane width of any through lane be a minimum of 3.0 meters. An average sized car, which we have defined as a Honda Civic 2022, is approximately 2.1 meters wide(including mirrors). This leaves a maximum of 0.45 meters of leeway that the vehicle can deviate from the center of the lane without accidentally entering another lane.
+	      In the City of Toronto, the lane width guidelines require that the minimum lane width of any through lane be a minimum of 3.0 meters. An average sized car, which we have defined as a Honda Civic 2022, is approximately 2.1 meters wide(including mirrors). This leaves a maximum of 0.45 meters of leeway that the vehicle can deviate from the center of the lane without accidentally entering another lane.
 
-Sources:
+	      Sources:
 
-\begin{verbatim}
+	      \begin{verbatim}
 https://www.toronto.ca/wp-content/uploads/2017/11/921b-ecs-specs-roaddg-Lane_Widths_Guideline_Version_2.0_Jun2017.pdf
 https://www.honda.ca/en/civic_sedan/specs
 \end{verbatim}
 
 
-	\item FR3: Real-time Processing.
-The system should complete the entire processing pipeline from video frame to hardware instruction in 150 milliseconds or less.
+	\item FR3: Real-time Processing
+	      The system should complete the entire processing pipeline from video frame to hardware instruction in 150 milliseconds or less.
 
-TODO: Provide a reasoning for why 150 milliseconds is acceptable.
+	      TODO: Provide a reasoning for why 150 milliseconds is acceptable.
 
 
 	\item FR4: Loosely Coupled Software. The system must only interact with external hardware through dedicated bridges and require minimal configuration between deployment locations.
 
 	An important part of creating a lane following program is that it is usable in a wide variety of situations with minimal configuration. A lane assist system that is perfect for a single type of vehicle is less practical if it cannot be applied to other kinds of vehicles. Therefore, it is an important functional requirement for our software system to be as hardware-agnostic as possible, and that all interactions with external systems have consistent connections.
-	 
+
 \end{itemize}
 
 \subsubsection{Non-Functional Requirements}
 \begin{itemize}
-	\item NFR1: Reliability. 
-The system should have a minimum uptime of 99.5\% to ensure consistent operation during driving.
+	\item NFR1: Reliability.
+	      The system should have a minimum uptime of 99.5\% to ensure consistent operation during driving.
 
-Since autonomous driving systems must keep the drivers safe at all times, it is imperative that the system is as reliable as possible to prevent any accidents or collisions from happening.
+	      Since autonomous driving systems must keep the drivers safe at all times, it is imperative that the system is as reliable as possible to prevent any accidents or collisions from happening.
 
-	\item NFR2: Compliance. 
-The system should comply with any regulations and standards put in place by the Government of Ontario and the SAE for behaviour of automated driver assistance systems within vehicles.
+	\item NFR2: Compliance.
+	      The system should comply with any regulations and standards put in place by the Government of Ontario and the SAE for behaviour of automated driver assistance systems within vehicles.
 
-Legal restrictions may change significantly between provinces and countries, so the legal focus of our project will be with respect to Ontario, the system the group members are most familiar with.
+	      Legal restrictions may change significantly between provinces and countries, so the legal focus of our project will be with respect to Ontario, the system the group members are most familiar with.
 
 	\item NFR3: Extensibility. The system should provide an API that allows for programmatic control and access to its subsystems to allow any future autonomous vehicle systems to interact with it in tandem.
 
-	\item NFR4: Documentation. 
-The system should provide adequate documentation of its processes, software and runtime behaviour such that any technically-oriented person not previously affiliated with the system’s development can easily understand its functionality and inner workings.
+	\item NFR4: Documentation.
+	      The system should provide adequate documentation of its processes, software and runtime behaviour such that any technically-oriented person not previously affiliated with the system’s development can easily understand its functionality and inner workings.
 
-Since this project will be build on in future years, it is imperative that the system is accessible as possible to whoever continues it. The way we intend to make that happen is by clearly documenting all of our choices within the codebase, and properly documenting any errors encountered within this report.
+	      Since this project will be build on in future years, it is imperative that the system is accessible as possible to whoever continues it. The way we intend to make that happen is by clearly documenting all of our choices within the codebase, and properly documenting any errors encountered within this report.
 
 \end{itemize}
 
 \subsubsection{Constraints}
 
-The first major constraint of this project is the timeline. The duration of the project was 8 months(two four month terms), but with the final deadline being April 10th 2024 and the start date being within the first week of Fall 2023, the actual duration of the project more closely resembles 7 months. This sets a significant time constraint and was heavily accounted for when determining the work to be completed. This meant that the proper prioritization and planning of hardware acquisition, development, testing, debugging, and documentation of the system was essential due to the limited time frame. 
+The first major constraint of this project is the timeline. The duration of the project was 8 months(two four month terms), but with the final deadline being April 10th 2024 and the start date being within the first week of Fall 2023, the actual duration of the project more closely resembles 7 months. This sets a significant time constraint and was heavily accounted for when determining the work to be completed. This meant that the proper prioritization and planning of hardware acquisition, development, testing, debugging, and documentation of the system was essential due to the limited time frame.
 
 The team consists of four Software Engineering undergraduate students, each with varying levels and ranges of experience in software development and mostly minimal experience with electronics and hardware development. This limits what we can accomplish with respect to the hardware complexity of our system, meaning our team should focus more on the software aspect of development and use off-the-shelf hardware components.
 
@@ -179,9 +179,9 @@ Distributed Processing: This concept involves offloading computationally expensi
 
 
 \subsection{System Architecture}
-The overall architecture of our system is best described as a combination between a pipeline architecture and a microservice architecture. 
+The overall architecture of our system is best described as a combination between a pipeline architecture and a microservice architecture.
 
-The pipeline nature of the system comes from the primary command flow. The system starts off by receiving an image from the camera mounted on the vehicle. The image will be processed into the software, and given to the computer vision node where the image will be analysed to determine the location of the lane lines. The location of the lanes with respect to the vehicle will be passed to the lane keeping section, where it will calculate the center of the lane and calculate the movement commands required to follow it. Then it will send the movement commands to the vehicle which will execute the instructions. 
+The pipeline nature of the system comes from the primary command flow. The system starts off by receiving an image from the camera mounted on the vehicle. The image will be processed into the software, and given to the computer vision node where the image will be analysed to determine the location of the lane lines. The location of the lanes with respect to the vehicle will be passed to the lane keeping section, where it will calculate the center of the lane and calculate the movement commands required to follow it. Then it will send the movement commands to the vehicle which will execute the instructions.
 
 The presence of the microservice architecture comes from the desire to clearly separate each subsystem into its own isolated component. By isolating each part of the project, individual parts become easier to develop because developers can have clearly defined contracts of inputs into the system and what they should output. Furthermore, testing the system becomes easier since each node can be tested in isolation.
 
@@ -194,11 +194,11 @@ The two secondary subsystems in our project are the camera controller and the la
 
 \subsubsection{Physical Architecture}
 
-The physical architecture for the system is a distributed system with four  significant hardware components: the camera, the onboard processing unit with ROS configured, the external processing unit with ROS configured, and the hardware/simulation for controlling the vehicle wheels. First, the camera sensor(s) capture the image data and sends that data to the onboard ROS environment. The onboard ROS environment then sends the data to an external laptop with stronger computing power which contains the software architecture described in section 1.4.1 and completes all calculations. The movement command is then sent back to the onboard processing unit which is then forwarded to the simulation or robot to execute the commands. 
+The physical architecture for the system is a distributed system with four  significant hardware components: the camera, the onboard processing unit with ROS configured, the external processing unit with ROS configured, and the hardware/simulation for controlling the vehicle wheels. First, the camera sensor(s) capture the image data and sends that data to the onboard ROS environment. The onboard ROS environment then sends the data to an external laptop with stronger computing power which contains the software architecture described in section 1.4.1 and completes all calculations. The movement command is then sent back to the onboard processing unit which is then forwarded to the simulation or robot to execute the commands.
 
 \subsection{Overview of Remainder of Report}
 
-The remainder of the report will begin with Chapter 2, which will tie the project back to the Carleton Engineering project. It starts by outlining the health and safety present as part of the project.  Then, it will detail how the team exhibited the profesionalism that is expected of engineering practitioners. The tools and systems used project management skills will also be discussed. Afterwards will be the quick discussion of how this project relates to each of the participants engineering disciplines. The section will conclude with an overview of the individual contributions made by each member of the team in both the report and the project as a whole. 
+The remainder of the report will begin with Chapter 2, which will tie the project back to the Carleton Engineering project. It starts by outlining the health and safety present as part of the project.  Then, it will detail how the team exhibited the profesionalism that is expected of engineering practitioners. The tools and systems used project management skills will also be discussed. Afterwards will be the quick discussion of how this project relates to each of the participants engineering disciplines. The section will conclude with an overview of the individual contributions made by each member of the team in both the report and the project as a whole.
 
 Following the Engineering Project chapter will be chapter 3, which will focus on the work plan for the project. It will include the updated work breakdown structure, followed by a responsibility matrix, an activity network, and a Gantt chart. Then, a table will detail all of the costs and any special components that were required for the project. Lastly, the risk analysis table developed at the start of the project will be reviewed.
 
@@ -218,7 +218,7 @@ TODO: Review what is expected of this since health and safety is not a major con
 \subsection{Engineering Profesionalism}
 TODO: Using their course experience of ECOR 4995 Professional Practice, students should demonstrate how their professional responsibilities were met by the goals of their project and/or during the performance of their project.
 
-The team used their experience from ECOR 4995 to a satisfactory extent during the performance of the project. The foremost principles from this course which we made sure to follow were effectively working as a team, and ensuring sustainability in our system. 
+The team used their experience from ECOR 4995 to a satisfactory extent during the performance of the project. The foremost principles from this course which we made sure to follow were effectively working as a team, and ensuring sustainability in our system.
 
 For starters, the team did a great job at effectively working as a team. At the start of the project, the team got together and worked to best define what our objectives were for the project. After we understood the project decently well, we made sure that each member of the team had a clearly defined purpose. We also made sure to have clear and open communication with each other in case there were any issues that arose, allowing us to progress with little friction from each other.
 
@@ -233,7 +233,7 @@ The way that we approached the development of our system was focused on an agile
 In this section, students should explain how the project
 relates to the degree program of each group member.
 
-This project relates significantly to the degree of the students involved as each student is taking Software Engineering. The development of this system is entirely software based, and focuses on using many important software engineering concepts such as but not limited to project management, real-time systems, embedded systems, and machine learning. 
+This project relates significantly to the degree of the students involved as each student is taking Software Engineering. The development of this system is entirely software based, and focuses on using many important software engineering concepts such as but not limited to project management, real-time systems, embedded systems, and machine learning.
 
 
 \subsection{Individual Contributions}
@@ -241,14 +241,14 @@ This section should carefully itemize the individual contributions of each team 
 
 \subsubsection{Project Contributions}
 
-Curtis: 
+Curtis:
 \begin{itemize}
 	\item CLRNet setup and configuration
 	\item Docker setup and configuration
 	\item CARLA setup and configuration
 \end{itemize}
 
-Robert: 
+Robert:
 \begin{itemize}
 	\item ROS2 configuration
 	\item Configuring JetAcker
@@ -260,14 +260,14 @@ Ian:
 	\item Handling CLRNet outputs
 \end{itemize}
 
-Liam: 
+Liam:
 \begin{itemize}
-\item Controller setup and evaluation
+	\item Controller setup and evaluation
 \end{itemize}
 
 
 \subsubsection{Report Contributions}
-Curtis: 
+Curtis:
 \begin{itemize}
 	\item Abstract
 	\item Chapter 1
@@ -276,7 +276,7 @@ Curtis:
 	\item LaTeX Template
 \end{itemize}
 
-Robert: 
+Robert:
 \begin{itemize}
 	\item Chapter 1
 	\item Chapter 5
@@ -290,11 +290,11 @@ Ian:
 	\item Chapter 6
 \end{itemize}
 
-Liam: 
+Liam:
 \begin{itemize}
-\item Chapter 1
-\item Chapter 4.2
-\item Chapter 6
+	\item Chapter 1
+	\item Chapter 4.2
+	\item Chapter 6
 \end{itemize}
 
 \section{Work Plan}
@@ -302,77 +302,77 @@ Liam:
 \includegraphics[width=10in,scale=1, angle=90, origin=c]{wbs.png}
 \subsection{Responsibility Matrix}
 \begin{center}
-	\begin{tabular}{|c | c | c | c | c | c |} 
-	 \hline
-	 Step & Project Task & Curtis & Liam & Ian & Robert \\ [0.5ex] 
-	 \hline
-	 1 & Project Proposal & R & R & R & R \\ 
-	 \hline
-	 2 & Progress Report & R & R & R & R \\ 
-	 \hline
-	 3 & Oral Presentation & R & R & R & R \\ 
-	 \hline
-	 4 & Final Report Draft & R & R & R & R \\
-	 \hline
-	 5 & Poster Fair & R & R & R & R \\ 
-	 \hline
-	 6 & Final Report and Video & R & R & R & R \\ 
-	 \hline
-	 7 & Set up Simulation Software & R &  &  &  \\ 
-	 \hline
-	 8 & Acquire Camera Lenses & S &  & R  &  \\ 
-	 \hline
-	 9 & Hardware-level Camera Interfacing &  &  & R & S \\ 
-	 \hline
-	 10 & ROS Boilerplate &  &  &  & S \\ 
-	 \hline
-	 11 & CARLA ROS Bridge Setup & S &  &  & R \\ 
-	 \hline
-	 12 & ROS Image Data Communication & S &  &  & R \\ 
-	 \hline
-	 13 & Movement &  &  &  & R \\ 
-	 \hline
-	 14 & Basic Image Input Handling & R &  &  &  \\ 
-	 \hline
-	 15 & Image Processing Pipeline for CNN & R &  & S &  \\ 
-	 \hline
-	 16 & CNN Lane Position Classifier & R &  & S &  \\ 
-	 \hline
-	 17 & Lane Center Determination & R &  & S &  \\ 
-	 \hline
-	 18 & Create Detection-K\&C Data Schema & S &  & R &  \\ 
-	 \hline
-	 19 & Create Movement Schema Command &  & R &  & S \\ 
-	 \hline
-	 20 & PID Controller for Steering &  & R &  & S \\ 
-	 \hline
-	 21 & PID Controller for Speed &  & R &  & S \\ 
-	 \hline
-	 22 & PID Controller Refinement  &  & R &  & S \\ 
-	 \hline
-	 23 & MPC Controller &  & R &  & S \\ 
-	 \hline
+	\begin{tabular}{|c | c | c | c | c | c |}
+		\hline
+		Step & Project Task                      & Curtis & Liam & Ian & Robert \\ [0.5ex]
+		\hline
+		1    & Project Proposal                  & R      & R    & R   & R      \\
+		\hline
+		2    & Progress Report                   & R      & R    & R   & R      \\
+		\hline
+		3    & Oral Presentation                 & R      & R    & R   & R      \\
+		\hline
+		4    & Final Report Draft                & R      & R    & R   & R      \\
+		\hline
+		5    & Poster Fair                       & R      & R    & R   & R      \\
+		\hline
+		6    & Final Report and Video            & R      & R    & R   & R      \\
+		\hline
+		7    & Set up Simulation Software        & R      &      &     &        \\
+		\hline
+		8    & Acquire Camera Lenses             & S      &      & R   &        \\
+		\hline
+		9    & Hardware-level Camera Interfacing &        &      & R   & S      \\
+		\hline
+		10   & ROS Boilerplate                   &        &      &     & S      \\
+		\hline
+		11   & CARLA ROS Bridge Setup            & S      &      &     & R      \\
+		\hline
+		12   & ROS Image Data Communication      & S      &      &     & R      \\
+		\hline
+		13   & Movement                          &        &      &     & R      \\
+		\hline
+		14   & Basic Image Input Handling        & R      &      &     &        \\
+		\hline
+		15   & Image Processing Pipeline for CNN & R      &      & S   &        \\
+		\hline
+		16   & CNN Lane Position Classifier      & R      &      & S   &        \\
+		\hline
+		17   & Lane Center Determination         & R      &      & S   &        \\
+		\hline
+		18   & Create Detection-K\&C Data Schema & S      &      & R   &        \\
+		\hline
+		19   & Create Movement Schema Command    &        & R    &     & S      \\
+		\hline
+		20   & PID Controller for Steering       &        & R    &     & S      \\
+		\hline
+		21   & PID Controller for Speed          &        & R    &     & S      \\
+		\hline
+		22   & PID Controller Refinement         &        & R    &     & S      \\
+		\hline
+		23   & MPC Controller                    &        & R    &     & S      \\
+		\hline
 	\end{tabular}
-	\end{center}
-	
+\end{center}
+
 \subsection{Project Network}
 \includegraphics[width=10in,scale=1, angle=90, origin=c]{activity.png}
 \subsection{Gantt Chart}
 \includegraphics{gantt.PNG}
 \subsection{Costs, Special Components and Facilities}
 \begin{center}
-	\begin{tabular}{|p{1in} | p{4in} | p{1in} |} 
-	 \hline
-	 Item & Description & Predicted Cost \\ [0.5ex] 
-	 \hline
-	 HiWOnder JetAcker & A robot that can have cameras configured onto the frame and respond to movement commands & 0\$, provided by department \\
-	 \hline
-	 Ubuntu Box & A Ubuntu computer capable of running the Carla Simulation software that can be accessed remotely for testing software & 0\$, provided by department \\
-	 \hline
-	 SSD Card & A SSD card for increasing the storage size of the HiWonder JetAcker & ~30\$ \\
-	 \hline
+	\begin{tabular}{|p{1in} | p{4in} | p{1in} |}
+		\hline
+		Item              & Description                                                                                                           & Predicted Cost              \\ [0.5ex]
+		\hline
+		HiWOnder JetAcker & A robot that can have cameras configured onto the frame and respond to movement commands                              & 0\$, provided by department \\
+		\hline
+		Ubuntu Box        & A Ubuntu computer capable of running the Carla Simulation software that can be accessed remotely for testing software & 0\$, provided by department \\
+		\hline
+		SSD Card          & A SSD card for increasing the storage size of the HiWonder JetAcker                                                   & ~30\$                       \\
+		\hline
 	\end{tabular}
-	\end{center}
+\end{center}
 
 \subsection{Risk Analysis}
 TODO: Use the old risk matrix but add a column stating whether or not that error was actually encountered or not
@@ -380,9 +380,100 @@ TODO: Use the old risk matrix but add a column stating whether or not that error
 \section{Software Subsystems}
 
 \subsection{Lane Detection}
+
+The Lane Detection subsystem is responsible for detecting lane markers (road lines) in video frames sent from the camera
+controller node and sending the locations of these markers on the video frames to the coordinate transformation node for
+processing.
+
 \subsubsection{Requirements}
+
+Requirement from system-wide requirements:
+
+\begin{itemize}
+	\item \textbf{FR1}: Lane Detection Accuracy. The system should accurately detect all lane borders within 10 centimetres
+	      of their actual position on the road 75\% of the time lane positions are calculated in a given video frame.
+\end{itemize}
+
+Subsystem-specific requirements:
+\begin{itemize}
+	\item \textbf{FR1.1}:
+\end{itemize}
+
 \subsubsection{Technologies and Methods}
+
+The backbone of the detection subsystem lies in its use of computer vision and machine learning to identify lane markers in video
+frames.
+
+Computer vision is the field of study that deals with the development of algorithms and techniques for enabling computers
+to interpret and understand visual information from images or videos.
+While humans are good at making use of visual information, computers need to rely on these complex algorithms to turn image
+data into usable information to act on.
+While the term ``computer vision'' covers a broad spectrum of topics, commonly used computer vision techniques include video
+processing, object recognition, face detection and augmented reality.
+The ultimate goal of computer vision research is to enable machines to perceive and understand the visual world in a way that
+is similar to or surpassing human vision.
+This has numerous applications in fields such as robotics, autonomous vehicles, security systems and medical imaging, among
+others.
+
+Machine learning, a subset of artificial intelligence, is a rapidly growing field that focuses on developing algorithms and
+models that enable computers to learn from data and make predictions or decisions based on that data without explicit programming
+to do so.
+At its core, machine learning enables algorithms to recognize patterns and relationships in datasets, allowing systems to adapt
+and improve their decision-making abilities as they're exposed to more information.
+This process, known as ``training'' a machine learning model, mimics the way in which humans learn, albeit at a much faster pace
+and with a focus on specific tasks for each system and model.
+The performance of machine learning models can be evaluated using various metrics, such as accuracy, precision, recall and F1
+score.
+
+
+
 \subsubsection{Conceptualization}
+
+There are many possible approaches to the problem of detecting road lines from a camera mounted in a vehicle.
+In the planning phase of the project, we considered the use of detection techniques that did not use machine learning at all.
+However, less complicated detection techniques can suffer from a lack of versatility.
+This is an important aspect of lane detection, as vehicles are driven in a variety of environments that result in varying
+levels of brightness, contrast and visibility of lane markers in video frames to be processed.
+
+One considered approach to lane detection was the use of heavier image pre-processing and a Hough Transform to determine line
+locations within video frames.
+Hough Transforms work by representing lines in an image using a ``parameter space,'' where each point represents a set of
+variables in a line or curve in the original image.
+Lines and curves are detected in the image by find local maxima in the image after it has been transposed to the parameter space
+for the task.
+After finding these maxima, the image can be converted back to its original coordinate space to find the detected lines and
+curves.
+This technique can be applied to the problem of lane detection, as the contrast between the black asphalt of the road and the
+white or yellow painted lines can make good use of an appropriate parameter space for line and curve detection.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\textwidth]{Hough-example}
+	\caption{An example of a Hough Transform used for line detection in an image.}\label{HoughTransform}
+\end{figure}
+
+One issue with the use of Hough Transforms is the changing contrast between road lines and the road surface, influenced by
+factors such as wear, lighting conditions and other environmental variations.
+In order to mediate this problem, different methods of image pre-processing were proposed in order to make the distinction
+between road line and road surface as obvious as possible for the Hough Transform.
+One of these proposed techniques was the conversion from the BGR colour space to the CIELAB (or La*b*) colour space.
+La\*b\* is an alternative colour space in which colours are measured based on their \textbf{L}ightness, along with \textbf{a*} and
+\textbf{b*} values corresponding to red-green and blue-yellow axes \cite{Mclaren2008}.
+The rationale behind using the La*b* colour space is that as seen in Figure \ref{LabColourSpace}, yellow and white fall close
+together in this space, meaning that light yellow and white road lines can be detected in a similar manner within the same space.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\textwidth]{Lab-colour-space}
+	\caption{A visualisation of the different colours and their locations on the La*b* colour space.}\label{LabColourSpace}
+\end{figure}
+
+Ultimately, the use of these techniques was deserted as while their implementation seems simple enough to understand and work on,
+we feared the amount of extra work required to make the detection subsystem as usable in as many environments as possible would
+grow too large, given the amount of time allocated for this project.
+
+
+
 \subsubsection{Software Architecture}
 \subsubsection{Implementation}
 \subsubsection{Evaluation}
@@ -395,7 +486,7 @@ Requirement from system-wide requirements:
 
 \begin{itemize}
 	\item FR2: Lane Following Precision. The system should maintain a deviation of no more than 0.45 meters from the center of its lane under normal driving conditions.
-	
+
 	As stated earlier, the ability to precisely follow the center of the lane is a very important functional requirement of the system. The primary purpose of this subsystem is therefore to fulfill that functional requirement by creating a control system that given the position of the lanes with respect to the vehicle, will be able to precisely follow their path.
 
 \end{itemize}
@@ -404,8 +495,8 @@ Subsystem-specific requirements:
 
 
 	\item FR2.1: Steering Control Stability. The control subsystem should aim to minimize the heading error of the vehicle.
-	
-	An important part of self-driving cars is the stability of the steering. It is not desirable for the humans in the vehicle if the steering of the car is continuously changing direction and overcompensating, meaning that the control system must minimize the heading error associated with the steering.
+
+	      An important part of self-driving cars is the stability of the steering. It is not desirable for the humans in the vehicle if the steering of the car is continuously changing direction and overcompensating, meaning that the control system must minimize the heading error associated with the steering.
 
 	\item FR2.2: Control Frequency.
 	The subsystem must produce movement command updates at a frequency of 50Hz.
@@ -413,28 +504,28 @@ Subsystem-specific requirements:
 	An important part of any real-time control system is that it must be able to reach deadlines. Additionally, a control system must exhibit continuous interaction with the environment which it is located within. To achieve these goals, the system must therefore be required to produce periodic movement commands that are frequent enough to give the appearance of continuous motion. The frequency of 50Hz was agreed upon by the group and the project supervisors as sufficiently frequent to represent continuous feedback from the control system.
 	
 	\item FR2.3: Closed Loop Properties.
-	The subsystem must produce movement commands using the most recent information available.
+	      The subsystem must produce movement commands using the most recent information available.
 
-	In control systems, there are usually two kinds of control systems: open and closed systems. Open control systems typically involve no feedback being provided to the control system between output commands, whereas closed loop systems are fed information which is to be used as part of the command generation. It is our intention to make the control system closed loop because it is important that the subsystem is continuously fed data about its positioning for subsequent commands. 
+	In control systems, there are usually two kinds of control systems: open and closed systems. Open control systems typically involve no feedback being provided to the control system between output commands, whereas closed loop systems are fed information which is to be used as part of the command generation. It is our intention to make the control system closed loop because it is important that the subsystem is continuously fed data about its positioning for subsequent commands.
 
 	However, one potential issue with a purely closed loop system is due to a timing concern. The rate at which lane data is received from the detection module may not be able to keep up with the rate of the desired control frequency defined in FR2.2. This means that there may be times which the system is required to produce an output without having received information about its position within the system, which represents an open control loop.
 
 	Therefore, it is important for our system to use as much closed loop properties as possible, and only rely on open loop properties when the latest data is not available.
-	
+
 	\item FR2.4: Output Attributes. The output commands produced by the subsystem must output the fewest parameters required for path execution.
-	
+
 	One of the primary goals of the system is to be very easy to configure for new hardware environments. For the control system, this means that the system must be able to output movement commands that are easily interpretable for any hardware environment it might be in. This does not mean that it must automatically be compatible with every hardware setup, but it must provide sufficient information such that an adapter can be used to convert between the control systems movement command and the hardware's execution.
 \end{itemize}
 
 
 \subsubsection{Technologies and Methods}
-The development of the K\&C subsystem requires the use of three primary technologies and software concepts. 
+The development of the K\&C subsystem requires the use of three primary technologies and software concepts.
 
-For starters, the K\&C system will require the use of multi-threading. Multithreading is the process by which a system has multiple concurrent threads, a program in execution, running concurrently in parallel. There are several advantages of using multi-threading, including better performance due to being able to run tasks during I/O blocking time, greater scheduling flexibility, and it separates the concern of what a task does and when it does it. With respect to our system, Multithreading will need to be used to have our PID processing run in parallel to receiving new system environments from the lane detection subsystem. Multithreading was instructed as part of the SYSC 3303 Introduction to Real Time Systems course offered at Carleton. 
+For starters, the K\&C system will require the use of multi-threading. Multithreading is the process by which a system has multiple concurrent threads, a program in execution, running concurrently in parallel. There are several advantages of using multi-threading, including better performance due to being able to run tasks during I/O blocking time, greater scheduling flexibility, and it separates the concern of what a task does and when it does it. With respect to our system, Multithreading will need to be used to have our PID processing run in parallel to receiving new system environments from the lane detection subsystem. Multithreading was instructed as part of the SYSC 3303 Introduction to Real Time Systems course offered at Carleton.
 
-Another important methodology for this project is that of feedback control systems. These systems are control systems that incorporate comparing the measured variable with its target value and then manipulates the system to minimize this error[6]. Feedback control systems are advantageous since the controller takes into account any unforeseen changes present in the system such as friction from the environment or older data such as from long input processing times, both of which are likely to happen with our system[6]. These concepts are taught as part of the SYSC 3600 and SYSC 4505 courses offered at Carleton University. While these courses are not required as part of a Software Engineering degree, they can be taken as electives for students in Software Engineering and the project supervisors have experience with this concept that can be shared with the students. 
+Another important methodology for this project is that of feedback control systems. These systems are control systems that incorporate comparing the measured variable with its target value and then manipulates the system to minimize this error[6]. Feedback control systems are advantageous since the controller takes into account any unforeseen changes present in the system such as friction from the environment or older data such as from long input processing times, both of which are likely to happen with our system[6]. These concepts are taught as part of the SYSC 3600 and SYSC 4505 courses offered at Carleton University. While these courses are not required as part of a Software Engineering degree, they can be taken as electives for students in Software Engineering and the project supervisors have experience with this concept that can be shared with the students.
 
-Cars and car-like vehicles use an arrangement of linkages called an Ackermann steering geometry in order to steer effectively[17]. It allows for the wheels on the inside and outside of a turn to trace circles of different radii, preventing slipping. In systems that use Ackermann steering or something similar, the front wheels turn while the rear wheels remain in place. In contrast, robots like the JetAuto use mecanum wheels, which allow for omnidirectional movement. While this is a useful property for robots, we intend to use the JetAuto to evaluate the system’s capabilities for car-like vehicles. As such, this subsystem should be able to send commands to vehicles with mecanum wheels that result in Ackerman-like movement. While this concept was not explicitly taught as part of a software engineering degree at carleton, the integration of hardware components with embedded systems relates to the practices discussed in SYSC 3310 Introduction to Real-Time Systems. 
+Cars and car-like vehicles use an arrangement of linkages called an Ackermann steering geometry in order to steer effectively[17]. It allows for the wheels on the inside and outside of a turn to trace circles of different radii, preventing slipping. In systems that use Ackermann steering or something similar, the front wheels turn while the rear wheels remain in place. In contrast, robots like the JetAuto use mecanum wheels, which allow for omnidirectional movement. While this is a useful property for robots, we intend to use the JetAuto to evaluate the system’s capabilities for car-like vehicles. As such, this subsystem should be able to send commands to vehicles with mecanum wheels that result in Ackerman-like movement. While this concept was not explicitly taught as part of a software engineering degree at carleton, the integration of hardware components with embedded systems relates to the practices discussed in SYSC 3310 Introduction to Real-Time Systems.
 
 \subsubsection{Conceptualization}
 
@@ -453,16 +544,16 @@ There are many control loops that could be used to handle the lane keeping and c
 \indent The three main measurements used for evaluating a PID controller are the settling time, overshoot, and rise time. Within a PID controller, the settling time is typically defined as the time required to enter the 5\% error strip. The overshoot of the system is defined as the maximum amount by which the response overshoots the steady state value. Lastly, the rise time is typically defined as the time it takes for the controller to get from 10\% to 90\% of the steady state value. Each of these attributes are affected by the three constants in a PID controller, and the effect that each constant has on the overall controller can be found in Table \ref{tab:pidvals}.
 
 \begin{center}
-	\captionof{table}{Effect of PID Controller Characteristics Through Changing Constants} \label{tab:pidvals} 
-	\begin{tabular}{|c | c | c | c | c |} 
+	\captionof{table}{Effect of PID Controller Characteristics Through Changing Constants} \label{tab:pidvals}
+	\begin{tabular}{|c | c | c | c | c |}
 	 \hline
-	 Increase in Constant & Rise Time & Overshoot & Settling Time &S-S Error \\ [0.5ex] 
+	 Increase in Constant & Rise Time & Overshoot & Settling Time &S-S Error \\ [0.5ex]
 	 \hline
-	 \(Kp\) & Decrease & Increase & Small Change & Decrease \\ 
+	 \(Kp\) & Decrease & Increase & Small Change & Decrease \\
 	 \hline
 	 \(Ki\) & Decrease & Increase & Increase & Decrease \\
 	 \hline
-	 \(Kd\) & Small Change & Decrease & Decrease & No Changes \\ 
+	 \(Kd\) & Small Change & Decrease & Decrease & No Changes \\
 	 \hline
 	\end{tabular}
 \end{center}
@@ -472,9 +563,9 @@ The main advantage with a PID controller is its simplicity, both with designing 
 Despite the advantages, there are numerous drawbacks to using a PID controller. For starters, the tuning of the controller can only be so effective. Since there are only three constants to tune, there is a much worse peak to the performance of the controller compared to more sophisticated models, such as the Model Predictive Control described next[14]. Additionally, since the model is error driven it is very sensitive to noise in the error, especially with respect to the derivative component.\\~\\
 \underline{Model Predictive Control:}
 
-The MPC controller is a more sophisticated control system compared to the PID controller, with use in various industries and areas in academia.[16] It utilizes a model of the system, a cost function, and an optimization algorithm to determine the optimal strategy for minimizing error, which in this case is the distance between the car’s center and the center of its lane. 
+The MPC controller is a more sophisticated control system compared to the PID controller, with use in various industries and areas in academia.[16] It utilizes a model of the system, a cost function, and an optimization algorithm to determine the optimal strategy for minimizing error, which in this case is the distance between the car’s center and the center of its lane.
 
-One significant advantage of this controller is its potential for high accuracy when implemented effectively. The MPC controller takes a wider array of variables and information into account when making decisions, offering greater potential for improved performance metrics. 
+One significant advantage of this controller is its potential for high accuracy when implemented effectively. The MPC controller takes a wider array of variables and information into account when making decisions, offering greater potential for improved performance metrics.
 
 However, MPC comes with the drawback of increased complexity. Unlike a PID controller, which is relatively straightforward to set up and configure, implementing an MPC controller involves considering a larger set of variables and a model of the environment surrounding the system, making it more challenging during the initial stages of development. \\~\\
 \underline{Standford Mathematical Model(Stanley Controller):}
@@ -483,7 +574,7 @@ However, MPC comes with the drawback of increased complexity. Unlike a PID contr
 https://ai.stanford.edu/\%7Egabeh/papers/hoffmann_stanley_control07.pdf
 \end{verbatim}
 
-The Stanley controller is a model based controller that calculates its recommended trajectory by using the vehicles distance to the center of the path and the heading error with the tangent line of the closest point. Most notably, it focuses on the trajectory of the vehicle with respect to the orientation of the front wheels as opposed to the entire vehicles body. 
+The Stanley controller is a model based controller that calculates its recommended trajectory by using the vehicles distance to the center of the path and the heading error with the tangent line of the closest point. Most notably, it focuses on the trajectory of the vehicle with respect to the orientation of the front wheels as opposed to the entire vehicles body.
 
 The Stanley controller is composed of two schemes that are used to model the vehicles motion. The first is the kinematic model, which works under the assumption that the vehicle has negligeable inertia, focuses on the position and heading of the vehicle's front axis with respect to the center of the lane. The second is the dynamic model which includes the additional inertial effects such as tire slip and steering actuation. These two models can be seen below in Fig. \ref{fig:stankine} and Fig. \ref{fig:standyna}.
 
@@ -497,7 +588,7 @@ The Stanley controller is composed of two schemes that are used to model the veh
 	\captionof{figure}{Dynamic Model of a Stanley Controller} \label{fig:standyna}
 \end{center}
 
-The main advantage of the Stanley controller is that it can be very easy to implement, and can scale very well with complexity. The Stanley controller's two models allows for two different degrees of complexity within the model, ensuring that a simple approach can be used in addition to a more complicated model for futher improvement. Additioanlly, the complexity of the kinematic model is not programatically complex to implement. 
+The main advantage of the Stanley controller is that it can be very easy to implement, and can scale very well with complexity. The Stanley controller's two models allows for two different degrees of complexity within the model, ensuring that a simple approach can be used in addition to a more complicated model for futher improvement. Additioanlly, the complexity of the kinematic model is not programatically complex to implement.
 
 However, a disadvantage with the control system is that the dynamic model is not interchangeable between environments. The dynamic model has a very strong relationship with the architecture of the vehicle, meaning that it is not particularily interchangeable to new systems. \\~\\
 \underline{Chosen Solution:}
@@ -571,7 +662,7 @@ The first step in implementing the internal map was to identify the path for the
 
 When it comes to evaluating the subsystem, the most important requirement for the quality of the control system is the maximum lateral error, also known as the maximum deviation from the center of the lane.
 
-In order to evaluate this functional requirement, a path was generated in CARLA. The vehicle would be spawned at the start of the path, and then the waypoint data would be fed to the control system as it progressed through the track. An evaluation module would record the path that the vehicle took, and after the vehicle reaches its final destination it would generate three figured and two number. The three figures represent a 2D model of the vehicles path overlayed with the waypoints, a line chart highlihgting the heading error over time, and a line chart highlighting the lateral error over time. Additionally, the evaluation node would calculate and output the highest lateral error and highest heading error. 
+In order to evaluate this functional requirement, a path was generated in CARLA. The vehicle would be spawned at the start of the path, and then the waypoint data would be fed to the control system as it progressed through the track. An evaluation module would record the path that the vehicle took, and after the vehicle reaches its final destination it would generate three figured and two number. The three figures represent a 2D model of the vehicles path overlayed with the waypoints, a line chart highlihgting the heading error over time, and a line chart highlighting the lateral error over time. Additionally, the evaluation node would calculate and output the highest lateral error and highest heading error.
 
 The control system was then evaluated by adjusting the constant speed and the controller's tuning constant each with three different values to find the one that has the lowest maximum lateral error. The results can be seen below.
 
@@ -601,7 +692,7 @@ Our system outputs movement commands in the form of ackermann messages, which ar
 \section{System Integration and Evaluation}
 
 \subsection{Integration}
-Recall that the system is made up of two primary subsystems: Lane Detection and Lane Keeping \& Control. The Lane Detection subsystem processes real-time video camera footage from a vehicle as it drives, identifies lane markers and calculates the centre of the vehicle’s lane. This information is relayed to the Keeping \& Control subsystem, which takes this data and determines the best corrective action to keep the vehicle centered in its lane. The K\&C subsystem is responsible for generating steering and acceleration commands based on the received lane position data, which is then sent to the vehicle hardware for execution. 
+Recall that the system is made up of two primary subsystems: Lane Detection and Lane Keeping \& Control. The Lane Detection subsystem processes real-time video camera footage from a vehicle as it drives, identifies lane markers and calculates the centre of the vehicle’s lane. This information is relayed to the Keeping \& Control subsystem, which takes this data and determines the best corrective action to keep the vehicle centered in its lane. The K\&C subsystem is responsible for generating steering and acceleration commands based on the received lane position data, which is then sent to the vehicle hardware for execution.
 
 
 \subsubsection{ROS2 Orchestration}
@@ -615,16 +706,16 @@ In addition to ROS, Docker was also used to assist with the integration of the s
 
 
 \subsection{Evaluation}
-The system will be developed and evaluated for two phases of demonstration. The first phase will involve testing using a simulation environment, and the second will involve integration with a physical robot on a test roadway. 
+The system will be developed and evaluated for two phases of demonstration. The first phase will involve testing using a simulation environment, and the second will involve integration with a physical robot on a test roadway.
 
-The evaluation of the individual Detection and K\&C subsystems will be completed as described in sections 3.1.6 and 3.2.6 respectively. The overall evaluation of the system will involve a more high level look at the system’s functionality. 
+The evaluation of the individual Detection and K\&C subsystems will be completed as described in sections 3.1.6 and 3.2.6 respectively. The overall evaluation of the system will involve a more high level look at the system’s functionality.
 
 \subsubsection{CARLA Simulator}
-For the main course of the project, testing will be performed in a simulation environment using CARLA. CARLA is a driving environment simulation tool used for iterative, test-driven development of autonomous driving systems.[12] This testing method will give freedom of modifying the various parameters to be considered with respect to road conditions. Using the simulation will also allow for quick testing of features throughout development. When running simulations using CARLA, the distance from the center of the lane will be determined by the detection subsystem and adjustments to remain in the lane will be made by the K\&C subsystem. The results of the adjustments will be observed and recorded to verify proper functioning of the system. 
+For the main course of the project, testing will be performed in a simulation environment using CARLA. CARLA is a driving environment simulation tool used for iterative, test-driven development of autonomous driving systems.[12] This testing method will give freedom of modifying the various parameters to be considered with respect to road conditions. Using the simulation will also allow for quick testing of features throughout development. When running simulations using CARLA, the distance from the center of the lane will be determined by the detection subsystem and adjustments to remain in the lane will be made by the K\&C subsystem. The results of the adjustments will be observed and recorded to verify proper functioning of the system.
 
 \subsubsection{HiWonder JetAcker}
 
-The secondary testing for the project will include running the system on the Hiwonder JetAuto driving on a test track. The camera sensors will be mounted to the JetAuto and interfacing will be developed for communicating movement commands. Testing will be completed in a similar way to the simulation phase by observing and recording the system’s ability to maintain a sufficiently small distance from the center of the lane. 
+The secondary testing for the project will include running the system on the Hiwonder JetAuto driving on a test track. The camera sensors will be mounted to the JetAuto and interfacing will be developed for communicating movement commands. Testing will be completed in a similar way to the simulation phase by observing and recording the system’s ability to maintain a sufficiently small distance from the center of the lane.
 
 
 \section{Reflections}
@@ -649,7 +740,7 @@ While we tried our best, we hit very few of our functional requirements for teh 
 
 \subsection{Changes from Proposal}
 
-WE had a lot of changes from our proposal. 
+WE had a lot of changes from our proposal.
 
 Whiel we wanted ot make our own CNN, we were not able to make one on our own and had to instead use a pre-existing model.
 
@@ -661,8 +752,8 @@ More...
 
 We bit off a lot more than we could chew. We're happy with the progress, but if we knew what we know now we would have been a lot more productive.
 
-\begin{thebibliography}{00}
-\end{thebibliography}
+\bibliography{References}{}
+\bibliographystyle{plain}
 \vspace{12pt}
 \color{red}
 
