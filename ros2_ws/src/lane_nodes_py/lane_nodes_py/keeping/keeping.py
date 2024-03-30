@@ -4,15 +4,12 @@ import numpy as np
 
 from lane_nodes_py.keeping.ackerman_wrapper import AckermannWrapper
 
-from lane_nodes_py.keeping.pid_controller import PID
-
 from lane_nodes_py.keeping.robot_path import PathData
 
 from typing import Tuple, List
 
 
 class Keeping:
-    pid = PID(1.0, 0, 0)
 
     target_velocity: float
 
@@ -64,7 +61,7 @@ class Keeping:
         # Figure out the new heading from the error
         new_heading = self.calculate_heading(cross_track_error, heading_error, v, self.path_grid)
 
-        # Use the output of the PID controller with the grid data to determine the next control
+        # Use the output of the controller with the grid data to determine the next control
         return self.generate_ackerman_control(new_heading, self.path_grid)
 
     def calculate_error(self) -> Tuple[float, float]:

@@ -13,6 +13,7 @@
 \usepackage{textcomp}
 \usepackage{titlesec}
 \usepackage{xcolor}
+\usepackage{caption}
 \graphicspath{ {./images/} }
 \usepackage{geometry}
 \geometry{
@@ -437,20 +438,22 @@ Cars and car-like vehicles use an arrangement of linkages called an Ackermann st
 
 \subsubsection{Conceptualization}
 
-There are many control loops that could be used to handle the lane keeping and control requirements for this sub-system. However, out of all these methods, there are three that have stood out for us as potential conceptual solutions.
-
-PID Controller:
-
-A PID controller is an error driven controller. This means it works by being fed a source of error, and outputs actions intended to minimize it. The output is calculated using three components: a proportional, a derivative, and an integral component. 
-
-First, the proportional component calculates an output value that is directly proportional to the source of error. The effect of the proportional controller on the output is typically a significant immediate reaction to the output of the device. Next is the derivative component, which calculates an output value using the derivative of the error at the current point in time. The derivative component in PID controllers is typically used as a means of dampening the oscillation in the source of error that arises from the proportional component. Lastly, the integral component works by outputting a value proportional to the total error up to the current point in time. Integral components are largely effective at reducing the steady state error of the system to ensure that it reaches the desired value faster.  Using the outputs of these three values, the PID controller adds them together and outputs a command that is intended to minimize the error, which then starts the next cycle of the PID controller.[13] Fig. 4.1 illustrates a diagram of a typical PID controller.
-
-One of the things that makes PID controllers desirable is its tuning process. PID controllers only have three tunable constants, being the proportional constant \((K_p)\), the integral component \((K_i)\), and the derivative component \((K_d)\). After the PID controller is implemented, these three constants are then used to tune the system to a desired effect. [14]
-
-The three main measurements used for evaluating a PID controller are the settling time, overshoot, and rise time. Within a PID controller, the settling time is typically defined as the time required to enter the 5\% error strip. The overshoot of the system is defined as the maximum amount by which the response overshoots the steady state value. Lastly, the rise time is typically defined as the time it takes for the controller to get from 10\% to 90\% of the steady state value. Each of these attributes are affected by the three constants in a PID controller, and the effect that each constant has on the overall controller can be found in Table 4.1.
-
+There are many control loops that could be used to handle the lane keeping and control requirements for this sub-system. However, out of all these methods, there are three that have stood out for us as potential conceptual solutions.\\~\\
+\underline{PID Controller:}\\
+\indent A PID controller is an error driven controller. This means it works by being fed a source of error, and outputs actions intended to minimize it. The output is calculated using three components: a proportional, a derivative, and an integral component. \\
+\indent First, the proportional component calculates an output value that is directly proportional to the source of error. The effect of the proportional controller on the output is typically a significant immediate reaction to the output of the device. Next is the derivative component, which calculates an output value using the derivative of the error at the current point in time. The derivative component in PID controllers is typically used as a means of dampening the oscillation in the source of error that arises from the proportional component. Lastly, the integral component works by outputting a value proportional to the total error up to the current point in time. Integral components are largely effective at reducing the steady state error of the system to ensure that it reaches the desired value faster.  Using the outputs of these three values, the PID controller adds them together and outputs a command that is intended to minimize the error, which then starts the next cycle of the PID controller.[13] Fig.\ref{fig:piddiagram} illustrates a diagram of a typical PID controller.\\
 
 \begin{center}
+	\includegraphics[width=4in]{PID2.jpg}\\
+	\captionof{figure}{Diagram of a Typical PID Controller} \label{fig:piddiagram}
+\end{center}
+
+
+\indent One of the things that makes PID controllers desirable is its tuning process. PID controllers only have three tunable constants, being the proportional constant \((K_p)\), the integral component \((K_i)\), and the derivative component \((K_d)\). After the PID controller is implemented, these three constants are then used to tune the system to a desired effect. [14]\\
+\indent The three main measurements used for evaluating a PID controller are the settling time, overshoot, and rise time. Within a PID controller, the settling time is typically defined as the time required to enter the 5\% error strip. The overshoot of the system is defined as the maximum amount by which the response overshoots the steady state value. Lastly, the rise time is typically defined as the time it takes for the controller to get from 10\% to 90\% of the steady state value. Each of these attributes are affected by the three constants in a PID controller, and the effect that each constant has on the overall controller can be found in Table \ref{tab:pidvals}.
+
+\begin{center}
+	\captionof{table}{Effect of PID Controller Characteristics Through Changing Constants} \label{tab:pidvals} 
 	\begin{tabular}{|c | c | c | c | c |} 
 	 \hline
 	 Increase in Constant & Rise Time & Overshoot & Settling Time &S-S Error \\ [0.5ex] 
@@ -462,21 +465,14 @@ The three main measurements used for evaluating a PID controller are the settlin
 	 \(Kd\) & Small Change & Decrease & Decrease & No Changes \\ 
 	 \hline
 	\end{tabular}
-	\end{center}
-
-
-
-Advantages and Disadvantages
+\end{center}
 
 The main advantage with a PID controller is its simplicity, both with designing and with tuning the controller. For starters, a PID controller is very simple to implement. PID controllers are not very programmatically complicated compared to other control schemes, and many PID contorller packages already exist which could easily be used instead of creating a custom one. As a result, the only thing that needs to be detremined is the source of the error for the system, and how the output affects the system. Additionally, PID controllers are very straightforward to tune. A PID controller only has three constants, all three of which have predictable effects on the perfromance of the controller.
 
-Despite the advantages, there are numerous drawbacks to using a PID controller. For starters, the tuning of the controller can only be so effective. Since there are only three constants to tune, there is a much worse peak to the performance of the controller compared to more sophisticated models, such as the Model Predictive Control described next[14]. Additionally, since the model is error driven it is very sensitive to noise in the error, especially with respect to the derivative component.
+Despite the advantages, there are numerous drawbacks to using a PID controller. For starters, the tuning of the controller can only be so effective. Since there are only three constants to tune, there is a much worse peak to the performance of the controller compared to more sophisticated models, such as the Model Predictive Control described next[14]. Additionally, since the model is error driven it is very sensitive to noise in the error, especially with respect to the derivative component.\\~\\
+\underline{Model Predictive Control:}
 
-
-Model Predictive Control:
 The MPC controller is a more sophisticated control system compared to the PID controller, with use in various industries and areas in academia.[16] It utilizes a model of the system, a cost function, and an optimization algorithm to determine the optimal strategy for minimizing error, which in this case is the distance between the car’s center and the center of its lane. 
-
-Advantages and Disadvantages
 
 One significant advantage of this controller is its potential for high accuracy when implemented effectively. The MPC controller takes a wider array of variables and information into account when making decisions, offering greater potential for improved performance metrics. 
 
@@ -490,17 +486,22 @@ https://ai.stanford.edu/\%7Egabeh/papers/hoffmann_stanley_control07.pdf
 
 The Stanley controller is a model based controller that calculates its recommended trajectory by using the vehicles distance to the center of the path and the heading error with the tangent line of the closest point. Most notably, it focuses on the trajectory of the vehicle with respect to the orientation of the front wheels as opposed to the entire vehicles body. 
 
-The Stanley controller is composed of two schemes that are used to model the vehicles motion. The first is the kinematic model, which works under the assumption that the vehicle has negligeable inertia, focuses on the position and heading of the vehicle's front axis with respect to the center of the lane. The second is the dynamic model which includes the additional inertial effects such as tire slip and steering actuation. These two models can be seen below in Fig. 4.3 and Fig. 4.4.
+The Stanley controller is composed of two schemes that are used to model the vehicles motion. The first is the kinematic model, which works under the assumption that the vehicle has negligeable inertia, focuses on the position and heading of the vehicle's front axis with respect to the center of the lane. The second is the dynamic model which includes the additional inertial effects such as tire slip and steering actuation. These two models can be seen below in Fig. \ref{fig:stankine} and Fig. \ref{fig:standyna}.
 
-Fig 4.3
+\begin{center}
+	\includegraphics[width=4in]{stanley_kinematic.PNG}\\
+	\captionof{figure}{Kinematic Model of a Stanley Controller} \label{fig:stankine}
+\end{center}
 
-Fig 4.4
+\begin{center}
+	\includegraphics[width=4in]{stanley_dynamic.PNG}\\
+	\captionof{figure}{Dynamic Model of a Stanley Controller} \label{fig:standyna}
+\end{center}
 
 The main advantage of the Stanley controller is that it can be very easy to implement, and can scale very well with complexity. The Stanley controller's two models allows for two different degrees of complexity within the model, ensuring that a simple approach can be used in addition to a more complicated model for futher improvement. Additioanlly, the complexity of the kinematic model is not programatically complex to implement. 
 
-However, a disadvantage with the control system is that the dynamic model is not interchangeable between environments. The dynamic model has a very strong relationship with the architecture of the vehicle, meaning that its not particularily interchangeable to new systems. 
-
-Chosen Solution:
+However, a disadvantage with the control system is that the dynamic model is not interchangeable between environments. The dynamic model has a very strong relationship with the architecture of the vehicle, meaning that it is not particularily interchangeable to new systems. \\~\\
+\underline{Chosen Solution:}
 
 The original descision for which control system architecture to base the subsystem on was a PID controller. At that time, the two main control systems that were being considered was the PID controller and the MPC controller. Between these two options, it was significantly more difficult to try and implement the MPC controller due to the complexity associated with its implementation and the more complex theory associated with it. As a result, a PID controller was chosen as the starting point for development.
 
@@ -511,7 +512,18 @@ The Lane Keeping \& Control subsystem receives lane data from the Detection subs
 ackermann\_message
 \/
 AckermannDrive message, 
-a data type provided by ROS, and then published to a separate ROS topic. This data is subsequently utilized by either a hardware module (simulated or real) capable of responding to Ackermann steering signals, or a software component that interprets the Ackermann steering commands and converts them into a compatible format.
+a data type provided by ROS, and then published to a separate ROS topic. This data is subsequently utilized by either a hardware module (simulated or real) capable of responding to Ackermann steering signals, or a software component that interprets the Ackermann steering commands and converts them into a compatible format. Figures \ref{fig:control_class} and \ref{fig:control_sequence} further illustrate the architecture of the system.
+
+\begin{center}
+	\includegraphics[width=6in]{KnC_diagrams.png}\\
+	\captionof{figure}{UML Class Diagram of the K\&C Subsystem} \label{fig:control_class}
+\end{center}
+
+\begin{center}
+	\includegraphics[width=6in]{KnC_sequence.png}\\
+	\captionof{figure}{UML Sequence Diagram of the K\&C Subsystem} \label{fig:control_sequence}
+\end{center}
+
 
 \subsubsection{Implementation}
 The build plan for this subsystem will begin with outlining the exact specification of the lane data that the system will receive and the exact format of the movement controls to export. This is because once these properties are established, every node in the system can be implemented in parallel rather than in series.

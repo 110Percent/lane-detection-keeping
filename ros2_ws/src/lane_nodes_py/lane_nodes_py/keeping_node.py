@@ -7,7 +7,6 @@ from ackermann_msgs.msg import AckermannDrive
 
 from lane_nodes_py.keeping.keeping import Keeping
 
-from lane_nodes_py.keeping.pid_controller import PID
 
 from lane_nodes_py.keeping.lane_wrapper import LaneWrapper
 
@@ -18,8 +17,6 @@ OUTPUT_FREQUENCY = 10
 
 class KeepingNode(Node):
     keeping: Keeping
-
-    pid = PID(1.0, 0, 0)
 
     def __init__(self, target_velocity, control_constant):
         super().__init__('keeping')
