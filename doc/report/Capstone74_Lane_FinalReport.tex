@@ -443,24 +443,29 @@ white or yellow painted lines can make good use of an appropriate parameter spac
 \begin{figure}
 	\centering
 	\includegraphics[width=0.5\textwidth]{Hough-example}
-	\caption{An example of a Hough Transform used for line detection in an image.}
+	\caption{An example of a Hough Transform used for line detection in an image.}\label{HoughTransform}
 \end{figure}
 
 One issue with the use of Hough Transforms is the changing contrast between road lines and the road surface, influenced by
 factors such as wear, lighting conditions and other environmental variations.
 In order to mediate this problem, different methods of image pre-processing were proposed in order to make the distinction
 between road line and road surface as obvious as possible for the Hough Transform.
-One of these proposed techniques was the conversion from the BGR colour space to the CIELAB (or Lab) colour space.
-Lab is an alternative colour space in which colours are measured based on their \textbf{L}ightness, along with \textbf{a} and
-\textbf{b} values corresponding to red-green and blue-yellow axes.
-The rationale behind using the Lab colour space is that yellow and white fall close together in this space, meaning that light
-yellow and white road lines can be detected in a similar manner within the same space.
+One of these proposed techniques was the conversion from the BGR colour space to the CIELAB (or La*b*) colour space.
+La\*b\* is an alternative colour space in which colours are measured based on their \textbf{L}ightness, along with \textbf{a*} and
+\textbf{b*} values corresponding to red-green and blue-yellow axes \cite{Mclaren2008}.
+The rationale behind using the La*b* colour space is that as seen in Figure \ref{LabColourSpace}, yellow and white fall close
+together in this space, meaning that light yellow and white road lines can be detected in a similar manner within the same space.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.5\textwidth]{Lab-colour-space}
-	\caption{A visualisation of the different colours and their locations on the Lab colour space.}
+	\caption{A visualisation of the different colours and their locations on the La*b* colour space.}\label{LabColourSpace}
 \end{figure}
+
+Ultimately, the use of these techniques was deserted as while their implementation seems simple enough to understand and work on,
+we feared the amount of extra work required to make the detection subsystem as usable in as many environments as possible would
+grow too large, given the amount of time allocated for this project.
+
 
 
 \subsubsection{Software Architecture}
@@ -639,8 +644,8 @@ More...
 
 We bit off a lot more than we could chew. We're happy with the progress, but if we knew what we know now we would have been a lot more productive.
 
-\begin{thebibliography}{00}
-\end{thebibliography}
+\bibliography{References}{}
+\bibliographystyle{plain}
 \vspace{12pt}
 \color{red}
 
