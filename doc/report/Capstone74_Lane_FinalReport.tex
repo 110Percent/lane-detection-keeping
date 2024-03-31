@@ -128,7 +128,7 @@ https://www.honda.ca/en/civic_sedan/specs
 
 	\item FR4: Loosely Coupled Software. The system must only interact with external hardware through dedicated bridges and require minimal configuration between deployment locations.
 
-	An important part of creating a lane following program is that it is usable in a wide variety of situations with minimal configuration. A lane assist system that is perfect for a single type of vehicle is less practical if it cannot be applied to other kinds of vehicles. Therefore, it is an important functional requirement for our software system to be as hardware-agnostic as possible, and that all interactions with external systems have consistent connections.
+	      An important part of creating a lane following program is that it is usable in a wide variety of situations with minimal configuration. A lane assist system that is perfect for a single type of vehicle is less practical if it cannot be applied to other kinds of vehicles. Therefore, it is an important functional requirement for our software system to be as hardware-agnostic as possible, and that all interactions with external systems have consistent connections.
 
 \end{itemize}
 
@@ -424,7 +424,12 @@ This process, known as ``training'' a machine learning model, mimics the way in 
 and with a focus on specific tasks for each system and model.
 The performance of machine learning models can be evaluated using various metrics, such as accuracy, precision, recall and F1
 score.
-
+Neural networks are a subset of machine learning algorithms inspired by the structure of biological neural networks in the human
+brain.
+They consist of interconnected nodes or artificial neurons organized into layers, with each layer processing input data using
+mathematical functions and passing it on to the next layer.
+The increase in complexity of these networks makes them more computationally expensive to train and run, but they can also yield
+more high-level insights on large, complicated sets of data.
 
 
 \subsubsection{Conceptualization}
@@ -465,16 +470,86 @@ together in this space, meaning that light yellow and white road lines can be de
 \begin{figure}
 	\centering
 	\includegraphics[width=0.5\textwidth]{Lab-colour-space}
-	\caption{A visualisation of the different colours and their locations on the La*b* colour space.}\label{LabColourSpace}
+	\caption{A visualisation of the different colours and their locations on the La*b* colour space.}
+	\label{LabColourSpace}
 \end{figure}
 
-Ultimately, the use of these techniques was deserted as while their implementation seems simple enough to understand and work on,
-we feared the amount of extra work required to make the detection subsystem as usable in as many environments as possible would
-grow too large, given the amount of time allocated for this project.
+Ultimately, the use of these techniques was abandoned as while their implementation seems simple enough to understand and work
+on, we feared the amount of extra work required to make the detection subsystem as usable in as many environments as possible
+would grow too large, given the amount of time allocated for this project.
 
+As an alternative to Hough Transforms, we looked into the use of machine learning for lane detection to leverage its versatility
+in functioning in the dynamic environments a lane keeping system would experience in a vehicle as it drives.
+Unlike Hough Transforms, which rely on predefined rules and parameters for the specific problem space, machine learning models
+can be trained on large amounts of diverse data, making them flexible and capable of accommodating changes in road conditions
+and lighting.
 
+The TuSimple Lane Detection Benchmark\cite{TuSimpleBenchmark} was used as a metric to examine which machine learning approaches
+to investigate for this project.
+TuSimple is a Chinese company focused on making autonomous heavy-duty trucks for goods transportation.
+They provide various benchmarks and large datasets of dashcam footage, which machine learning researchers can use to train and
+test machine learning models for tasks such as lane detection and velocity estimation from image data. \cite{TuSimpleBenchmark}
+
+Papers with Code is a database that provides open access to ``machine learning papers, code, datasets, methods and evaluation
+tables''. [CITE ME]
+TuSimple uses Papers with Code to provide a leaderboard for their Lane Detection benchmark, listing papers that perform the best
+on their datasets' test data, sorted by their accuracy or F1 scores.
+Out of the listed models, ones based on the CLRNet paper ranked best on both F1 scores and accuracy.
+As these models were new and scored well, we saw this as an opportunity to implement bleeding-edge software into our system
+to give it an edge for detecting lanes.
+
+{\renewcommand{\arraystretch}{2}%
+\begin{table}[]
+	\caption{Top 10 TuSimple Lane Detection Benchmark models, March 2024.}
+	\centering
+	\begin{tabular}{llllll}
+		\textbf{Rank} & \textbf{Model}      & \textbf{Accuracy} & \textbf{F1 Score} & \textbf{Code?} & \textbf{Paper}         \\ \hline
+		1             & CLRNet (ResNet-18)  & 96.82\%           & 97.89             & Y              & \cite{zheng2022clrnet} \\ \hline
+		2             & CLRNet (ResNet-34)  & 96.9\%            & 97.82             & Y              & \cite{zheng2022clrnet} \\ \hline
+		3             & CANet-L (ResNet101) & 96.76\%           & 97.77             & N              & \cite{yang2023canet}   \\ \hline
+		4             & GANet (ResNet-34)   &                   & 97.71             & Y              & \cite{Wang_2022_CVPR}  \\ \hline
+		5             & GANet (ResNet-18)   &                   & 97.68             & Y              & \cite{Wang_2022_CVPR}  \\ \hline
+		6             & CLRNet (ResNet-101) &                   & 97.62             & Y              & \cite{zheng2022clrnet} \\ \hline
+		7             & CANet-S             & 96.56\%           & 97.51             & N              & \cite{yang2023canet}   \\ \hline
+		8             & GANet (ResNet-101)  &                   & 97.45             & Y              & \cite{Wang_2022_CVPR}  \\ \hline
+		9             & CANet-M             & 96.66\%           & 97.44             & N              & \cite{yang2023canet}   \\ \hline
+		10            & Oblique Convolution & 96.50\%           & 97.42             & N              & None                   \\
+	\end{tabular}
+	\label{Table_TuSimpleBenchmark}
+\end{table}
+
+CLRNet (Cross Layer Refinement Network for Lane Detection) is a paper written by researchers from FABU.ai, a Chinese autonomous
+driving development company, and Zhejiang University. \cite{zheng2022clrnet}
+In this paper, a neural network algorithm known as a ``refinement network'' is used to accurately detect lanes on a road from an
+image taken by a dashcam in a vehicle.
+Refinement networks \cite{lin2016refinenet} are a type of machine learning technique in which objects are detected at a high
+level and located with increased precision as the network decreases the scope further onto the detected objects.
+
+A major advantage to the use of CLRNet is that the framework uses contextual information around an image to infer the positions
+of lines even when they are not very visible on-screen.
+For example, when another vehicle passes by the camera providing the video feed to CLRNet, it has little to no problems
+accurately determining the location of the line behind the passing vehicle.
+Detected and inferred lanes also maintain a smooth shape, which is critical in our navigation system as we want to minimize
+jitter introduced by jagged lines caused by errors in the detection subsystem.
 
 \subsubsection{Software Architecture}
+
+The Lane Detection subsystem receives video frames from the Camera Controller node over a ROS topic, formatted as
+\texttt{sensor\_msgs/Image} messages.
+The subsystem uses CLRNet to detect the locations of road lines on the image, then sends this data over another ROS topic to the
+Keeping \& Control node.
+Using a ROS topic allows the actual line detection process to run asynchronously from the Camera Controller and Keeping \& Control nodes.
+Since ROS nodes run on separate threads, this also allows other nodes to continue running during the computationally-expensive process
+of line detection, whereas a synchronous approach would introduce hitching and delays that would be unacceptable in a real-time system
+such as an autonomous vehicle.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{Detection-UML}
+	\caption{UML Class Diagram of the Detection Subsystem's ROS Node.}
+	\label{Detection-UML}
+\end{figure}
+
 \subsubsection{Implementation}
 \subsubsection{Evaluation}
 
@@ -487,7 +562,7 @@ Requirement from system-wide requirements:
 \begin{itemize}
 	\item FR2: Lane Following Precision. The system should maintain a deviation of no more than 0.45 meters from the center of its lane under normal driving conditions.
 
-	As stated earlier, the ability to precisely follow the center of the lane is a very important functional requirement of the system. The primary purpose of this subsystem is therefore to fulfill that functional requirement by creating a control system that given the position of the lanes with respect to the vehicle, will be able to precisely follow their path.
+	      As stated earlier, the ability to precisely follow the center of the lane is a very important functional requirement of the system. The primary purpose of this subsystem is therefore to fulfill that functional requirement by creating a control system that given the position of the lanes with respect to the vehicle, will be able to precisely follow their path.
 
 \end{itemize}
 Subsystem-specific requirements:
@@ -499,22 +574,22 @@ Subsystem-specific requirements:
 	      An important part of self-driving cars is the stability of the steering. It is not desirable for the humans in the vehicle if the steering of the car is continuously changing direction and overcompensating, meaning that the control system must minimize the heading error associated with the steering.
 
 	\item FR2.2: Control Frequency.
-	The subsystem must produce movement command updates at a frequency of 50Hz.
-	
-	An important part of any real-time control system is that it must be able to reach deadlines. Additionally, a control system must exhibit continuous interaction with the environment which it is located within. To achieve these goals, the system must therefore be required to produce periodic movement commands that are frequent enough to give the appearance of continuous motion. The frequency of 50Hz was agreed upon by the group and the project supervisors as sufficiently frequent to represent continuous feedback from the control system.
-	
+	      The subsystem must produce movement command updates at a frequency of 50Hz.
+
+	      An important part of any real-time control system is that it must be able to reach deadlines. Additionally, a control system must exhibit continuous interaction with the environment which it is located within. To achieve these goals, the system must therefore be required to produce periodic movement commands that are frequent enough to give the appearance of continuous motion. The frequency of 50Hz was agreed upon by the group and the project supervisors as sufficiently frequent to represent continuous feedback from the control system.
+
 	\item FR2.3: Closed Loop Properties.
 	      The subsystem must produce movement commands using the most recent information available.
 
-	In control systems, there are usually two kinds of control systems: open and closed systems. Open control systems typically involve no feedback being provided to the control system between output commands, whereas closed loop systems are fed information which is to be used as part of the command generation. It is our intention to make the control system closed loop because it is important that the subsystem is continuously fed data about its positioning for subsequent commands.
+	      In control systems, there are usually two kinds of control systems: open and closed systems. Open control systems typically involve no feedback being provided to the control system between output commands, whereas closed loop systems are fed information which is to be used as part of the command generation. It is our intention to make the control system closed loop because it is important that the subsystem is continuously fed data about its positioning for subsequent commands.
 
-	However, one potential issue with a purely closed loop system is due to a timing concern. The rate at which lane data is received from the detection module may not be able to keep up with the rate of the desired control frequency defined in FR2.2. This means that there may be times which the system is required to produce an output without having received information about its position within the system, which represents an open control loop.
+	      However, one potential issue with a purely closed loop system is due to a timing concern. The rate at which lane data is received from the detection module may not be able to keep up with the rate of the desired control frequency defined in FR2.2. This means that there may be times which the system is required to produce an output without having received information about its position within the system, which represents an open control loop.
 
-	Therefore, it is important for our system to use as much closed loop properties as possible, and only rely on open loop properties when the latest data is not available.
+	      Therefore, it is important for our system to use as much closed loop properties as possible, and only rely on open loop properties when the latest data is not available.
 
 	\item FR2.4: Output Attributes. The output commands produced by the subsystem must output the fewest parameters required for path execution.
 
-	One of the primary goals of the system is to be very easy to configure for new hardware environments. For the control system, this means that the system must be able to output movement commands that are easily interpretable for any hardware environment it might be in. This does not mean that it must automatically be compatible with every hardware setup, but it must provide sufficient information such that an adapter can be used to convert between the control systems movement command and the hardware's execution.
+	      One of the primary goals of the system is to be very easy to configure for new hardware environments. For the control system, this means that the system must be able to output movement commands that are easily interpretable for any hardware environment it might be in. This does not mean that it must automatically be compatible with every hardware setup, but it must provide sufficient information such that an adapter can be used to convert between the control systems movement command and the hardware's execution.
 \end{itemize}
 
 
@@ -546,15 +621,15 @@ There are many control loops that could be used to handle the lane keeping and c
 \begin{center}
 	\captionof{table}{Effect of PID Controller Characteristics Through Changing Constants} \label{tab:pidvals}
 	\begin{tabular}{|c | c | c | c | c |}
-	 \hline
-	 Increase in Constant & Rise Time & Overshoot & Settling Time &S-S Error \\ [0.5ex]
-	 \hline
-	 \(Kp\) & Decrease & Increase & Small Change & Decrease \\
-	 \hline
-	 \(Ki\) & Decrease & Increase & Increase & Decrease \\
-	 \hline
-	 \(Kd\) & Small Change & Decrease & Decrease & No Changes \\
-	 \hline
+		\hline
+		Increase in Constant & Rise Time    & Overshoot & Settling Time & S-S Error  \\ [0.5ex]
+		\hline
+		\(Kp\)               & Decrease     & Increase  & Small Change  & Decrease   \\
+		\hline
+		\(Ki\)               & Decrease     & Increase  & Increase      & Decrease   \\
+		\hline
+		\(Kd\)               & Small Change & Decrease  & Decrease      & No Changes \\
+		\hline
 	\end{tabular}
 \end{center}
 
@@ -602,7 +677,7 @@ However, after having spent some time trying to implement the PID controller it 
 The Lane Keeping \& Control subsystem receives lane data from the Detection subsystem via a ROS topic using a publish-subscribe approach, allowing for asynchronous communication to accommodate different processing rates. The LaneDataListener component captures the lane position data and updates the LaneControl component. This component operates on a 50Hz timer, determining the optimal angle and velocity for the vehicle to stay centered in its lane. The output is formatted as an
 ackermann\_message
 \/
-AckermannDrive message, 
+AckermannDrive message,
 a data type provided by ROS, and then published to a separate ROS topic. This data is subsequently utilized by either a hardware module (simulated or real) capable of responding to Ackermann steering signals, or a software component that interprets the Ackermann steering commands and converts them into a compatible format. Figures \ref{fig:control_class} and \ref{fig:control_sequence} further illustrate the architecture of the system.
 
 \begin{center}
