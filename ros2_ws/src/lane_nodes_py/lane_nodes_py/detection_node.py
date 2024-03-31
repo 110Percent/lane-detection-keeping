@@ -18,17 +18,21 @@ import cv2
 
 from .detection import Detection
 
-CONFIG = '/opt/clrnet/configs/clrnet/clr_resnet18_tusimple.py'
-MODEL = '/opt/clrnet/models/tusimple_r18.pth'
-IMAGE_DIR = '/imgs/in'
-OUTPUT_DIR = '/imgs/out'
+# These paths are hardcoded for now, but should be moved to a config file or something similar.
+# We use /opt/clrnet because that's where CLRNet is installed in the Docker container.
+CONFIG = "/opt/clrnet/configs/clrnet/clr_resnet18_tusimple.py"
+MODEL = "/opt/clrnet/models/tusimple_r18.pth"
+# IMAGE_DIR and OUTPUT_DIR don't do anything since we're getting images from ROS, but I'm just writing comments as we
+# wrap up the project and don't want to end up breaking anything. Probably safe to remove them though.
+IMAGE_DIR = "/imgs/in"
+OUTPUT_DIR = "/imgs/out"
 
 cv_bridge = CvBridge()
 
-class DetectionNode(Node):
 
+class DetectionNode(Node):
     def __init__(self):
-        super().__init__('detection')
+        super().__init__("detection")
 
         cfg = Config.fromfile(CONFIG)
         cfg.show = False
@@ -40,56 +44,45 @@ class DetectionNode(Node):
         self.detection = Detection(cfg)
 
         # Create the publisher for sending lane location data
-        self.lane_publisher_ = self.create_publisher(LaneLocation, "lane_location_data", 10)
+        self.lane_publisher_ = self.create_publisher(
+            LaneLocation, "lane_location_data", 10
+        )
 
-        # Create the subscriber for receiving images 
+        # Create the subscriber for receiving images
         self.image_subscription = self.create_subscription(
-                Image,
-                "raw_input_images",
-                self.image_callback,
-                10)
-        self.image_subscription # prevent unused variable warning
+            Image, "raw_input_images", self.image_callback, 10
+        )
+        self.image_subscription  # prevent unused variable warning
 
-    # Callback for receiving image data. At the moment, just echoes the received message, which is a string.
+    # Callback for when an image is received. Performs lane detection and sends the results to the lane location publisher.
     def image_callback(self, msg):
-
+        # NOTE: There isn't any mutex on this, meaning too many images sent in rapid succession could crash the node by overloading the GPU.
+        # Something to keep in mind for the future that should probably be addressed.
         cv_image = cv_bridge.imgmsg_to_cv2(msg, "bgr8")
-        # self.get_logger().info('img type' + str(type(cv_image)))
-        # self.get_logger().info('img shape:' + str(cv_image.shape))
 
-        # self.get_logger().info('Received image')
+        # Actual detection magic happens here, see detection.py
         detected = self.detection.run_raw(cv_image)
 
-        lanes = detected['lanes']
-        
+        lanes = detected["lanes"]
+
         if lanes is None:
             return
         if len(lanes) < 1:
             return
-        
-        # self.get_logger().info('type lanes[0]: ' + str(type(lanes[0])))
-        # self.get_logger().info('lanes:' + str(lanes))
+
         # bev_lanes = self.lanes_to_birds_eye(lanes, cv_image)
         flat_lanes = self.flatten_lanes(lanes)
-        
-        # self.get_logger().info('len lanes:' + str(len(lanes)))
-        # self.get_logger().info('lanes:' + str(lanes))
-
-        # self.get_logger().info('len flat:' + str(len(flat_lanes)))
-
-        # self.get_logger().info('lane1:' + str(lanes[0]))
-        # self.get_logger().info('lane2:' + str(lanes[1]))
 
         lane_data = LaneLocation()
         lane_data.stamp = str(datetime.now())
-        lane_data.frame_id = "FILENAME"
+        lane_data.frame_id = "FILENAME"  # Is this supposed to be constant?
         lane_data.row_lengths = [len(lane.points) for lane in lanes]
         lane_data.lanes = flat_lanes
         lane_data.img_shape = [cv_image.shape[0], cv_image.shape[1]]
 
-        # self.get_logger().info('Sent: ' + str(lane_date))
         self.lane_publisher_.publish(lane_data)
-    
+
+    # Converts a list of tuples of lane points to a list of floats for the ROS message
     def flatten_lanes(self, lanes):
         flattened = []
         for row in lanes:
@@ -99,8 +92,6 @@ class DetectionNode(Node):
         return flattened
 
 
-
-
 def main(args=None):
     rclpy.init(args=args)
 
@@ -108,11 +99,9 @@ def main(args=None):
 
     rclpy.spin(detection_node)
 
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
     detection_node.destroy_node()
     rclpy.shutdown()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
