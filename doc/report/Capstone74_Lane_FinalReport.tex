@@ -112,15 +112,12 @@ The system is expected to function similarly to lane-following technologies in e
 
 	\item FR2: Lane Following Precision. The system should maintain a deviation of no more than 0.45 meters from the center of its lane under normal driving conditions.
 
-	      In the City of Toronto, the lane width guidelines require that the minimum lane width of any through lane be a minimum of 3.0 meters. An average sized car, which we have defined as a Honda Civic 2022, is approximately 2.1 meters wide(including mirrors). This leaves a maximum of 0.45 meters of leeway that the vehicle can deviate from the center of the lane without accidentally entering another lane.
-
-	      Sources:
-
-	      \begin{verbatim}
-https://www.toronto.ca/wp-content/uploads/2017/11/921b-ecs-specs-roaddg-Lane_Widths_Guideline_Version_2.0_Jun2017.pdf
-https://www.honda.ca/en/civic_sedan/specs
-\end{verbatim}
-
+	      In the City of Toronto, the lane width guidelines require that the minimum lane width of any through lane be a minimum
+	      of 3.0 meters. \cite{LaneWidthsGuideline}
+	      An average sized car, which we have defined as a Honda Civic 2022, is approximately 2.1 meters wide (including
+	      mirrors). \cite{HondaCivicSpecs}
+	      This leaves a maximum of 0.45 meters of leeway that the vehicle can deviate from the center of the lane without
+	      accidentally entering another lane.
 
 	\item FR3: Real-time Processing
 	      The system should complete the entire processing pipeline from video frame to hardware instruction in 150 milliseconds or less.
@@ -300,8 +297,16 @@ Liam:
 \end{itemize}
 
 \section{Work Plan}
+
 \subsection{Work Breakdown Structure}
-\includegraphics[width=10in,scale=1, angle=90, origin=c]{wbs.png}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{wbs}
+	\caption{Project Work Breakdown Structure}
+	\label{fig:wbs}
+\end{figure}
+
 \subsection{Responsibility Matrix}
 \begin{table}[H]
 	\centering
@@ -361,23 +366,36 @@ Liam:
 \end{table}
 
 \subsection{Project Network}
-\includegraphics[width=10in,scale=1, angle=90, origin=c]{activity.png}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{activity}
+	\caption{Project Activity Network}
+	\label{fig:activity}
+\end{figure}
+
 \subsection{Gantt Chart}
-\includegraphics{gantt.PNG}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{gantt}
+	\caption{Gantt Chart of Project Tasks Over Time}
+	\label{fig:gantt_chart}
+\end{figure}
+
 \subsection{Costs, Special Components and Facilities}
-\begin{center}
-	\begin{tabular}{|p{1in} | p{4in} | p{1in} |}
-		\hline
-		Item              & Description                                                                                                           & Predicted Cost              \\ [0.5ex]
-		\hline
-		HiWOnder JetAcker & A robot that can have cameras configured onto the frame and respond to movement commands                              & 0\$, provided by department \\
-		\hline
-		Ubuntu Box        & A Ubuntu computer capable of running the Carla Simulation software that can be accessed remotely for testing software & 0\$, provided by department \\
-		\hline
-		SSD Card          & A SSD card for increasing the storage size of the HiWonder JetAcker                                                   & ~30\$                       \\
-		\hline
+\begin{table}[H]
+	\centering
+	\begin{tabular}{@{}lp{0.5\linewidth}l@{}}
+		\toprule
+		\textbf{Item}     & \textbf{Description}                                                                                                                 & \textbf{Cost}                \\ \midrule
+		HiWonder JetAcker & A robot that can have cameras configured onto the frame and respond to movement commands                                             & \$0 (Provided by Department) \\ \midrule
+		Simulation Server & A computer running Ubuntu Linux, capable of running the CARLA Simulation software that can be accessed remotely for testing software & \$0 (Provided by Department) \\ \midrule
+		SD Card           & An SD card for increasing the storage size of the HiWonder JetAcker                                                                  & \$30                         \\ \bottomrule
 	\end{tabular}
-\end{center}
+	\caption{Extra materials purchased for this project and their associated costs.}
+	\label{tab:costs}
+\end{table}
 
 \subsection{Risk Analysis}
 TODO: Use the old risk matrix but add a column stating whether or not that error was actually encountered or not
@@ -548,7 +566,6 @@ to give it an edge for detecting lanes.
 
 {\renewcommand{\arraystretch}{2}%
 \begin{table}[]
-	\caption{Top 10 TuSimple Lane Detection Benchmark models, March 2024.}
 	\centering
 	\begin{tabular}{llllll}
 		\textbf{Rank} & \textbf{Model}      & \textbf{Accuracy} & \textbf{F1 Score} & \textbf{Code?} & \textbf{Paper}         \\ \hline
@@ -563,6 +580,7 @@ to give it an edge for detecting lanes.
 		9             & CANet-M             & 96.66\%           & 97.44             & N              & \cite{yang2023canet}   \\ \hline
 		10            & Oblique Convolution & 96.50\%           & 97.42             & N              & None                   \\ \hline
 	\end{tabular}
+	\caption{Top 10 TuSimple Lane Detection Benchmark models, March 2024.}
 	\label{Table_TuSimpleBenchmark}
 \end{table}
 
@@ -650,7 +668,7 @@ For starters, the K\&C system will require the use of multi-threading. Multithre
 
 Another important methodology for this project is that of feedback control systems. These systems are control systems that incorporate comparing the measured variable with its target value and then manipulates the system to minimize this error[6]. Feedback control systems are advantageous since the controller takes into account any unforeseen changes present in the system such as friction from the environment or older data such as from long input processing times, both of which are likely to happen with our system[6]. These concepts are taught as part of the SYSC 3600 and SYSC 4505 courses offered at Carleton University. While these courses are not required as part of a Software Engineering degree, they can be taken as electives for students in Software Engineering and the project supervisors have experience with this concept that can be shared with the students.
 
-Cars and car-like vehicles use an arrangement of linkages called an Ackermann steering geometry in order to steer effectively[17]. It allows for the wheels on the inside and outside of a turn to trace circles of different radii, preventing slipping. In systems that use Ackermann steering or something similar, the front wheels turn while the rear wheels remain in place. In contrast, robots like the JetAuto use mecanum wheels, which allow for omnidirectional movement. While this is a useful property for robots, we intend to use the JetAuto to evaluate the system’s capabilities for car-like vehicles. As such, this subsystem should be able to send commands to vehicles with mecanum wheels that result in Ackerman-like movement. While this concept was not explicitly taught as part of a software engineering degree at carleton, the integration of hardware components with embedded systems relates to the practices discussed in SYSC 3310 Introduction to Real-Time Systems.
+Cars and car-like vehicles use an arrangement of linkages called an Ackermann steering geometry in order to steer effectively[17]. It allows for the wheels on the inside and outside of a turn to trace circles of different radii, preventing slipping. In systems that use Ackermann steering or something similar, the front wheels turn while the rear wheels remain in place. In contrast, robots like the JetAuto use mecanum wheels, which allow for omnidirectional movement. While this is a useful property for robots, we intend to use the JetAuto to evaluate the system’s capabilities for car-like vehicles. As such, this subsystem should be able to send commands to vehicles with mecanum wheels that result in Ackermann-like movement. While this concept was not explicitly taught as part of a software engineering degree at carleton, the integration of hardware components with embedded systems relates to the practices discussed in SYSC 3310 Introduction to Real-Time Systems.
 
 \subsubsection{Conceptualization}
 
@@ -687,7 +705,7 @@ There are many control loops that could be used to handle the lane keeping and c
 	\label{tab:pidvals}
 \end{table}
 
-The main advantage with a PID controller is its simplicity, both with designing and with tuning the controller. For starters, a PID controller is very simple to implement. PID controllers are not very programmatically complicated compared to other control schemes, and many PID contorller packages already exist which could easily be used instead of creating a custom one. As a result, the only thing that needs to be detremined is the source of the error for the system, and how the output affects the system. Additionally, PID controllers are very straightforward to tune. A PID controller only has three constants, all three of which have predictable effects on the perfromance of the controller.
+The main advantage with a PID controller is its simplicity, both with designing and with tuning the controller. For starters, a PID controller is very simple to implement. PID controllers are not very technically complicated compared to other control schemes, and many PID controller packages already exist which could easily be used instead of creating a custom one. As a result, the only thing that needs to be determined is the source of the error for the system, and how the output affects the system. Additionally, PID controllers are very straightforward to tune. A PID controller only has three constants, all three of which have predictable effects on the performance of the controller.
 
 Despite the advantages, there are numerous drawbacks to using a PID controller. For starters, the tuning of the controller can only be so effective. Since there are only three constants to tune, there is a much worse peak to the performance of the controller compared to more sophisticated models, such as the Model Predictive Control described next[14]. Additionally, since the model is error driven it is very sensitive to noise in the error, especially with respect to the derivative component.\\~\\
 \underline{Model Predictive Control:}
@@ -705,7 +723,7 @@ https://ai.stanford.edu/\%7Egabeh/papers/hoffmann_stanley_control07.pdf
 
 The Stanley controller is a model based controller that calculates its recommended trajectory by using the vehicles distance to the center of the path and the heading error with the tangent line of the closest point. Most notably, it focuses on the trajectory of the vehicle with respect to the orientation of the front wheels as opposed to the entire vehicles body.
 
-The Stanley controller is composed of two schemes that are used to model the vehicles motion. The first is the kinematic model, which works under the assumption that the vehicle has negligeable inertia, focuses on the position and heading of the vehicle's front axis with respect to the center of the lane. The second is the dynamic model which includes the additional inertial effects such as tire slip and steering actuation. These two models can be seen below in Fig. \ref{fig:stankine} and Fig. \ref{fig:standyna}.
+The Stanley controller is composed of two schemes that are used to model the vehicles motion. The first is the kinematic model, which works under the assumption that the vehicle has negligible inertia, focuses on the position and heading of the vehicle's front axis with respect to the center of the lane. The second is the dynamic model which includes the additional inertial effects such as tire slip and steering actuation. These two models can be seen below in Fig. \ref{fig:stankine} and Fig. \ref{fig:standyna}.
 
 \begin{figure}
 	\centering
@@ -721,9 +739,9 @@ The Stanley controller is composed of two schemes that are used to model the veh
 	\label{fig:standyna}
 \end{figure}
 
-The main advantage of the Stanley controller is that it can be very easy to implement, and can scale very well with complexity. The Stanley controller's two models allows for two different degrees of complexity within the model, ensuring that a simple approach can be used in addition to a more complicated model for futher improvement. Additioanlly, the complexity of the kinematic model is not programatically complex to implement.
+The main advantage of the Stanley controller is that it can be very easy to implement, and can scale very well with complexity. The Stanley controller's two models allows for two different degrees of complexity within the model, ensuring that a simple approach can be used in addition to a more complicated model for further improvement. Additionally, the complexity of the kinematic model is not technically complex to implement.
 
-However, a disadvantage with the control system is that the dynamic model is not interchangeable between environments. The dynamic model has a very strong relationship with the architecture of the vehicle, meaning that it is not particularily interchangeable to new systems. \\~\\
+However, a disadvantage with the control system is that the dynamic model is not interchangeable between environments. The dynamic model has a very strong relationship with the architecture of the vehicle, meaning that it is not particularly interchangeable to new systems. \\~\\
 \underline{Chosen Solution:}
 
 The original descision for which control system architecture to base the subsystem on was a PID controller. At that time, the two main control systems that were being considered was the PID controller and the MPC controller. Between these two options, it was significantly more difficult to try and implement the MPC controller due to the complexity associated with its implementation and the more complex theory associated with it. As a result, a PID controller was chosen as the starting point for development.
@@ -791,7 +809,7 @@ repository at \texttt{/lane-detection-keeping/ros2\textunderscore ws/src/lane\te
 
 After the PID controller was implemented, the next step was creating an internal representation of the vehicle's environment. This is important for two reasons. For starters, having an internal representation of the environment would be essential in calculating the error that needs to be fed into the PID controller for it to work. Without an appropriate model of the environment available, it would be hard to determine the error and the control system would have a hard time properly steering. Additionally, since the rate at which lane data is produced is much slower than the rate at which the control system must enact movement commands, the system must be able to track roughly how far the vehicle has moved through its environment as it generates movement commands. Without this, the subsystem would not be able to achieve its output frequency of 50Hz.
 
-The first step in implementing the internal map was to identify the path for the vehicle to follow. This means that in order for a model of its environment to exist, it must be created from the passed lane data from the detection subsystem. To do this, the internal map parses the lane data received from the detection and attempts to map each lane into a polynomial. The purpose of this is to smooth the lane curve to get rid of any jagged shapes that might appear in the lane lines. Through a mild amount of testing, a degree of 3 was chosen for the polynomial fitting. This is because the shape of curves is rarely straight enough for a degree of 1 or 2, and a degree of 4 or higher starts to suffer from overfitting which destroys the accuracy of the polynomial. After the lanes are turned into polynomials, the system identifies the clsoest lane that appears on each side of the origin by comparing the y-intercepts of the lanes. The system finds the smallest y-intercept above 0 and sets that as the left lane, and the lane with the largest y-intercept below 0 and sets that as the right lane. Then, it averages the polynomials for the two lanes to determine the center of the two lanes, and stores that path as the center lane for the vehicle to follow. Fig. \ref{fig:lane_center_determination} illustrates this process.
+The first step in implementing the internal map was to identify the path for the vehicle to follow. This means that in order for a model of its environment to exist, it must be created from the passed lane data from the detection subsystem. To do this, the internal map parses the lane data received from the detection and attempts to map each lane into a polynomial. The purpose of this is to smooth the lane curve to get rid of any jagged shapes that might appear in the lane lines. Through a mild amount of testing, a degree of 3 was chosen for the polynomial fitting. This is because the shape of curves is rarely straight enough for a degree of 1 or 2, and a degree of 4 or higher starts to suffer from overfitting which destroys the accuracy of the polynomial. After the lanes are turned into polynomials, the system identifies the closest lane that appears on each side of the origin by comparing the y-intercepts of the lanes. The system finds the smallest y-intercept above 0 and sets that as the left lane, and the lane with the largest y-intercept below 0 and sets that as the right lane. Then, it averages the polynomials for the two lanes to determine the center of the two lanes, and stores that path as the center lane for the vehicle to follow. Fig. \ref{fig:lane_center_determination} illustrates this process.
 
 \begin{figure}
 	\centering
@@ -800,9 +818,9 @@ The first step in implementing the internal map was to identify the path for the
 	\label{fig:lane_center_determination}
 \end{figure}
 
-The second step in implementing the internal map is to be able to predict where the vehicle is if no new lane data is recieved. This is important for the system because one of the requirements is to be able to use the latest availible data for each command output, so its important that when the system is relying on old data it can predict where the vehicle moves between output commands. The first thing done to implement this was to set a flag on the internal grid called "fresh" which is set to true whenever a lane center is configured, but then swapped to false after a movement command is generated. If the lane data is not fresh, the system will then update the position of the vehicle in the internal grid based on how much time has passed, and the last movement command enacted.
+The second step in implementing the internal map is to be able to predict where the vehicle is if no new lane data is received. This is important for the system because one of the requirements is to be able to use the latest available data for each command output, so its important that when the system is relying on old data it can predict where the vehicle moves between output commands. The first thing done to implement this was to set a flag on the internal grid called "fresh" which is set to true whenever a lane center is configured, but then swapped to false after a movement command is generated. If the lane data is not fresh, the system will then update the position of the vehicle in the internal grid based on how much time has passed, and the last movement command enacted.
 
-The steps for predicting the vehicles new position is done in four steps. The first step is to find the pivot point. An important part of ackermann steering is that it works by having all the wheels oriented perpendicular to a singular pivot point. This means that given the last movement commands heading, we can take the distance between the axis and the angle of the heading to find teh point which the vehicle will pivot around. Next, the system has to determine how far hte vehicle actually travels. This is done by taking the time between the last movement ocmmand and the present, and multiplying it by hte speed of the last movement command to get a distance. Afterwards, the number of radians traveled around with respect to the pivot point is calculated. Lastly, using the amount of radians that the system rotated about the pivot point the vehicles new position is calculated. Figure \ref{fig:internal_update_determination} provides a visual representation of the math. It should be noted that this method of predicting the vehicles location is not very accurate, as it works in an ideal world and simplifies a lot of the movement that is occuring.
+The steps for predicting the vehicles new position is done in four steps. The first step is to find the pivot point. An important part of ackermann steering is that it works by having all the wheels oriented perpendicular to a singular pivot point. This means that given the last movement commands heading, we can take the distance between the axis and the angle of the heading to find teh point which the vehicle will pivot around. Next, the system has to determine how far hte vehicle actually travels. This is done by taking the time between the last movement command and the present, and multiplying it by hte speed of the last movement command to get a distance. Afterwards, the number of radians travelled around with respect to the pivot point is calculated. Lastly, using the amount of radians that the system rotated about the pivot point the vehicles new position is calculated. Figure \ref{fig:internal_update_determination} provides a visual representation of the math. It should be noted that this method of predicting the vehicles location is not very accurate, as it works in an ideal world and simplifies a lot of the movement that is occurring.
 
 \begin{figure}
 	\centering
@@ -815,7 +833,7 @@ The full implementation of the internal mapping system can be found within the c
 
 \underline{The Problem with PID}
 
-After having created the PID controller and the internal representation of the vehicle in its environment, it came time to putting these two components together to create a functional system. However, this proved to be a challenge. While the theory behind the use of a PID controller is very straightforward, a conventional PID controller works by taking a single source of error and outputting commands that are intended to minimize it. With respect to a system such as autonomous driving, its dificult to identify a singular source of error. For example, if we consider the source of error to be just the distance between the vehicles front axis to the center of the lane and the output to represent the steering angle, then it becomes very easy for the vehicle to overcompensate its steering and start turning the opposite direction if the vehicle is too far away. On the other hand, if the source of error is the heading error of the vehicle then the vehicle will reach a parallel state with the center of the lane and not be obliged to move closer to it. As a result, it proved difficult to identify an appropriate way to implement a single PID controller that can effectively include both of these errors in the PID algorithm. Furthermore, attempts to find implementations of PID controllers online for autonomous driving proved difficult and unhelpful, and a search for an alternative control system began.\\~\\
+After having created the PID controller and the internal representation of the vehicle in its environment, it came time to putting these two components together to create a functional system. However, this proved to be a challenge. While the theory behind the use of a PID controller is very straightforward, a conventional PID controller works by taking a single source of error and outputting commands that are intended to minimize it. With respect to a system such as autonomous driving, its difficult to identify a singular source of error. For example, if we consider the source of error to be just the distance between the vehicles front axis to the center of the lane and the output to represent the steering angle, then it becomes very easy for the vehicle to overcompensate its steering and start turning the opposite direction if the vehicle is too far away. On the other hand, if the source of error is the heading error of the vehicle then the vehicle will reach a parallel state with the center of the lane and not be obliged to move closer to it. As a result, it proved difficult to identify an appropriate way to implement a single PID controller that can effectively include both of these errors in the PID algorithm. Furthermore, attempts to find implementations of PID controllers online for autonomous driving proved difficult and unhelpful, and a search for an alternative control system began.\\~\\
 \underline{The Discovery of the Stanley Controller}
 
 Further research conducted on simple control systems for autonomous driving led to the discovery of the Stanley Controller. This controller was originally designed in 2005 by Standford University for autonomous driving in the 2005 DARPA Autonomous Driving Challenge, and works by using a mathematical model of the vehicles position to the center of the lane and provides a means of effectively balancing the cross track error and the heading error of the vehicle at the same time, addressing the issues with implementing a PID controller. Since this control method looked functional and there was sufficient documentation from the control systems original page, the team worked to implement this control system instead.\\~\\
@@ -846,14 +864,14 @@ After these two heading values have been determined, their values are added toge
 Another important part of the output command is the output velocity. The AckermannDrive requires a target speed to achieve, so another mechanism has to be put in place to determine which speed should be used. For our system, we decided that a PID controller should be effective for managing the velocity of the controls, but in order to keep things as simple as possible to reduce teh amount of issues no controller was implemented for the longitudal control and only the lateral controllers were used.\\~\\
 \underline{Evaluating the Stanley Controller}
 
-After the controller was implemented, nessesary procedures had to be created in order to properly evaluate the controller. Since at this point in time only CARLA has been properly integrated, a means of evaluating the performance of the controller though CARLA had to be used. Fortunately, within CARLA is as series of waypoints that are generated whenever a vehicle spawns into a map. Those waypoints can be taken and then modified to be fed into the control system as a means of providing a path without the detection module by providing those waypoints in a form similar to the way lanes are presented to the subsystem. In order to send the right waypoints, a new evaluation subsystem was designed that listens to CARLA for the vehicles current position in the map which then generates a series of points which is then sent to the vehicle. Furthermore, since this subsystem can listen to the vehicles position at all times, it is able to output graphs detailing the path of the vehicle as it travels through the system, and with the waypoints being followed identify how far away from the center of the road the vehicle is at all times. The visualisations for the vehicle were created with pythons MatPlotLib package.
+After the controller was implemented, necessary procedures had to be created in order to properly evaluate the controller. Since at this point in time only CARLA has been properly integrated, a means of evaluating the performance of the controller though CARLA had to be used. Fortunately, within CARLA is as series of waypoints that are generated whenever a vehicle spawns into a map. Those waypoints can be taken and then modified to be fed into the control system as a means of providing a path without the detection module by providing those waypoints in a form similar to the way lanes are presented to the subsystem. In order to send the right waypoints, a new evaluation subsystem was designed that listens to CARLA for the vehicles current position in the map which then generates a series of points which is then sent to the vehicle. Furthermore, since this subsystem can listen to the vehicles position at all times, it is able to output graphs detailing the path of the vehicle as it travels through the system, and with the waypoints being followed identify how far away from the center of the road the vehicle is at all times. The visualizations for the vehicle were created with pythons MatPlotLib package.
 
 \subsubsection{Evaluation}
 \textbf{Evaluating FR2}
 
 When it comes to evaluating the subsystem, the most important requirement for the quality of the control system is the maximum lateral error, also known as the maximum deviation from the center of the lane.
 
-The methodology used for evaluating this funtional requirement was primarily done through the evaluation subsystem described in the prior subsection. The vehicle was spawned at a specific point on the Town04 map, and follows a set of waypoints. These path chosen was due to the shape of its path. The path starts off with a shallow snaking patter, followed by a wide left turn. Afterwards, there is a straight section where the vehicle goes up a hill. Then, the vehicle performs a loop similar to the ones seen on a cloverleaf highway interchange. Lastly, the vehicle performs a sharp right hand turn.
+The methodology used for evaluating this functional requirement was primarily done through the evaluation subsystem described in the prior subsection. The vehicle was spawned at a specific point on the Town04 map, and follows a set of waypoints. These path chosen was due to the shape of its path. The path starts off with a shallow snaking patter, followed by a wide left turn. Afterwards, there is a straight section where the vehicle goes up a hill. Then, the vehicle performs a loop similar to the ones seen on a cloverleaf highway interchange. Lastly, the vehicle performs a sharp right hand turn.
 
 Once the vehicle gets within 5 meters of the last waypoint, the evaluation subsystem will generate three figures: one overlaying the vehicle's path with the waypoint path, one illustrating the vehicles cross track error over time, and one illustrating the vehicles heading error over time. Additionally, each execution of the test will also output the maximum heading error the vehicle exhibited as well as the maximum lateral error the vehicle exhibited in order to identify whether the requirements have been achieved. This test will be repeated nine times, each with a unique combination of the stanley controller's 'k' control constant, which effects how far the control system "looks ahead" when calculating the cross track heading, and the standing velocity of the vehicle. The three different 'k' values that will be used are \texttt{0.5 1/s}, \texttt{1.0 1/s}, and \texttt{1.5 1/s}. The three different standing velocities used will be \texttt{4.0 m/s}, \texttt{6.0 m/s}, and \texttt{8.0 m/s}. The results of the nine tests can be seen in Table \ref{tab:controller_test_values}
 
@@ -909,7 +927,7 @@ The results of the testing identified that the best performance for both maximum
 	\label{fig:headingk10v4}
 \end{figure}
 
-Upon further analysis of the figures, it can be identified that there were only two instances where the vehicle deviated beyond the required \texttt{0.45 meters} maximum deviation. When compared to the path of the vehicle, it can be identified that these two instances occured when the vehicle was performing the left-hand turn approximately 35\% of the way through the course and the sharp right-handed turn at the end of the path. If these two instances are removed, the vehicle demonstrates a strong ability to stay within the requirement of a maximum lateral error of \texttt{0.45 meters}. However, these two cases are important for evaluating the lane following of the vehicle as sharp turns in a road can appear and the vehicle must be ready for them.
+Upon further analysis of the figures, it can be identified that there were only two instances where the vehicle deviated beyond the required \texttt{0.45 meters} maximum deviation. When compared to the path of the vehicle, it can be identified that these two instances occurred when the vehicle was performing the left-hand turn approximately 35\% of the way through the course and the sharp right-handed turn at the end of the path. If these two instances are removed, the vehicle demonstrates a strong ability to stay within the requirement of a maximum lateral error of \texttt{0.45 meters}. However, these two cases are important for evaluating the lane following of the vehicle as sharp turns in a road can appear and the vehicle must be ready for them.
 
 Addtionally, it should be noted that all tests were performed a singular time. For a better performance evaluation, additional tests should be used to calculate a proper confidence interval.
 
@@ -983,7 +1001,7 @@ While we tried our best, we hit very few of our functional requirements for teh 
 
 WE had a lot of changes from our proposal.
 
-Whiel we wanted ot make our own CNN, we were not able to make one on our own and had to instead use a pre-existing model.
+While we wanted to make our own CNN, we were not able to make one on our own and had to instead use a pre-existing model.
 
 While we initially planned to use a PID controller, it proved too complex and instead a mathematical model was used.
 
@@ -1000,4 +1018,4 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 \appendix
 \end{document}
 
-% LocalWords:  leaderboard
+% LocalWords:  leaderboard Ackermann
