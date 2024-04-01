@@ -15,6 +15,7 @@
 \usepackage{titlesec}
 \usepackage{xcolor}
 \usepackage{caption}
+\usepackage[toc,page]{appendix}
 \graphicspath{ {./images/} }
 \usepackage{geometry}
 \geometry{
@@ -302,7 +303,7 @@ Liam:
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{wbs}
+	\includegraphics[angle=90,height=9in]{wbs}
 	\caption{Project Work Breakdown Structure}
 	\label{fig:wbs}
 \end{figure}
@@ -800,7 +801,7 @@ After the control schema was established, the next step was to create the PID co
 The first step in implementing the PID controller was actually creating the PID controller. In general, PID controllers are straightforward to create. Through the use of various tutorials and discussing PID controllers with fellow students, a functional PID controller was implemented. Afterwards, the PID controller was tested in a console environment to ensure that it worked as expected, and could theoretically be used for the control system.
 
 The implementation of the PID controller can be found within our project
-repository at \texttt{/lane-detection-keeping/ros2\textunderscore ws/src/lane\textunderscore nodes\textunderscore py/lane\textunderscore odes\textunderscore py/keeping/pid\textunderscore controller.py}\\~\\
+repository at \\\texttt{/lane-detection-keeping/ros2\textunderscore ws/src/lane\textunderscore nodes\textunderscore py/lane\textunderscore odes\textunderscore py/keeping/pid\textunderscore controller.py}\\~\\
 \underline{Creating the Internal Map}
 
 After the PID controller was implemented, the next step was creating an internal representation of the vehicle's environment. This is important for two reasons. For starters, having an internal representation of the environment would be essential in calculating the error that needs to be fed into the PID controller for it to work. Without an appropriate model of the environment available, it would be hard to determine the error and the control system would have a hard time properly steering. Additionally, since the rate at which lane data is produced is much slower than the rate at which the control system must enact movement commands, the system must be able to track roughly how far the vehicle has moved through its environment as it generates movement commands. Without this, the subsystem would not be able to achieve its output frequency of 50Hz.
@@ -929,16 +930,61 @@ Addtionally, it should be noted that all tests were performed a singular time. F
 
 \textbf{Evaluating FR2.1}
 
-The evaluation for determining whether or not FR2.1 was satisfied comes down to the maximum heading error velocity. The maximum heading error does not represent how much jerk si associated with the control system, but hte rate at which the error changes represents how stable the driving is. In order to evaluate this functional requirement, the same method as evaluating FR2 was performed, but instead of looking for lateral error the heading error over time was tracked to find the maximum heading error velocity.
+The evaluation for determining whether FR2.1 was satisfied comes down to the maximum heading error. There are many different ways to interpret what stability is represetned by in the vehicle, but for our system we defined stability as the maximum heading error that the vehicle exhibits during a drive. As a team, we decided that the maximum heading error for our vechicle should be a 22.5 degree angle, or \(\pi/8\) radians in order to satisfy this requirement. This is not based on any actual calculation, but rather is an estimate as to the largest possible heading error a vehicle could have at the center of the land without exiting the lane.
 
-The data from this evaluation can be found below. Overall, the system was not very stable.
+In order to evaluate this requirement, the same methodology as FR2 was performed. The vehicle was spawned at a specific point on the Town04 map, and follows a set of waypoints. As before, the path was chosen because the path exhibits a wide range of steerings that would be useful for assessing the performance of the subsystem. The results for this test have been included in the evaluation for FR2, as both requirements were performed at the same point in time.
+
+The results of the test found that even with the best possible configuration of standing velocity and control constant, the lowest heading error occured with a k value of texttt{1.5 1/s} and the standing velocity was equal to \texttt{4.0 m/s} with a maximum heading error of 0.4508 radians. Unfortunately, this also falls short of the requirement for this section. 
+
+A closer look at the heading error chart demonstrates as well that for a vast majority of the vehicles path the heading error remains very low, and only becomes much larger as the vehicle approaches much sharper turns. As a result, future work on this domain should be placed on improving the quality of the land following when sharper turns are present as this appears to be the most difficult part for the system to achieve.
+
 
 \textbf{Evaluating FR2.2}
 
-THe control frequency of hte system can be measured by having a listener to the output of hte control system. On average, the control system outputted a new message every 20ms, satisfying this requirement.
+Another important requirement for this subsystem is the output frequency. This is important because the system must be able to output a sufficient number of movement commands each second in order to achieve the illusion of continuous driving. 
+
+Within our system, a timer within the control and keeping subsystem was configured to trigger the new movement output command on a variable frequency. This frequency is defined within the environmental variables of the command, and as a reuslt it is very easy to adjust the frequency used internally. However, while it is possible that this value works we cannot be sure that this rate is actually achieved. If the amount of time it takes for the system to process a new request is longer than the soft deadline set by the timer, then the actual output frequency will not be the expected \(50Hz\). As a result, it is crutial for this to be tested experimentally to ensure that the proper frequency is actually being achieved by this.
+
+The procedure by which this requirement was tested was through using a logger to output a log whenever a new movement command was outputted. Then, after increasing intervals of time the number of outputted logs will be analysed and divided by the total time spent to achieve a frequency. The purpose of increased times is to get a better picture of what is actually happening as the longer the sample size, the less likely it is for smaller time segments to represent a biased part of the total population. The frequency observed after \(1s\), \(5s\), \(10s\), \(20s\), and \(60s\) can be observed in Table \ref{tab:frequency}.
+
+\begin{table}
+	\centering
+	\begin{tabular}{| c | c | c |}
+		\hline
+		time (s) & Total Movement Commands Outputted & Movement Command Frequency \\ [0.5ex]
+		\hline
+		1.0 & 46 & 46.00Hz\\
+		\hline
+		5.0 & 232 & 46.40Hz\\
+		\hline
+		10.0 & 464 & 46.40Hz\\
+		\hline
+		20.0 & 930 & 46.50Hz\\
+		\hline
+		60.0 & 2787 & 46.45Hz\\
+		\hline
+	\end{tabular}
+	\caption{Results of the Maximum Heading and Lateral Error for Various K and Speed Values}
+	\label{tab:frequency}
+\end{table}
+
+
+The results of this experiment show that at both long and short intervals of time, the output frequency of the system is approximately 46.4Hz. While this is not the required 50Hz frequency outlined in the functional requirements of the system, it is sufficiently close to the functional requirement to be considered achieved. This is in part due to the fact that the control system for this is not hard real time, and is instead soft real-time which means it is acceptible for the system to miss the ocasional timer. As a reuslt, this functional requirement has been achieved.
 
 \textbf{Evaluating FR2.3}
-This was accomplished by keepign a memory of the vehicles position and then letting the car drive on its own with a single datapoint to ensure that it si able to adjust its trajectory instead of using the same output as before. As a result, thsi requirement is satisfied.
+
+One very important part of the system is the ability for the controller to be able to generate new movement commands using the latest availible data. This means that it must be able to interpret how far the vehicle has moved since the last image and predict where it currently is for the current movement command. 
+
+In order to evaluate this, the logs for the subsystem have to be observed. A log is posted each time a new set of lane data is given to the system, and a new log is also posted whenever a new movement command is posted. In order for this functional requirement to be satisfied, at least two movement commands must be uploaded between a pair of new lane data being provieded and the two movement commands cannot be the same movement command. The results of this evaluation can be found in Fig. \ref{fig:fr23}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=6in]{fr23}
+	\caption{Subset of Logs from the Keeping and Control Subsystem }
+	\label{fig:fr23}
+\end{figure}
+
+The contents of the figure illustrate several instances between two lane being recieved logs where two or more movement commands were published, where each movement command was unique compared to the adjacent movement commands illustrating that the system exhibited closed loop properties and based movement commands on the latest availible information, fulfilling the requirement.
 
 \textbf{Evaluating FR2.4}
 Our system outputs movement commands in the form of ackermann messages, which are easily modifiable to fit any system requirement. Therefore, this requirement is fulfilled.
@@ -1009,9 +1055,229 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 
 \printbibliography
 \vspace{12pt}
-\color{red}
 
 \appendix
+
+\section{Keeping and Control Evaluation Graphs}
+\label{FirstAppendix}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+	  \centering
+	  \includegraphics[width=\linewidth]{waypoints_k-05_v-4.png}
+	  \captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 4.0 m/s Over Time}
+	  \label{fig:wayk5v4}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{lateral_k-05_v-4.png}
+		\captionof{figure}{Lateral Error with k=0.5 1/s and Base Velocity of 4.0 m/s Over Time}
+		\label{fig:latk5v4}
+	\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+	  \centering
+	  \includegraphics[width=\linewidth]{heading_k-05_v-4.png}
+	  \captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 4.0 m/s Over Time}
+	  \label{fig:headk5v4}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{waypoints_k-05_v-6.png}
+		\captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\label{fig:wayk5v6}
+	  \end{minipage}
+\end{figure}	
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{lateral_k-05_v-6.png}
+		\captionof{figure}{Lateral Error with k=0.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\label{fig:latk5v6}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{heading_k-05_v-6.png}
+		\captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\label{fig:headk5v6}
+	  \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+	  \centering
+	  \includegraphics[width=\linewidth]{waypoints_k-05_v-8.png}
+	  \captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 8.0 m/s Over Time}
+	  \label{fig:wayk5v8}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{lateral_k-05_v-8.png}
+		\captionof{figure}{Lateral Error with k=0.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\label{fig:latk5v8}
+	\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+	  \centering
+	  \includegraphics[width=\linewidth]{heading_k-05_v-8.png}
+	  \captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 8.0 m/s Over Time}
+	  \label{fig:headk5v8}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{waypoints_k-1_v-4.png}
+		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.0 1/s and Base Velocity of 4.0 m/s Over Time}
+		\label{fig:wayk10v4}
+	  \end{minipage}
+\end{figure}	
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{lateral_k-1_v-4.png}
+		\captionof{figure}{Lateral Error with k=1.0 1/s and Base Velocity of 4.0 m/s Over Time}
+		\label{fig:latk10v4}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{heading_k-1_v-4.png}
+		\captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 4.0 m/s Over Time}
+		\label{fig:headk10v4}
+	  \end{minipage}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+	  \centering
+	  \includegraphics[width=\linewidth]{waypoints_k-1_v-6.png}
+	  \captionof{figure}{Vehicle Path Compared to Waypoints for k=1.0 1/s and Base Velocity of 6.0 m/s Over Time}
+	  \label{fig:wayk10v6}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{lateral_k-1_v-6.png}
+		\captionof{figure}{Lateral Error with k=1.0 1/s and Base Velocity of 6.0 m/s Over Time}
+		\label{fig:latk10v6}
+	\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+	  \centering
+	  \includegraphics[width=\linewidth]{heading_k-1_v-6.png}
+	  \captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 6.0 m/s Over Time}
+	  \label{fig:headk10v6}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{waypoints_k-1_v-8.png}
+		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.0 1/s and Base Velocity of 8.0 m/s Over Time}
+		\label{fig:wayk10v8}
+	  \end{minipage}
+\end{figure}	
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{lateral_k-1_v-8.png}
+		\captionof{figure}{Lateral Error with k=1.0 1/s and Base Velocity of 8.0 m/s Over Time}
+		\label{fig:latk10v8}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{heading_k-1_v-8.png}
+		\captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 8.0 m/s Over Time}
+		\label{fig:headk10v4}
+	  \end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+	  \centering
+	  \includegraphics[width=\linewidth]{waypoints_k-15_v-6.png}
+	  \captionof{figure}{Vehicle Path Compared to Waypoints for k=1.5 1/s and Base Velocity of 6.0 m/s Over Time}
+	  \label{fig:wayk15v6}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{lateral_k-15_v-6.png}
+		\captionof{figure}{Lateral Error with k=1.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\label{fig:latk15v6}
+	\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+	  \centering
+	  \includegraphics[width=\linewidth]{heading_k-15_v-6.png}
+	  \captionof{figure}{Heading Error with k=1.5 1/s and Base Velocity of 6.0 m/s Over Time}
+	  \label{fig:headk15v6}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{waypoints_k-15_v-8.png}
+		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\label{fig:wayk15v8}
+	  \end{minipage}
+\end{figure}	
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{lateral_k-15_v-8.png}
+		\captionof{figure}{Lateral Error with k=1.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\label{fig:latk15v8}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{heading_k-15_v-8.png}
+		\captionof{figure}{Heading Error with k=1.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\label{fig:headk15v4}
+	  \end{minipage}
+\end{figure}
+
+\section{Second Appendix}
+\label{SecondAppendix}
+
+\section{Third Appendix}
+\label{ThirdAppendix}
+
+\section{Fourth Appendix}
+\label{FourthAppendix}
+
+
+
+
 \end{document}
 
 % LocalWords:  leaderboard Ackermann
