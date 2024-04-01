@@ -24,6 +24,8 @@
 	left=20mm,
 	top=20mm,
 }
+\usepackage{multirow}
+\usepackage{makecell}
 
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
 T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -313,56 +315,52 @@ Liam:
 	\centering
 	\begin{tabular}{|c | c | c | c | c | c |}
 		\hline
-		Step & Project Task                      & Curtis & Liam & Ian & Robert \\ [0.5ex]
+		Step & Project Task                          & Curtis & Liam & Ian & Robert \\ [0.5ex]
 		\hline
-		1    & Project Proposal                  & R      & R    & R   & R      \\
+		1    & Project Proposal                      & R      & R    & R   & R      \\
 		\hline
-		2    & Progress Report                   & R      & R    & R   & R      \\
+		2    & Progress Report                       & R      & R    & R   & R      \\
 		\hline
-		3    & Oral Presentation                 & R      & R    & R   & R      \\
+		3    & Oral Presentation                     & R      & R    & R   & R      \\
 		\hline
-		4    & Final Report Draft                & R      & R    & R   & R      \\
+		4    & Final Report Draft                    & R      & R    & R   & R      \\
 		\hline
-		5    & Poster Fair                       & R      & R    & R   & R      \\
+		5    & Poster Fair                           & R      & R    & R   & R      \\
 		\hline
-		6    & Final Report and Video            & R      & R    & R   & R      \\
+		6    & Final Report and Video                & R      & R    & R   & R      \\
 		\hline
-		7    & Set up Simulation Software        & R      &      &     &        \\
+		7    & Set up Simulation Software            & R      &      &     &        \\
 		\hline
-		8    & Acquire Camera Lenses             & S      &      & R   &        \\
+		8    & Configure Offboard Processing         & R      &      &     &        \\
 		\hline
-		9    & Hardware-level Camera Interfacing &        &      & R   & S      \\
+		9    & ROS1-ROS2 Bridge                      &        &      &     & R      \\
 		\hline
-		10   & ROS Boilerplate                   &        &      &     & S      \\
+		10   & JetAcker Mesaging Configuration       &        &      &     & R      \\
 		\hline
-		11   & CARLA ROS Bridge Setup            & S      &      &     & R      \\
+		11    & ROS Boilerplate                      &        &      &     & R      \\
 		\hline
-		12   & ROS Image Data Communication      & S      &      &     & R      \\
+		12    & CARLA ROS Bridge Setup               & R      &      &     & S      \\
 		\hline
-		13   & Movement                          &        &      &     & R      \\
+		13    & ROS Message Types                    &        &      & R   &        \\
 		\hline
-		14   & Basic Image Input Handling        & R      &      &     &        \\
+		14    & Dockerization                        & R      &      &     &        \\
 		\hline
-		15   & Image Processing Pipeline for CNN & R      &      & S   &        \\
+		15    & Basic Image Input Handling           & R      &      &     &        \\
 		\hline
-		16   & CNN Lane Position Classifier      & R      &      & S   &        \\
+		16    & Image Processing Pipeline for CNN    & R      &      &     &        \\
 		\hline
-		17   & Lane Center Determination         & R      &      & S   &        \\
+		17    & Data Perspective Transformation      &        &      & R   &        \\
 		\hline
-		18   & Create Detection-K\&C Data Schema & S      &      & R   &        \\
+		18    & Lane Confidence Module               &        &      &     & R      \\
 		\hline
-		19   & Create Movement Schema Command    &        & R    &     & S      \\
+		19    & Controller for Steering              &        & R    &     &        \\
 		\hline
-		20   & PID Controller for Steering       &        & R    &     & S      \\
-		\hline
-		21   & PID Controller for Speed          &        & R    &     & S      \\
-		\hline
-		22   & PID Controller Refinement         &        & R    &     & S      \\
-		\hline
-		23   & MPC Controller                    &        & R    &     & S      \\
+		20    & Controller Refinement and Evaluation &        & R    &     &        \\
+		\hline 
+		21    & Lane Center Determination            &        & R    &     &        \\
 		\hline
 	\end{tabular}
-	\caption{Responsibility Matrix of Project Components and Tasks}
+	\caption{Responsibility Matrix of Major Project Components and Tasks}
 	\label{tab:WorkBreakdown}
 \end{table}
 
@@ -370,7 +368,7 @@ Liam:
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{activity}
+	\includegraphics[angle=90,height=9in]{activity}
 	\caption{Project Activity Network}
 	\label{fig:activity}
 \end{figure}
@@ -379,7 +377,7 @@ Liam:
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\textwidth]{gantt}
+	\includegraphics[angle=90,height=9in]{gantt}
 	\caption{Gantt Chart of Project Tasks Over Time}
 	\label{fig:gantt_chart}
 \end{figure}
@@ -399,7 +397,75 @@ Liam:
 \end{table}
 
 \subsection{Risk Analysis}
-TODO: Use the old risk matrix but add a column stating whether or not that error was actually encountered or not
+
+In order to perform the risk analysis, the risk levels and meaning have to be identified. Table \ref{Table_risk_level} highlights the matrix that determines the overall risk level based on the probability of an event ocuring and the impact it has on the success of the project. Table \ref{Table_risk_meaning} highlights the impactfulness of the risk level and the appropriate steps to take for properly mitigating next.
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\begin{tabular}{|p{0.7in}|p{0.55in}|p{0.55in}|p{0.55in}|p{0.55in}|}
+			\cline{1-5}
+			\multicolumn{2}{|l|}{\multirow{2}{*}{RISK LEVEL}} & \multicolumn{3}{|l|}{\makecell{PROBABILITY of the event\\ occuring}} \\ \cline{3-5}
+			\multicolumn{2}{|l|}{} & Low & Moderate & High        \\ \cline{1-5}
+			\multirow{3}{0.8in}{SEVERITY of the event on the project's success} &  Low & VERY LOW & LOW & MEDIUM         \\ \cline{2-5}
+			& Moderate & LOW & MEDIUM & HIGH          \\ \cline{2-5}
+			& High & MEDIUM& HIGH & VERY HIGH         \\ \cline{1-5}
+		\end{tabular}
+		\caption{Risk Level Matrix for Risk Analysis}
+		\label{Table_risk_level}
+	
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\begin{tabular}{|@{}l|p{0.5\linewidth}|}
+			\toprule
+			Risk Level & Description \\ \hline
+			Very Low & Very low risk, does not require any significant plans for mitigation         \\ \hline
+			Low &  A preliminary study on a plan of action to recover should be performed and documented         \\ \hline
+			Moderate & A significant risk. A plan of action to recover should be made in advance.         \\ \hline
+			High & A very significant risk that warrants considering a change in the project to address, or a plan of action should be made.         \\ \hline
+			Very High & An unacceptable risk. The project should be changed to address this risk.			\\ \bottomrule
+		\end{tabular}
+		\caption{Risk Level Meaning}
+		\label{Table_risk_meaning}
+
+	  \end{minipage}
+\end{figure}
+
+At the beginning of the project, five risks were identified as being the most prominent issues that the team might run into over the course of the project. These risks were identified as the following: Neural Networks / ML is too complicated, Hardware not powerful enough, Scope Creep, Future Integration Challenges, and Software Version Incompatibility.
+
+\textbf{Neural Networks / ML is too complicated}
+
+The first risk for the project was whether the neural network/machine learning present in the lane detection would be too complicated for the team to handle. This risk was identified as a low probability, as some members of the team have prior experience designing neural networks and the problem domain means that there is a lot of reference material to draw on. Additioanlly, this risk was given a high severity since failure to properly construct a neural network would render the "Lane Detection" portion of the project impossible. As a result, this risk presented an overal moderate risk level for the team. The plan of action for this error would be if the neural network is too complex for the team to achieve, an algorithmic approach would be used as those are simpler to design than a neural network.
+
+Unfortuantely, this identified risk did occur during the development of the project. Despite the teams experience and the availible resources, it proved to be too difficult to design our own convolutional neural network. However, further research into an algorithmic approach also proved challenging since the algorithmic approaches appeared to be more difficult than the neural network approach. In order to address this problem, the team instead opted for the use of a pre-existing CNN, CLRNet. This CNN proved to satisfy the requirements that our own neural network would need, and as a result the team could move forward with the rest of the project.
+
+\textbf{Hardware is not Powerful Enough}
+
+The second identified risk for the project was whether the hardware for the robot would be powerful enough. Since at the beginning of hte project we did not have the proper technical specifications of the robot nor the technical requirements for the system to run, we were unsure if the final product could run on the robot. The chances of this were identified to be moderate since we knew there was a chance of this occuring, but thought it wouldn't be too likely. For severity, we identified this problem to be a moderate severity because the hardware should still be capable of runing the neural network, but it would run it much slower than expected. As a result, the risk level identified with this risk was determined to be moderate. The plan of action for this risk was to instead make use of a distributed computing system, where a laptop would connect to the vehicle remotely and perform all the intensive action there.
+
+As with the first risk, this identified risk also occured during the development of the project. The HiWonder JetAcker proved to lack numerous hardware requirements to have the project run entirely on it, and as a result a distributed approach had to be used. There were many problems with setting up the distributed network though, since the JetAcker proved to have poor documentation and technical issues that made it difficult to properly distribute. However, despite the complications that were presented this risk was properly managed.
+
+\textbf{Scope Creep}
+
+Another identified risk with the project is a risk that is present in most development projects: scope creep. Scope creep occurs when proposed features keep getting added to the list of tasks to do to the point where there is too much work to get done and the team fails to address some of the most important tasks. For our team, we identified that the probability we encounter scope creep to be rather low, as following the projects proposal no new features will begin to be implemented until after all other performable work has been accomplished. Furthermore, the risk of scope creep to the overall success of the project was identified to be low since even if the team does accidentally start adding more to the project scope, additional features can easily be dropped. Since the risk level of this risk was identified to be very low, no major plans had to be designed. However, the plan for the project would be to try and accomplish a minimum viable product(MVP) as soon as possible so that new features can only be brought on once the core functionality has been implemented.
+
+Over the course of the project, we did not encounter any issues with scope creep. The team did a good job of focusing on what needed to be done, and new features were only ever considered after individuals were left with nothing else to do. This risk was properly handled.
+
+\textbf{Future Integration Challenges}
+
+Since future projects might be building on this project, a significant risk is that of future integration challenges. While documentation and code readability will be prioritized, the time constraints put on the project could lead to quick solutions to problems that may not be easily read by future teams integrating our system with other autonomous driving systems. Given the amount of uncertainty in general with the project, it is moderately likely that this problem is encountered by the end of the projects development. However, even though it is quite likely to happen it is unlikely to affect the severity of this project since while integration with future self-driving systems is preferred but not critical to the project. Having software that is less interoperable with other services will not severely impact our system in itself. As a reuslt, the overall risk level was determined to be low, and the plan of action to address this will be to always properly document code whenever code is submitted to the git repository. 
+
+As with the first two identified risks, this risk also occured durign our projects development. While this was a concern that was had throughout the project, the rate at which development was occuring led to poor documentation of many important procedures within the project. This problem was eventually addressed at the end of the project since the team spent time reviewing all the work performed, so future groups should still be able to use this repository with relative ease.
+
+\textbf{Software Version Incompatibility}
+
+The final significant risk identified at the begining of the project was the potential for software version incompatabilities. This was deemed unlikely to occur since ROS 2, Ubuntu, Carla, and the Carla ROS bridge all have their own versions that are only compatible with specific versions of the others, but these are fairly clearly documented and problems should be straightforward to avoid. Furthremore, it was also deemed unlikely to affect the severity of the project since if an incompatibility between chosen versions is found and cannot be worked around, we could migrate to versions that are compatible, which may require changing Ubuntu versions but should not require redoing much work. Overall this risk was identified to be very low risk. No plan of action was identified because initial research showed that the versioning of all required systems was sufficiently stable that no further action would be required.
+
+Unfortuantely, this risk proved to be one of the largest problems encountered over the course of the project. While the software versionings were compatable for the Carla, ROS 2, and Ubuntu portions, the version that existed on the JetAcker proved to be a very big problem. The result of this is discussed later, but to provide a short summary a member of the team spent several months dealing with an array of version compatabilities to finally end with a functional system that works most of the time. For future reference, it should be noted that software incompatability with this software should be considered a much larger risk than the team initially thought.
+
 
 \section{Software Subsystems}
 
@@ -1211,7 +1277,7 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\centering
 		\includegraphics[width=\linewidth]{heading_k-1_v-8.png}
 		\captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 8.0 m/s Over Time}
-		\label{fig:headk10v4}
+		\label{fig:headk10v8}
 	  \end{minipage}
 \end{figure}
 
