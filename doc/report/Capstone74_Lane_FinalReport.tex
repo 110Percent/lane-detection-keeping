@@ -8,13 +8,14 @@
 \usepackage{biblatex}
 \usepackage{blindtext}
 \usepackage{booktabs}
+\usepackage{caption}
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{indentfirst}
+\usepackage{listings}
 \usepackage{textcomp}
 \usepackage{titlesec}
 \usepackage{xcolor}
-\usepackage{caption}
 \usepackage[toc,page]{appendix}
 \graphicspath{ {./images/} }
 \usepackage{geometry}
@@ -1108,6 +1109,14 @@ TODO: Liam look at what I wrote (above) and add in some stuff about waypoints an
 For the main course of the project, testing will be performed in a simulation environment using CARLA. CARLA is a driving environment simulation tool used for iterative, test-driven development of autonomous driving systems.\cite{dosovitskiy2017carla} This testing method will give freedom of modifying the various parameters to be considered with respect to road conditions. Using the simulation will also allow for quick testing of features throughout development. When running simulations using CARLA, the distance from the center of the lane will be determined by the detection subsystem and adjustments to remain in the lane will be made by the K\&C subsystem. The results of the adjustments will be observed and recorded to verify proper functioning of the system.
 
 \subsubsection{HiWonder JetAcker}
+
+\begin{figure}
+	\centering
+	\includegraphics*[width=0.4\textwidth]{JetAcker1}
+	\caption{HiWonder JetAcker Autonomous Vehicle Robot.}
+	\label{fig:JetAcker}
+\end{figure}
+
 Our secondary method for testing our system was intended to be the HiWonder JetAcker, a robot with an Ackermann steering geometry similar to that of a real car. Unfortunately, due to a fire that destroyed a different robot as well as the charger for the JetAcker, we were not able to run our system on the JetAcker. Much of the groundwork for doing so was completed just days before the fire.
 
 The JetAcker is equipped with an RGB camera, a depth camera, and a LIDAR. Of these, we only planned to use the RGB camera. Its steering mechanism uses an Ackermann geometry in which the wheels used for steering rotate by different amounts in order to minimize slipping during a turn. This is the basis for the steering mechanisms used by real cars, which is why we chose to use the JetAcker. It provides us with a system that is controlled in much the same way as a real car.
