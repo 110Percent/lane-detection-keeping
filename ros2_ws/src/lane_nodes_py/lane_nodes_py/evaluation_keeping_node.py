@@ -11,7 +11,7 @@ from lane_nodes_py.evaluation_printer import DataAnalyzer
 
 from lane_interfaces.msg import LaneLocation2
 
-from lane_nodes_py.waypoints import wp
+from lane_nodes_py.waypoints import wp, wp_straight, wp_snake, wp_circle
 
 import os
 
@@ -44,6 +44,8 @@ class EvaluationKeeping(Node):
             10)
 
         self.lane_publisher_ = self.create_publisher(LaneLocation2, "lane_location_data_eval", 10)
+        self.eval_mode = os.environ['EVAL_MODE']
+        self.get_logger().info("Evaluation Node Initialized with mode " + str(self.eval_mode))
 
     def publish_latest_path(self):
         self.get_logger().info('Publishing the latest generated path')
@@ -53,9 +55,16 @@ class EvaluationKeeping(Node):
         self.lane_publisher_.publish(msg)
 
     def test_callback(self, msg):
-
-        self.waypoints = wp
-
+        if self.eval_mode == "FULL":
+            self.waypoints = wp
+        elif self.eval_mode == "STRAIGHT":
+            self.waypoints = wp_straight
+        elif self.eval_mode == "SNAKE":
+            self.waypoints = wp_snake
+        elif self.eval_mode == "CIRCLE":
+            self.waypoints = wp_circle
+        else:
+            raise Exception("Invalid eval mode provided")
         self.get_logger().info(str(self.waypoints))
 
     def odometry_callback(self, msg):
@@ -132,8 +141,7 @@ def get_2d_direction_from_quaternion(x, y, z, w):
 
 
 def main(args=None):
-    return
-    if os.environ['ENABLE_EVALUATION'] == 1:
+    if os.environ['EVAL_MODE'] == "0":
         return
 
     rclpy.init(args=args)
