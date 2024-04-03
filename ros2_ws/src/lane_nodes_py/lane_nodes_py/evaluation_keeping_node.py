@@ -11,7 +11,7 @@ from lane_nodes_py.evaluation_printer import DataAnalyzer
 
 from lane_interfaces.msg import LaneLocation2
 
-from lane_nodes_py.waypoints import wp, wp_straight, wp_snake, wp_circle
+from lane_nodes_py.waypoints import wp, wp_straight, wp_snake, wp_circle, wp_merge
 
 import os
 
@@ -69,6 +69,8 @@ class EvaluationKeeping(Node):
             self.waypoints = wp_snake
         elif self.eval_mode == "CIRCLE":
             self.waypoints = wp_circle
+        elif self.eval_mode == "MERGE":
+            self.waypoints = wp_merge
         else:
             raise Exception("Invalid eval mode provided")
         self.get_logger().info(str(self.waypoints))
