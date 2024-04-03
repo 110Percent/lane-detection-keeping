@@ -105,6 +105,33 @@ class DataAnalyzer():
             labelleft=False,
             labelbottom=False)  # labels along the bottom edge are off
         plt.legend()
+        wayxmax = max(list(zip(*self.waypoints))[0])
+        wayymax = max(list(zip(*self.waypoints))[1])
+
+        wayxmin = min(list(zip(*self.waypoints))[0])
+        wayymin = min(list(zip(*self.waypoints))[1])
+
+        pathxmax = max(list(zip(*vehicle_path_points))[0])
+        pathymax = max(list(zip(*vehicle_path_points))[1])
+
+        pathxmin = min(list(zip(*vehicle_path_points))[0])
+        pathymin = min(list(zip(*vehicle_path_points))[1])
+
+        globalx = [min([wayxmin, pathxmin]), max([wayxmax, pathxmax])]
+        globaly = [min([wayymin, pathymin]), max([wayymax, pathymax])]
+
+        if globalx[1]-globalx[0] < globaly[1] - globaly[0]:
+            diff = (globaly[1] - globaly[0]) - (globalx[1] - globalx[0])
+            globalx[1] += diff/2
+            globalx[0] -= diff/2
+        else:
+            diff = (globalx[1] - globalx[0]) - (globaly[1] - globaly[0])
+            globaly[1] += diff/2
+            globaly[0] -= diff/2
+
+        ax = plt.gca()
+        ax.set_xlim(globalx)
+        ax.set_ylim(globaly)
         plt.show()
         plt.savefig('Vehicle_Path.jpg')
 
