@@ -42,9 +42,12 @@ class EvaluationKeeping(Node):
             '/carla/ego_vehicle/odometry',
             self.odometry_callback,
             10)
-
-        self.lane_publisher_ = self.create_publisher(LaneLocation2, "lane_location_data_eval", 10)
         self.eval_mode = os.environ['EVAL_MODE']
+
+        # Only publish the waypoints path if we plan on following it using the control system
+        if self.eval_mode == "FULL":
+            self.lane_publisher_ = self.create_publisher(LaneLocation2, "lane_location_data_eval", 10)
+
         self.get_logger().info("Evaluation Node Initialized with mode " + str(self.eval_mode))
 
     def publish_latest_path(self):
