@@ -1076,7 +1076,7 @@ Despite these issues, ROS provides huge benefits to the design and implementatio
 In addition to ROS, Docker was also used to assist with the integration of the software and hardware systems. A common problem with software is dependency issues, where running tasks would fail due to a dependency issue present with extenral packages. Docker solves this issue by making software run in isolated environments, makign it less likely for packaging issues to be encountered. THis helps with oru project because ther are a lot of dependency issues present with the simulation and the JetAcker, meaning containerized software is crutial to the applications success.
 
 
-\subsection{Evaluation}
+\subsection{Evaluation - Tools}
 The system will be developed and evaluated for two phases of demonstration. The first phase will involve testing using a simulation environment, and the second will involve integration with a physical robot on a test roadway.
 
 The evaluation of the individual Detection and K\&C subsystems will be completed as described in sections 3.1.6 and 3.2.6 respectively. The overall evaluation of the system will involve a more high level look at the system’s functionality.
@@ -1100,6 +1100,122 @@ Using the JetAcker proved to be much more difficult than expected, and numerous 
 Because our system is designed to operate on cars, we chose to use AckermannDrive messages for the control output. These messages contain a forward speed and a steering angle. This accurately reflects how steering a car works, as those are the variables that are physically controllable on a car. The same is true of the JetAcker, but its software is not capable of handling AckermannDrive messages, instead taking Twist messages containing a linear velocity and an angular velocity. We believe this is because the JetAcker was built using a different robot, the JetAuto, as a starting point, and the JetAuto has mecanum wheels that allow it to move and rotate independently and in any direction. Our choice to use AckermannDrive messages made using the ROS bridge much more difficult. By default, the ROS bridge only supports message types that are built into ROS. Twist is one of these, but AckermannDrive is not. To use message types that are not a part of ROS by default, the ROS bridge has to be built from source, which cannot be done without building ROS 2 from source first. Building ROS 2 from source is not a simple task, as it has many dependencies and is a huge project. Since the JetAcker runs Ubuntu 18.04 and we needed to bridge versions on Ubuntu 20.04, we built ROS 2 and the ROS Bridge in a Docker container running Ubuntu 20.04. Once the Dockerfile to create this container was finished, we were able to put it onto the JetAcker and build it. We then discovered that the JetAcker only has a few gigabytes of spare storage, so we had to replace the SD card on it to build the image. Once the image was built, we modified the source code of the JetAcker to allow it to respond to AckermannDrive messages, and tested that it worked. We were able to successfully control it with AckermannDrive messages sent from ROS 2 on a laptop connected to the JetAcker's wifi network.
 
 Our plan was to construct a test track for the JetAcker in order to test our system in the real world. Having multiple environments to test our system, with different pros and cons, would have been incredibly useful. While the JetAcker is further from a real driving environment than CARLA, it is a physical machine, so it can provide valuable data that we could not get from CARLA.
+
+\subsection{Evaluation - Results}
+
+Due to the complications that arose with the JetAcker, the primary method of evaluation for the system was done through the Carla simulation software. However, even though Carla is a great environment for testing there is a limited amount of information that can be extracted from the Carla-ROS bridge that makes it difficult to evaluate where the lane center truly is. In order to get around this, the waypoint path that was used for the keeping and control subsystem was broken into four distinct parts that each exhibited a unique path characteristic that can be used to evaluate the system as a whole. The vehicle is then spawned at the beginning of each segment, and once the vehicle reaches the end the evaluation subsystem will output the maximum lateral error and the error over time associated with that trial. 
+
+The four different trial paths used for the evaluation are a straight line, a shallow snake curve, a moderately sharp circular curve, and a straight line that has a lane merge. The straight line is a path that has no turns associated with it, and it meant to confirm that the vehicle is actually capable of following a clear path. The second evaluation path is the shallow snake path. The purpose of this path is to determine that the vehicle is capable of identifying curves present in the vehicles field of view, and then to then proceed to follow the lanes. Thirdly, a moderately sharp circular path was added to evaluate if the vehicle can control itself well on sharper corners. Lastly, a straight lane path that has another lane merge into it was used to evaluate how the system is able to handle that scenario.
+
+Each trial path was run through five times to achieve an average maximum lateral error over time. Additionally, each trial path outputted a line chart of the lateral error over time to identify any noticable patterns present in the lateral error. Finally, each trial also outputted a line chart comparing the overall path of the vehicle to the path of the waypoints to provide a birds-eye view of the path the vehicle takes. The results of the testing can be found in Table \ref{tab:overal_eval}.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{c c c c c c c c }
+		\textbf{Trial Path} & \textbf{Trial 1} & \textbf{Trial 2} & \textbf{Trial 3} & \textbf{Trial 4} & \textbf{Trial 5} & \textbf{Average} & \textbf{Standard Deviation} \\ [0.5ex]
+		\hline
+		Straight Path & 0.0425 m & 0.0517 m & 0.0690 m & 0.0592 m & 0.0449 m & 0.0535 m & 0.0109 m \\		
+		\hline
+		Snake Path & 0.3482 m & 0.3332 m & 0.3348 m & 0.3491 m & 0.3630 m & 0.3457 m & 0.0121 m \\		
+		\hline
+		Circle Path & 0.5569 m & 0.5372 m & 0.5340 m & 0.5463 m & 0.5221 m & 0.5393 m & 0.0131 m \\		
+		\hline
+		Merge Path & 1.3978 m & 1.3881 m & 1.4532 m & 1.3979 m & 1.4164 m & 1.4107 m & 0.0259 m \\		
+		\hline
+	\end{tabular}
+	\caption{Results of Maximum Lateral Devation across 5 Trials for 4 Unique Paths}
+	\label{tab:overal_eval}
+\end{table}
+
+\textbf{Straight Path}
+
+The straight path had little relevant insights to gain from it. The average maximum lateral error for this path was 0.0535 meters, which is well below the maximum lateral error threshold defined in Functional Requirement 2. Further analysis of the lateral error over time graphs does not highlight anything of note, as the lateral error remains too low to show anything meaningful as seen in Fig. \ref{fig:straight_lat_1}. Furthermore, a review of the vehicle path compared to the waypoint path demonstrates that there is almost a complete overlap between the vehicles path and the waypoints. Therefore, in the case of a completely straight path the system can maintain a maximum lateral heading below 0.45 meters.
+
+\begin{figure}
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_straight_1}
+		\captionof{figure}{Lateral Error over Time for Straight Path Trial 1}
+		\label{fig:straight_lat_1}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_1}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 1}
+		\label{fig:straight_way_1}
+		\end{minipage}
+\end{figure}	
+
+\textbf{Snake Path}
+
+The snake path was originally chosen to evaluate how effectively the autonomous driving system can deal with the existence of turns in the road in each direction. For this trial, the vehicle achieved an average maximum lateral error of 0.3457 meters, which while it is close to the maximum lateral error of 0.45 meters it still remains acceptable. Upon further investigation of the lateral error over time graph found at Fig. \ref{fig:snake_lat_1} in conjunction with the vehicle path graph found at Fig. \ref{fig:snake_way_1}, a few key points can be identified. For starters, the two halves of the vehicle path can be identified. The first half of the snake shape was a lot more shallow than the second half, which resulted in an average lateral error that visually appears around half of what was seen in th second half. Furthermore, The moment when the vehicle switches the direction of the curve there is a noticable peak in the lateral error before the vehicle finds its footing and has a more steady lateral error. This increased initial error is likely due to the vehicle not responding quicly enough to the curvature of the path, and as a result it accidentally overshoots. All that said, in the case of a slightly curved path in both direction the system can maintain a maximum lateral heading below 0.45 meters.
+
+\begin{figure}
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_snake_1}
+		\captionof{figure}{Lateral Error over Time for Snake Path Trial 1}
+		\label{fig:snake_lat_1}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_1}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 1}
+		\label{fig:snake_way_1}
+		\end{minipage}
+\end{figure}	
+
+\textbf{Circle Path}
+
+The third trial map our team chose was the Circle path, which was originally chosen to evaluate how effectively the autonomous driving system can deal with sharper turns. For this trial, the vehicle achieved an average maximum lateral error of 0.5393 meters, which fails the requirement for maintaining a maximum lateral error below 0.45 meters. Upon further investigation of the lateral error over time graph found at Fig. \ref{fig:circle_lat_1} in conjunction with the vehicle path graph found at Fig. \ref{fig:circle_way_1}, a few notable patterns emerge. For starters, the same pattern observed with the snake path can be identified. When the vehicle begins on the track, it initially gets a very high lateral error which ends up being the maximum lateral error for the trial. However, this maximum lateral error is very quickly lowered to a more stable lateral error that does remain under the 0.45 meters identified in the requirements. As before, this is likely due to the initial overshoot of the vehicle not attemping to steer towards the lane center at the beginning, but only after its already started moving away. However, while we can understand why this initial overshoot might be occuring the ability to handle this overshoot must exist in the lane evaluation system, and as a result in the case of a moderately curved path the system cannot maintain a maximum lateral heading below 0.45 meters.
+
+\begin{figure}
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_circle_1}
+		\captionof{figure}{Lateral Error over Time for Circle Path Trial 1}
+		\label{fig:circle_lat_1}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_1}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 1}
+		\label{fig:circle_way_1}
+		\end{minipage}
+\end{figure}	
+
+\textbf{Merge Path}
+
+The final trial that our team chose was a merge path. This means that the vehicle travels along a straight path, but partway through another lane merges into the current one and no line is visible for a short while. This is useful since a human driver would be able to identify the "invisible" lane line, and as a result the autonomous driving must as well. For this trial, the vehicle achieved a maximum lateral error of 1.4107 meters which falls well above the maximum lateral error tollerance defined in the requirements. Upon review of the lateral error over time graph found at Fig. \ref{fig:merge_lat_1} in conjunction with the vehicle path graph found at Fig. \ref{fig:merge_way_1}, it can be identified that the point at which the other lane merges into the vehicles lane the car fails to properly drive straight forward and instead veers to the side and takes a short amount of time to properly correct itself. Ultimately, in the case of a a merging path into the vehicles current path the system cannot maintain a maximum lateral heading below 0.45 meters.
+
+\begin{figure}
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_merge_1}
+		\captionof{figure}{Lateral Error over Time for Merge Path Trial 1}
+		\label{fig:merge_lat_1}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_1}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 1}
+		\label{fig:merge_way_1}
+		\end{minipage}
+\end{figure}
+
+\textbf{Conclusions}
+
+Overall, the system was not capable of maintinging a maximum lateral error below 0.45 meters in all tested environments. It was capable of maintining a sufficiently low maximum lateral error when the shape of curves in the road was sufficiently shallow, but after a certain point was no longer capable of always remaining between the lane lines. Furthermore, the system was incapable of keeping when any disturbances to the lane data were present since when the other lane merged onto the vehicles path it was incapable of properly determining the lane center and flew off course. 
+
+Of further note, the other graphs generated in the other trials can be found in Appendix B.
 
 \section{Reflections}
 
@@ -1369,6 +1485,300 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 
 \section{Second Appendix}
 \label{SecondAppendix}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_straight_2}
+		\captionof{figure}{Lateral Error over Time for Straight Path Trial 2}
+		\label{fig:straight_lat_2}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_2}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 2}
+		\label{fig:straight_way_2}
+		\end{minipage}
+\end{figure}	
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_straight_3}
+		\captionof{figure}{Lateral Error over Time for Straight Path Trial 3}
+		\label{fig:straight_lat_3}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_3}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 3}
+		\label{fig:straight_way_3}
+		\end{minipage}
+\end{figure}	
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_straight_4}
+		\captionof{figure}{Lateral Error over Time for Straight Path Trial 4}
+		\label{fig:straight_lat_4}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_4}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 4}
+		\label{fig:straight_way_4}
+		\end{minipage}
+\end{figure}	
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_straight_5}
+		\captionof{figure}{Lateral Error over Time for Straight Path Trial 5}
+		\label{fig:straight_lat_5}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_5}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 5}
+		\label{fig:straight_way_5}
+		\end{minipage}
+\end{figure}	
+
+
+
+
+
+
+
+
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_snake_2}
+		\captionof{figure}{Lateral Error over Time for Snake Path Trial 2}
+		\label{fig:snake_lat_2}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_2}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 2}
+		\label{fig:snake_way_2}
+		\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_snake_3}
+		\captionof{figure}{Lateral Error over Time for Snake Path Trial 3}
+		\label{fig:snake_lat_3}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_3}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 3}
+		\label{fig:snake_way_3}
+		\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_snake_4}
+		\captionof{figure}{Lateral Error over Time for Snake Path Trial 4}
+		\label{fig:snake_lat_4}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_4}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 4}
+		\label{fig:snake_way_4}
+		\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_snake_5}
+		\captionof{figure}{Lateral Error over Time for Snake Path Trial 5}
+		\label{fig:snake_lat_5}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_5}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 5}
+		\label{fig:snake_way_5}
+		\end{minipage}
+\end{figure}
+
+
+
+
+
+
+
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_circle_2}
+		\captionof{figure}{Lateral Error over Time for Circle Path Trial 2}
+		\label{fig:circle_lat_2}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_2}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 2}
+		\label{fig:circle_way_2}
+		\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_circle_3}
+		\captionof{figure}{Lateral Error over Time for Circle Path Trial 3}
+		\label{fig:circle_lat_3}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_3}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 3}
+		\label{fig:circle_way_3}
+		\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_circle_4}
+		\captionof{figure}{Lateral Error over Time for Circle Path Trial 4}
+		\label{fig:circle_lat_4}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_4}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 4}
+		\label{fig:circle_way_4}
+		\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_circle_5}
+		\captionof{figure}{Lateral Error over Time for Circle Path Trial 5}
+		\label{fig:circle_lat_5}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_5}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 5}
+		\label{fig:circle_way_5}
+		\end{minipage}
+\end{figure}
+
+
+
+
+
+
+
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_merge_2}
+		\captionof{figure}{Lateral Error over Time for Merge Path Trial 2}
+		\label{fig:merge_lat_2}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_2}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 2}
+		\label{fig:merge_way_2}
+		\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_merge_3}
+		\captionof{figure}{Lateral Error over Time for Merge Path Trial 3}
+		\label{fig:merge_lat_3}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_3}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 3}
+		\label{fig:merge_way_3}
+		\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_merge_4}
+		\captionof{figure}{Lateral Error over Time for Merge Path Trial 4}
+		\label{fig:merge_lat_4}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_4}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 4}
+		\label{fig:merge_way_4}
+		\end{minipage}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/lateral_merge_5}
+		\captionof{figure}{Lateral Error over Time for Merge Path Trial 5}
+		\label{fig:merge_lat_5}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_5}
+		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 5}
+		\label{fig:merge_way_5}
+		\end{minipage}
+\end{figure}
 
 \section{Third Appendix}
 \label{ThirdAppendix}
