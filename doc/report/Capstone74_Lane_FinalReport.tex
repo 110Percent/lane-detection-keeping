@@ -8,13 +8,15 @@
 \usepackage{biblatex}
 \usepackage{blindtext}
 \usepackage{booktabs}
+\usepackage{caption}
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{indentfirst}
+\usepackage{listings}
+\usepackage{setspace}
 \usepackage{textcomp}
 \usepackage{titlesec}
 \usepackage{xcolor}
-\usepackage{caption}
 \usepackage[toc,page]{appendix}
 \graphicspath{ {./images/} }
 \usepackage{geometry}
@@ -69,6 +71,7 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
 \newpage
 
+\setstretch{1.5}
 \begin{abstract}
 	\noindent Autonomous driving technology has garnered significant attention lately due to its potential to
 	improve road safety and help remove the need for menial adjustments from drivers on the road.
@@ -315,49 +318,49 @@ Liam:
 	\centering
 	\begin{tabular}{|c | c | c | c | c | c |}
 		\hline
-		Step & Project Task                          & Curtis & Liam & Ian & Robert \\ [0.5ex]
+		Step & Project Task                         & Curtis & Liam & Ian & Robert \\ [0.5ex]
 		\hline
-		1    & Project Proposal                      & R      & R    & R   & R      \\
+		1    & Project Proposal                     & R      & R    & R   & R      \\
 		\hline
-		2    & Progress Report                       & R      & R    & R   & R      \\
+		2    & Progress Report                      & R      & R    & R   & R      \\
 		\hline
-		3    & Oral Presentation                     & R      & R    & R   & R      \\
+		3    & Oral Presentation                    & R      & R    & R   & R      \\
 		\hline
-		4    & Final Report Draft                    & R      & R    & R   & R      \\
+		4    & Final Report Draft                   & R      & R    & R   & R      \\
 		\hline
-		5    & Poster Fair                           & R      & R    & R   & R      \\
+		5    & Poster Fair                          & R      & R    & R   & R      \\
 		\hline
-		6    & Final Report and Video                & R      & R    & R   & R      \\
+		6    & Final Report and Video               & R      & R    & R   & R      \\
 		\hline
-		7    & Set up Simulation Software            & R      &      &     &        \\
+		7    & Set up Simulation Software           & R      &      &     &        \\
 		\hline
-		8    & Configure Offboard Processing         & R      &      &     &        \\
+		8    & Configure Offboard Processing        & R      &      &     &        \\
 		\hline
-		9    & ROS1-ROS2 Bridge                      &        &      &     & R      \\
+		9    & ROS1-ROS2 Bridge                     &        &      &     & R      \\
 		\hline
-		10   & JetAcker Mesaging Configuration       &        &      &     & R      \\
+		10   & JetAcker Mesaging Configuration      &        &      &     & R      \\
 		\hline
-		11    & ROS Boilerplate                      &        &      &     & R      \\
+		11   & ROS Boilerplate                      &        &      &     & R      \\
 		\hline
-		12    & CARLA ROS Bridge Setup               & R      &      &     & S      \\
+		12   & CARLA ROS Bridge Setup               & R      &      &     & S      \\
 		\hline
-		13    & ROS Message Types                    &        &      & R   &        \\
+		13   & ROS Message Types                    &        &      & R   &        \\
 		\hline
-		14    & Dockerization                        & R      &      &     &        \\
+		14   & Dockerization                        & R      &      &     &        \\
 		\hline
-		15    & Basic Image Input Handling           & R      &      &     &        \\
+		15   & Basic Image Input Handling           & R      &      &     &        \\
 		\hline
-		16    & Image Processing Pipeline for CNN    & R      &      &     &        \\
+		16   & Image Processing Pipeline for CNN    & R      &      &     &        \\
 		\hline
-		17    & Data Perspective Transformation      &        &      & R   &        \\
+		17   & Data Perspective Transformation      &        &      & R   &        \\
 		\hline
-		18    & Lane Confidence Module               &        &      &     & R      \\
+		18   & Lane Confidence Module               &        &      &     & R      \\
 		\hline
-		19    & Controller for Steering              &        & R    &     &        \\
+		19   & Controller for Steering              &        & R    &     &        \\
 		\hline
-		20    & Controller Refinement and Evaluation &        & R    &     &        \\
-		\hline 
-		21    & Lane Center Determination            &        & R    &     &        \\
+		20   & Controller Refinement and Evaluation &        & R    &     &        \\
+		\hline
+		21   & Lane Center Determination            &        & R    &     &        \\
 		\hline
 	\end{tabular}
 	\caption{Responsibility Matrix of Major Project Components and Tasks}
@@ -406,32 +409,32 @@ In order to perform the risk analysis, the risk levels and meaning have to be id
 		\centering
 		\begin{tabular}{|p{0.7in}|p{0.55in}|p{0.55in}|p{0.55in}|p{0.55in}|}
 			\cline{1-5}
-			\multicolumn{2}{|l|}{\multirow{2}{*}{RISK LEVEL}} & \multicolumn{3}{|l|}{\makecell{PROBABILITY of the event\\ occuring}} \\ \cline{3-5}
-			\multicolumn{2}{|l|}{} & Low & Moderate & High        \\ \cline{1-5}
-			\multirow{3}{0.8in}{SEVERITY of the event on the project's success} &  Low & VERY LOW & LOW & MEDIUM         \\ \cline{2-5}
-			& Moderate & LOW & MEDIUM & HIGH          \\ \cline{2-5}
-			& High & MEDIUM& HIGH & VERY HIGH         \\ \cline{1-5}
+			\multicolumn{2}{|l|}{\multirow{2}{*}{RISK LEVEL}}                   & \multicolumn{3}{|l|}{\makecell{PROBABILITY of the event                                 \\ occuring}} \\ \cline{3-5}
+			\multicolumn{2}{|l|}{}                                              & Low                                                     & Moderate & High               \\ \cline{1-5}
+			\multirow{3}{0.8in}{SEVERITY of the event on the project's success} & Low                                                     & VERY LOW & LOW    & MEDIUM    \\ \cline{2-5}
+			                                                                    & Moderate                                                & LOW      & MEDIUM & HIGH      \\ \cline{2-5}
+			                                                                    & High                                                    & MEDIUM   & HIGH   & VERY HIGH \\ \cline{1-5}
 		\end{tabular}
 		\caption{Risk Level Matrix for Risk Analysis}
 		\label{Table_risk_level}
-	
+
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\begin{tabular}{|@{}l|p{0.5\linewidth}|}
 			\toprule
-			Risk Level & Description \\ \hline
-			Very Low & Very low risk, does not require any significant plans for mitigation         \\ \hline
-			Low &  A preliminary study on a plan of action to recover should be performed and documented         \\ \hline
-			Moderate & A significant risk. A plan of action to recover should be made in advance.         \\ \hline
-			High & A very significant risk that warrants considering a change in the project to address, or a plan of action should be made.         \\ \hline
-			Very High & An unacceptable risk. The project should be changed to address this risk.			\\ \bottomrule
+			Risk Level & Description                                                                                                               \\ \hline
+			Very Low   & Very low risk, does not require any significant plans for mitigation                                                      \\ \hline
+			Low        & A preliminary study on a plan of action to recover should be performed and documented                                     \\ \hline
+			Moderate   & A significant risk. A plan of action to recover should be made in advance.                                                \\ \hline
+			High       & A very significant risk that warrants considering a change in the project to address, or a plan of action should be made. \\ \hline
+			Very High  & An unacceptable risk. The project should be changed to address this risk.                                                 \\ \bottomrule
 		\end{tabular}
 		\caption{Risk Level Meaning}
 		\label{Table_risk_meaning}
 
-	  \end{minipage}
+	\end{minipage}
 \end{figure}
 
 At the beginning of the project, five risks were identified as being the most prominent issues that the team might run into over the course of the project. These risks were identified as the following: Neural Networks / ML is too complicated, Hardware not powerful enough, Scope Creep, Future Integration Challenges, and Software Version Incompatibility.
@@ -456,7 +459,7 @@ Over the course of the project, we did not encounter any issues with scope creep
 
 \textbf{Future Integration Challenges}
 
-Since future projects might be building on this project, a significant risk is that of future integration challenges. While documentation and code readability will be prioritized, the time constraints put on the project could lead to quick solutions to problems that may not be easily read by future teams integrating our system with other autonomous driving systems. Given the amount of uncertainty in general with the project, it is moderately likely that this problem is encountered by the end of the projects development. However, even though it is quite likely to happen it is unlikely to affect the severity of this project since while integration with future self-driving systems is preferred but not critical to the project. Having software that is less interoperable with other services will not severely impact our system in itself. As a reuslt, the overall risk level was determined to be low, and the plan of action to address this will be to always properly document code whenever code is submitted to the git repository. 
+Since future projects might be building on this project, a significant risk is that of future integration challenges. While documentation and code readability will be prioritized, the time constraints put on the project could lead to quick solutions to problems that may not be easily read by future teams integrating our system with other autonomous driving systems. Given the amount of uncertainty in general with the project, it is moderately likely that this problem is encountered by the end of the projects development. However, even though it is quite likely to happen it is unlikely to affect the severity of this project since while integration with future self-driving systems is preferred but not critical to the project. Having software that is less interoperable with other services will not severely impact our system in itself. As a reuslt, the overall risk level was determined to be low, and the plan of action to address this will be to always properly document code whenever code is submitted to the git repository.
 
 As with the first two identified risks, this risk also occured durign our projects development. While this was a concern that was had throughout the project, the rate at which development was occuring led to poor documentation of many important procedures within the project. This problem was eventually addressed at the end of the project since the team spent time reviewing all the work performed, so future groups should still be able to use this repository with relative ease.
 
@@ -559,6 +562,15 @@ mathematical functions and passing it on to the next layer.
 The increase in complexity of these networks makes them more computationally expensive to train and run, but they can also yield
 more high-level insights on large, complicated sets of data.
 
+Due to the computationally expensive operations performed by a majority of machine learning programs, a computer's GPU is often
+used for operating on machine learning models, rather than its CPU.
+This is because while CPUs are better optimized for sequential execution of tasks, GPUs are designed to run a large number of
+operations in parallel, making the hardware better suited to run the computations required for most machine learning applications.
+However, since GPUs are primarily designed with graphics in mind, a software interface is required to use the GPU for
+general-purpose computation.
+NVIDIA provides the CUDA (Compute Unified Device Architecture) Toolkit \cite{CUDA} to allow developers to interface with its
+GPUs for general-purpose computational tasks.
+A similar stack, ROCm, is provided by AMD for use with its Radeon series of GPUs. \cite{ROCm}
 
 \subsubsection{Conceptualization}
 
@@ -684,6 +696,14 @@ such as an autonomous vehicle.
 	\caption{UML Class Diagram of the Detection Subsystem's ROS Node.}
 	\label{Detection-UML}
 \end{figure}
+
+Since the actual lane marker detection process in this subsystem uses a neural network running on the GPU, the subsystem needs the
+NVIDIA CUDA runtime to be installed in its environment.
+The main system is based on the \texttt{ros-bridge} \cite{ROSBridge} Docker image, which does not have this toolkit installed.
+To avoid bloating the environment on which the system runs, the detection subsystem runs in a separate Docker container based on the
+\texttt{nvidia/cuda} Docker image, allowing it to interface with the host machine's GPU.
+The networking stack in ROS2 allows nodes between Docker containers to communicate with one another without any additional configuration,
+meaning that running lane detection in a separate container does not add any unnecessary complications in the system's architecture.
 
 \subsubsection{Implementation}
 \subsubsection{Evaluation}
@@ -1000,14 +1020,14 @@ The evaluation for determining whether FR2.1 was satisfied comes down to the max
 
 In order to evaluate this requirement, the same methodology as FR2 was performed. The vehicle was spawned at a specific point on the Town04 map, and follows a set of waypoints. As before, the path was chosen because the path exhibits a wide range of steerings that would be useful for assessing the performance of the subsystem. The results for this test have been included in the evaluation for FR2, as both requirements were performed at the same point in time.
 
-The results of the test found that even with the best possible configuration of standing velocity and control constant, the lowest heading error occured with a k value of texttt{1.5 1/s} and the standing velocity was equal to \texttt{4.0 m/s} with a maximum heading error of 0.4508 radians. Unfortunately, this also falls short of the requirement for this section. 
+The results of the test found that even with the best possible configuration of standing velocity and control constant, the lowest heading error occured with a k value of texttt{1.5 1/s} and the standing velocity was equal to \texttt{4.0 m/s} with a maximum heading error of 0.4508 radians. Unfortunately, this also falls short of the requirement for this section.
 
 A closer look at the heading error chart demonstrates as well that for a vast majority of the vehicles path the heading error remains very low, and only becomes much larger as the vehicle approaches much sharper turns. As a result, future work on this domain should be placed on improving the quality of the land following when sharper turns are present as this appears to be the most difficult part for the system to achieve.
 
 
 \textbf{Evaluating FR2.2}
 
-Another important requirement for this subsystem is the output frequency. This is important because the system must be able to output a sufficient number of movement commands each second in order to achieve the illusion of continuous driving. 
+Another important requirement for this subsystem is the output frequency. This is important because the system must be able to output a sufficient number of movement commands each second in order to achieve the illusion of continuous driving.
 
 Within our system, a timer within the control and keeping subsystem was configured to trigger the new movement output command on a variable frequency. This frequency is defined within the environmental variables of the command, and as a reuslt it is very easy to adjust the frequency used internally. However, while it is possible that this value works we cannot be sure that this rate is actually achieved. If the amount of time it takes for the system to process a new request is longer than the soft deadline set by the timer, then the actual output frequency will not be the expected \(50Hz\). As a result, it is crutial for this to be tested experimentally to ensure that the proper frequency is actually being achieved by this.
 
@@ -1019,15 +1039,15 @@ The procedure by which this requirement was tested was through using a logger to
 		\hline
 		time (s) & Total Movement Commands Outputted & Movement Command Frequency \\ [0.5ex]
 		\hline
-		1.0 & 46 & 46.00Hz\\
+		1.0      & 46                                & 46.00Hz                    \\
 		\hline
-		5.0 & 232 & 46.40Hz\\
+		5.0      & 232                               & 46.40Hz                    \\
 		\hline
-		10.0 & 464 & 46.40Hz\\
+		10.0     & 464                               & 46.40Hz                    \\
 		\hline
-		20.0 & 930 & 46.50Hz\\
+		20.0     & 930                               & 46.50Hz                    \\
 		\hline
-		60.0 & 2787 & 46.45Hz\\
+		60.0     & 2787                              & 46.45Hz                    \\
 		\hline
 	\end{tabular}
 	\caption{Results of the Maximum Heading and Lateral Error for Various K and Speed Values}
@@ -1039,7 +1059,7 @@ The results of this experiment show that at both long and short intervals of tim
 
 \textbf{Evaluating FR2.3}
 
-One very important part of the system is the ability for the controller to be able to generate new movement commands using the latest availible data. This means that it must be able to interpret how far the vehicle has moved since the last image and predict where it currently is for the current movement command. 
+One very important part of the system is the ability for the controller to be able to generate new movement commands using the latest availible data. This means that it must be able to interpret how far the vehicle has moved since the last image and predict where it currently is for the current movement command.
 
 In order to evaluate this, the logs for the subsystem have to be observed. A log is posted each time a new set of lane data is given to the system, and a new log is also posted whenever a new movement command is posted. In order for this functional requirement to be satisfied, at least two movement commands must be uploaded between a pair of new lane data being provieded and the two movement commands cannot be the same movement command. The results of this evaluation can be found in Fig. \ref{fig:fr23}.
 
@@ -1063,7 +1083,7 @@ Recall that the system is made up of two primary subsystems: Lane Detection and 
 
 
 \subsubsection{ROS2}
-The Robot Operating System (ROS) is an open-source middleware suite for robotics. Despite its name, it is not an operating system but a software suite that runs mainly on Ubuntu. It provide a set of software frameworks for easy orchestration and data transfer between processes running on a robot.\cite{ros_documentation} Development on ROS 1 has ended and shifted to its successor, ROS 2, so we have chosen to use ROS 2 for orchestrating processes, facilitating data exchange and enabling interaction with the system’s surrounding environment. Software using ROS follows a microservices architecture, with processes running as independent nodes that communicate with each other via messages sent through topics. Nodes can publish and subscribe to any number of topics, and topics can have any number of publishers and subscribers. When a node publishes a message to a given topic, all nodes subscribed to that topic receive the message. ROS is quite popular in the robotics industry, so there is good support for it from other software. CARLA, the simulation software we used, provides a bridge allowing it to communicate with ROS 1 and 2 nodes, publishing data such as a vehicle's camera feed to a topic and subscribing to a topic for movement commands. 
+The Robot Operating System (ROS) is an open-source middleware suite for robotics. Despite its name, it is not an operating system but a software suite that runs mainly on Ubuntu. It provide a set of software frameworks for easy orchestration and data transfer between processes running on a robot.\cite{ros_documentation} Development on ROS 1 has ended and shifted to its successor, ROS 2, so we have chosen to use ROS 2 for orchestrating processes, facilitating data exchange and enabling interaction with the system’s surrounding environment. Software using ROS follows a microservices architecture, with processes running as independent nodes that communicate with each other via messages sent through topics. Nodes can publish and subscribe to any number of topics, and topics can have any number of publishers and subscribers. When a node publishes a message to a given topic, all nodes subscribed to that topic receive the message. ROS is quite popular in the robotics industry, so there is good support for it from other software. CARLA, the simulation software we used, provides a bridge allowing it to communicate with ROS 1 and 2 nodes, publishing data such as a vehicle's camera feed to a topic and subscribing to a topic for movement commands.
 
 ROS serves as the backbone of our system. Every subsystem runs as a set of ROS nodes that communicate with each other over a variety of topics. For example, the Lane Detection subsystem outputs the location of lanes to a specific topic, and the K\&C subsystem subscribes to that topic to get the data that it uses to determine what movement commands to send. Components of a subsystem work the same way. Inside Detection, for example, raw lines detected from the image are transformed to a top-down view before being sent to K\&C. Detecting the raw lines and transforming them are tasks done by different nodes, so the line data is passed between them on a topic. Because each step is a separate process, they do not all have to output at the same rate. K\&C, for instance, must output at a faster rate than Lane Detection to ensure steady operation of the vehicle at high speeds. For a given set of lanes sent to K\&C, it will send several commands before a new set of data arrives. This also allows parts of the system to handle faults more robustly. While not yet complete, work has begun on a Confidence component of Lane Detection that will take past lane data into account when sending data to K\&C, continuing to send confidently known lanes even if line detection fails to see them momentarily. This is all made very straightforward to orchestrate due to ROS 2, which handles all the details of message passing.
 
@@ -1091,11 +1111,19 @@ TODO: Liam look at what I wrote (above) and add in some stuff about waypoints an
 For the main course of the project, testing will be performed in a simulation environment using CARLA. CARLA is a driving environment simulation tool used for iterative, test-driven development of autonomous driving systems.\cite{dosovitskiy2017carla} This testing method will give freedom of modifying the various parameters to be considered with respect to road conditions. Using the simulation will also allow for quick testing of features throughout development. When running simulations using CARLA, the distance from the center of the lane will be determined by the detection subsystem and adjustments to remain in the lane will be made by the K\&C subsystem. The results of the adjustments will be observed and recorded to verify proper functioning of the system.
 
 \subsubsection{HiWonder JetAcker}
-Our secondary method for testing our system was intended to be the HiWonder JetAcker, a robot with an Ackermann steering geometry similar to that of a real car. Unfortunately, due to a fire that destroyed a different robot as well as the charger for the JetAcker, we were not able to run our system on the JetAcker. Much of the groundwork for doing so was completed just days before the fire. 
+
+\begin{figure}
+	\centering
+	\includegraphics*[width=0.4\textwidth]{JetAcker1}
+	\caption{HiWonder JetAcker Autonomous Vehicle Robot.}
+	\label{fig:JetAcker}
+\end{figure}
+
+Our secondary method for testing our system was intended to be the HiWonder JetAcker, a robot with an Ackermann steering geometry similar to that of a real car. Unfortunately, due to a fire that destroyed a different robot as well as the charger for the JetAcker, we were not able to run our system on the JetAcker. Much of the groundwork for doing so was completed just days before the fire.
 
 The JetAcker is equipped with an RGB camera, a depth camera, and a LIDAR. Of these, we only planned to use the RGB camera. Its steering mechanism uses an Ackermann geometry in which the wheels used for steering rotate by different amounts in order to minimize slipping during a turn. This is the basis for the steering mechanisms used by real cars, which is why we chose to use the JetAcker. It provides us with a system that is controlled in much the same way as a real car.
 
-Using the JetAcker proved to be much more difficult than expected, and numerous problems were encountered. The JetAcker was acquired around the halfway point of the project, and the hope was that our system would be able to easily integrate to any hardware due to its modular approach where only a video input and command output are required. The JetAcker, however, runs on ROS 1 Melodic on Ubuntu 18.04. Our system runs on ROS 2 Foxy on Ubuntu 20.04. There is a bridge for sending messages between ROS 1 and 2, but it only works for versions on the same version of Ubuntu. This meant that to send messages between our system and the JetAcker, we had to first bridge them from ROS 2 Foxy to ROS 1 Noetic, and then send them from Noetic to Melodic, and do the same in reverse to communicate the other way. The bridge is officially supported, but sending messages between different distros of ROS is unsupported for both ROS 1 and ROS 2. We found that Melodic and Noetic are capable of communicating, but it is not an ideal scenario since it is not supported officially. 
+Using the JetAcker proved to be much more difficult than expected, and numerous problems were encountered. The JetAcker was acquired around the halfway point of the project, and the hope was that our system would be able to easily integrate to any hardware due to its modular approach where only a video input and command output are required. The JetAcker, however, runs on ROS 1 Melodic on Ubuntu 18.04. Our system runs on ROS 2 Foxy on Ubuntu 20.04. There is a bridge for sending messages between ROS 1 and 2, but it only works for versions on the same version of Ubuntu. This meant that to send messages between our system and the JetAcker, we had to first bridge them from ROS 2 Foxy to ROS 1 Noetic, and then send them from Noetic to Melodic, and do the same in reverse to communicate the other way. The bridge is officially supported, but sending messages between different distros of ROS is unsupported for both ROS 1 and ROS 2. We found that Melodic and Noetic are capable of communicating, but it is not an ideal scenario since it is not supported officially.
 
 Because our system is designed to operate on cars, we chose to use AckermannDrive messages for the control output. These messages contain a forward speed and a steering angle. This accurately reflects how steering a car works, as those are the variables that are physically controllable on a car. The same is true of the JetAcker, but its software is not capable of handling AckermannDrive messages, instead taking Twist messages containing a linear velocity and an angular velocity. We believe this is because the JetAcker was built using a different robot, the JetAuto, as a starting point, and the JetAuto has mecanum wheels that allow it to move and rotate independently and in any direction. Our choice to use AckermannDrive messages made using the ROS bridge much more difficult. By default, the ROS bridge only supports message types that are built into ROS. Twist is one of these, but AckermannDrive is not. To use message types that are not a part of ROS by default, the ROS bridge has to be built from source, which cannot be done without building ROS 2 from source first. Building ROS 2 from source is not a simple task, as it has many dependencies and is a huge project. Since the JetAcker runs Ubuntu 18.04 and we needed to bridge versions on Ubuntu 20.04, we built ROS 2 and the ROS Bridge in a Docker container running Ubuntu 20.04. Once the Dockerfile to create this container was finished, we were able to put it onto the JetAcker and build it. We then discovered that the JetAcker only has a few gigabytes of spare storage, so we had to replace the SD card on it to build the image. Once the image was built, we modified the source code of the JetAcker to allow it to respond to AckermannDrive messages, and tested that it worked. We were able to successfully control it with AckermannDrive messages sent from ROS 2 on a laptop connected to the JetAcker's wifi network.
 
@@ -1249,9 +1277,9 @@ More...
 
 \subsection{Group Reflection}
 
-As a group, we believe that overall the project went very well. 
+As a group, we believe that overall the project went very well.
 
-\textbf{Project Unfolding as Expected} 
+\textbf{Project Unfolding as Expected}
 
 The project ended up unfolding very differently from what we expected. Notably, we thought that a lot of parts would be much easier to learn than they actually were. At the start of the project, we did not have any extensive experience in the field of autonomous driving. As a result, any guess as to what we thought would happen was very innacurate, with some actions taking significantly less time than expected and others taking significantly more time than expected. Furthermore, the focus of the project also shifted a lot between the proposal to the final product. At the beginning of the project, the focus was on designing an entirely new autonomous driving system using CARLA and the JetAcker as a means of testing the performance of the vehicle. However, as the project went on the team started to move away from creating the best possible autonomous driving system from scratch and instead worked towards creating an effective framework from which the autonomous driving system can be built from. The team spent a lot of time properly configuring Docker and ROS2 within the simulation environment so that a proper bridge between our system and CARLA can be used, with extensive documentation so that future groups can use our work in the future. Additionally, a lot of time was spent getting to the point where the JetAcker was in a state where it was possible for it to recieve commands from an external computer. Combined, these two tasks took a significant portion of the development of the project.
 
@@ -1281,10 +1309,10 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 \begin{figure}[H]
 	\centering
 	\begin{minipage}{.45\textwidth}
-	  \centering
-	  \includegraphics[width=\linewidth]{waypoints_k-05_v-4.png}
-	  \captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 4.0 m/s Over Time}
-	  \label{fig:wayk5v4}
+		\centering
+		\includegraphics[width=\linewidth]{waypoints_k-05_v-4.png}
+		\captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 4.0 m/s Over Time}
+		\label{fig:wayk5v4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
@@ -1298,10 +1326,10 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 \begin{figure}[H]
 	\centering
 	\begin{minipage}{.45\textwidth}
-	  \centering
-	  \includegraphics[width=\linewidth]{heading_k-05_v-4.png}
-	  \captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 4.0 m/s Over Time}
-	  \label{fig:headk5v4}
+		\centering
+		\includegraphics[width=\linewidth]{heading_k-05_v-4.png}
+		\captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 4.0 m/s Over Time}
+		\label{fig:headk5v4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
@@ -1309,8 +1337,8 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{waypoints_k-05_v-6.png}
 		\captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 6.0 m/s Over Time}
 		\label{fig:wayk5v6}
-	  \end{minipage}
-\end{figure}	
+	\end{minipage}
+\end{figure}
 
 \begin{figure}[H]
 	\centering
@@ -1326,16 +1354,16 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{heading_k-05_v-6.png}
 		\captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 6.0 m/s Over Time}
 		\label{fig:headk5v6}
-	  \end{minipage}
+	\end{minipage}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\begin{minipage}{.45\textwidth}
-	  \centering
-	  \includegraphics[width=\linewidth]{waypoints_k-05_v-8.png}
-	  \captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 8.0 m/s Over Time}
-	  \label{fig:wayk5v8}
+		\centering
+		\includegraphics[width=\linewidth]{waypoints_k-05_v-8.png}
+		\captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\label{fig:wayk5v8}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
@@ -1349,10 +1377,10 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 \begin{figure}[H]
 	\centering
 	\begin{minipage}{.45\textwidth}
-	  \centering
-	  \includegraphics[width=\linewidth]{heading_k-05_v-8.png}
-	  \captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 8.0 m/s Over Time}
-	  \label{fig:headk5v8}
+		\centering
+		\includegraphics[width=\linewidth]{heading_k-05_v-8.png}
+		\captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\label{fig:headk5v8}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
@@ -1360,8 +1388,8 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{waypoints_k-1_v-4.png}
 		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.0 1/s and Base Velocity of 4.0 m/s Over Time}
 		\label{fig:wayk10v4}
-	  \end{minipage}
-\end{figure}	
+	\end{minipage}
+\end{figure}
 
 \begin{figure}[H]
 	\centering
@@ -1377,17 +1405,17 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{heading_k-1_v-4.png}
 		\captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 4.0 m/s Over Time}
 		\label{fig:headk10v4}
-	  \end{minipage}
+	\end{minipage}
 \end{figure}
 
 
 \begin{figure}[H]
 	\centering
 	\begin{minipage}{.45\textwidth}
-	  \centering
-	  \includegraphics[width=\linewidth]{waypoints_k-1_v-6.png}
-	  \captionof{figure}{Vehicle Path Compared to Waypoints for k=1.0 1/s and Base Velocity of 6.0 m/s Over Time}
-	  \label{fig:wayk10v6}
+		\centering
+		\includegraphics[width=\linewidth]{waypoints_k-1_v-6.png}
+		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.0 1/s and Base Velocity of 6.0 m/s Over Time}
+		\label{fig:wayk10v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
@@ -1401,10 +1429,10 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 \begin{figure}[H]
 	\centering
 	\begin{minipage}{.45\textwidth}
-	  \centering
-	  \includegraphics[width=\linewidth]{heading_k-1_v-6.png}
-	  \captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 6.0 m/s Over Time}
-	  \label{fig:headk10v6}
+		\centering
+		\includegraphics[width=\linewidth]{heading_k-1_v-6.png}
+		\captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 6.0 m/s Over Time}
+		\label{fig:headk10v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
@@ -1412,8 +1440,8 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{waypoints_k-1_v-8.png}
 		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.0 1/s and Base Velocity of 8.0 m/s Over Time}
 		\label{fig:wayk10v8}
-	  \end{minipage}
-\end{figure}	
+	\end{minipage}
+\end{figure}
 
 \begin{figure}[H]
 	\centering
@@ -1429,16 +1457,16 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{heading_k-1_v-8.png}
 		\captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 8.0 m/s Over Time}
 		\label{fig:headk10v8}
-	  \end{minipage}
+	\end{minipage}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\begin{minipage}{.45\textwidth}
-	  \centering
-	  \includegraphics[width=\linewidth]{waypoints_k-15_v-6.png}
-	  \captionof{figure}{Vehicle Path Compared to Waypoints for k=1.5 1/s and Base Velocity of 6.0 m/s Over Time}
-	  \label{fig:wayk15v6}
+		\centering
+		\includegraphics[width=\linewidth]{waypoints_k-15_v-6.png}
+		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\label{fig:wayk15v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
@@ -1452,10 +1480,10 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 \begin{figure}[H]
 	\centering
 	\begin{minipage}{.45\textwidth}
-	  \centering
-	  \includegraphics[width=\linewidth]{heading_k-15_v-6.png}
-	  \captionof{figure}{Heading Error with k=1.5 1/s and Base Velocity of 6.0 m/s Over Time}
-	  \label{fig:headk15v6}
+		\centering
+		\includegraphics[width=\linewidth]{heading_k-15_v-6.png}
+		\captionof{figure}{Heading Error with k=1.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\label{fig:headk15v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
@@ -1463,8 +1491,8 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{waypoints_k-15_v-8.png}
 		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.5 1/s and Base Velocity of 8.0 m/s Over Time}
 		\label{fig:wayk15v8}
-	  \end{minipage}
-\end{figure}	
+	\end{minipage}
+\end{figure}
 
 \begin{figure}[H]
 	\centering
@@ -1480,7 +1508,7 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{heading_k-15_v-8.png}
 		\captionof{figure}{Heading Error with k=1.5 1/s and Base Velocity of 8.0 m/s Over Time}
 		\label{fig:headk15v4}
-	  \end{minipage}
+	\end{minipage}
 \end{figure}
 
 \section{Second Appendix}
