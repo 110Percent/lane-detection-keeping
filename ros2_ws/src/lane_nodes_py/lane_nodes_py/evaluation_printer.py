@@ -77,15 +77,15 @@ class DataAnalyzer():
         plt.title('Lateral Error with k='+str(k)+' and base velocity of '+str(v)+'m/s Over Time')
         plt.xlabel('Time(seconds)')
         plt.ylabel('Lateral Error(meters)')
-        plt.show()
-        plt.savefig('Lateral_Error.jpg')
+        plt.savefig('/root/Lateral_Error.png')
+        plt.clf()
 
         plt.plot(list(zip(*self.heading_error))[0], list(zip(*self.heading_error))[1])
         plt.title('Heading Error with k='+str(k)+' and base velocity of '+str(v)+'m/s Over Time')
         plt.xlabel('Time(seconds)')
         plt.ylabel('Heading Error(radians)')
-        plt.show()
-        plt.savefig('Heading_Error.jpg')
+        plt.savefig('/root/Heading_Error.png')
+        plt.clf()
 
 
     def print_path_diagram(self, k, v):
@@ -132,8 +132,9 @@ class DataAnalyzer():
         ax = plt.gca()
         ax.set_xlim(globalx)
         ax.set_ylim(globaly)
-        plt.show()
-        plt.savefig('Vehicle_Path.jpg')
+        plt.savefig('/root/Vehicle_Path.png')
+        plt.clf()
+
 
     def get_maximum_errors(self):
         # Get the closest two points to the cars position

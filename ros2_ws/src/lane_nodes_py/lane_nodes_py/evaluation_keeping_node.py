@@ -88,14 +88,14 @@ class EvaluationKeeping(Node):
     def respond_to_callback(self, msg):
         direction = msg.pose.pose.orientation
         self.yaw = get_2d_direction_from_quaternion(direction.x, direction.y, direction.z, direction.w)
-        self.get_logger().info('New location: ' + str(self.current_location) + ", with a yaw of " + str(self.yaw))
+        # self.get_logger().info('New location: ' + str(self.current_location) + ", with a yaw of " + str(self.yaw))
 
         points_in_range = self.find_points_in_view()
 
         transformed_points_to_front_view = self.transform_points(points_in_range)
 
         if not transformed_points_to_front_view:
-            self.get_logger().info("No waypoint points found?")
+            # self.get_logger().info("No waypoint points found?")
             return
 
         created_path = polish_path(transformed_points_to_front_view)
@@ -124,6 +124,7 @@ class EvaluationKeeping(Node):
         max_heading_error, max_lateral_deviation = anal.get_maximum_errors()
         self.get_logger().info("Maximum Heading Error(rads): " + str(max_heading_error))
         self.get_logger().info("Maximum Lateral Deviation: " + str(max_lateral_deviation))
+        raise Exception('Evaluation finished')
 
     def transform_points(self, points):
         return transform_points(points, self.current_location, self.yaw)
