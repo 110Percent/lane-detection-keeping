@@ -77,15 +77,15 @@ class DataAnalyzer():
         plt.title('Lateral Error with k='+str(k)+' and base velocity of '+str(v)+'m/s Over Time')
         plt.xlabel('Time(seconds)')
         plt.ylabel('Lateral Error(meters)')
-        plt.show()
-        plt.savefig('Lateral_Error.jpg')
+        plt.savefig('/root/Lateral_Error.png')
+        plt.clf()
 
         plt.plot(list(zip(*self.heading_error))[0], list(zip(*self.heading_error))[1])
         plt.title('Heading Error with k='+str(k)+' and base velocity of '+str(v)+'m/s Over Time')
         plt.xlabel('Time(seconds)')
         plt.ylabel('Heading Error(radians)')
-        plt.show()
-        plt.savefig('Heading_Error.jpg')
+        plt.savefig('/root/Heading_Error.png')
+        plt.clf()
 
 
     def print_path_diagram(self, k, v):
@@ -105,8 +105,36 @@ class DataAnalyzer():
             labelleft=False,
             labelbottom=False)  # labels along the bottom edge are off
         plt.legend()
-        plt.show()
-        plt.savefig('Vehicle_Path.jpg')
+        wayxmax = max(list(zip(*self.waypoints))[0])
+        wayymax = max(list(zip(*self.waypoints))[1])
+
+        wayxmin = min(list(zip(*self.waypoints))[0])
+        wayymin = min(list(zip(*self.waypoints))[1])
+
+        pathxmax = max(list(zip(*vehicle_path_points))[0])
+        pathymax = max(list(zip(*vehicle_path_points))[1])
+
+        pathxmin = min(list(zip(*vehicle_path_points))[0])
+        pathymin = min(list(zip(*vehicle_path_points))[1])
+
+        globalx = [min([wayxmin, pathxmin]), max([wayxmax, pathxmax])]
+        globaly = [min([wayymin, pathymin]), max([wayymax, pathymax])]
+
+        if globalx[1]-globalx[0] < globaly[1] - globaly[0]:
+            diff = (globaly[1] - globaly[0]) - (globalx[1] - globalx[0])
+            globalx[1] += diff/2
+            globalx[0] -= diff/2
+        else:
+            diff = (globalx[1] - globalx[0]) - (globaly[1] - globaly[0])
+            globaly[1] += diff/2
+            globaly[0] -= diff/2
+
+        ax = plt.gca()
+        ax.set_xlim(globalx)
+        ax.set_ylim(globaly)
+        plt.savefig('/root/Vehicle_Path.png')
+        plt.clf()
+
 
     def get_maximum_errors(self):
         # Get the closest two points to the cars position

@@ -20,7 +20,7 @@ services:
                   - gpu
     environment:
       - DISPLAY=$DISPLAY
-      - ENABLE_EVALUATION=0
+      - EVAL_MODE=0
       - VEHICLE_VELOCITY=8.0
       - CONTROL_CONSTANT=1.0
     volumes:
