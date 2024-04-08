@@ -186,20 +186,27 @@ Distributed Processing: This concept involves offloading computationally expensi
 \subsection{System Architecture}
 The overall architecture of our system is best described as a combination between a pipeline architecture and a microservice architecture.
 
-The pipeline nature of the system comes from the primary command flow. The system starts off by receiving an image from the camera mounted on the vehicle. The image will be processed into the software, and given to the computer vision node where the image will be analysed to determine the location of the lane lines. The location of the lanes with respect to the vehicle will be passed to the lane keeping section, where it will calculate the center of the lane and calculate the movement commands required to follow it. Then it will send the movement commands to the vehicle which will execute the instructions.
+The pipeline nature of the system comes from the primary command flow. The system starts off by receiving an image from the camera mounted on the vehicle. The image will be processed into the software, and given to the computer vision node where the image will be analyzed to determine the location of the lane lines. The location of the lanes with respect to the vehicle will be passed to the lane keeping section, where it will calculate the center of the lane and calculate the movement commands required to follow it. Then it will send the movement commands to the vehicle which will execute the instructions.
 
-The presence of the microservice architecture comes from the desire to clearly separate each subsystem into its own isolated component. By isolating each part of the project, individual parts become easier to develop because developers can have clearly defined contracts of inputs into the system and what they should output. Furthermore, testing the system becomes easier since each node can be tested in isolation.
+The presence of the microservice architecture comes from the desire to clearly separate each subsystem into its own isolated component. By isolating each part of the project, individual parts become easier to develop because developers can have clearly defined contracts of inputs into the system and what they should output. Furthermore, testing the system becomes easier since each node can be tested in isolation. The deployment diagram for the system architecture can be found in Fig. \ref{fig:deployment}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=6in]{deployment_uml}
+	\caption{UML Deployment Diagram of the System}
+	\label{fig:deployment}
+\end{figure}
 
 \subsubsection{Software Architecture}
 From a software perspective, the system can be grouped into two categories: primary subsystems, which represent major workflows in the system, and secondary subsystems, which exist only to assist the primary subsystems with their workflows but are separate components.
 
 The two primary subsystems in our project are the Detection and the Keeping \& Control subsystems. The Detection subsystem receives raw image data from the camera and determines the vehicle location within a lane, and sends this data to the Keeping \& Control subsystem. The K\&C subsystem interprets the lane data and produces movement commands to adjust the course of the vehicle. The two subsystems are discussed further in section 3 of this proposal.
 
-The two secondary subsystems in our project are the camera controller and the lane transformer. The camera controller is responsible for capturing the image feed from the camera mounted on the vehicle, and then supplying that to the detection node. The purpose behind this is to separate the detection module from the actual camera to remove any dependency issues. Additionally, we have a lane transformer subsystem which takes the data detected by the lane detection system and transforms it into a birds-eye view image of the lane data. The purpose of this is to simplify the operations of the primary subsystems and make it such that the primary subsystems can each be tested better in isolation.
+Additionally, there are several secondary subsystems in our project. These secondary subsystems are the camera controller, the lane transformer, and the lane confidence subsystems. The camera controller is responsible for capturing the image feed from the camera mounted on the vehicle, and then supplying that to the detection node. The purpose behind this is to separate the detection module from the actual camera to remove any dependency issues. Additionally, we have a lane transformer subsystem which takes the data detected by the lane detection system and transforms it into a birds-eye view image of the lane data. The purpose of this is to simplify the operations of the primary subsystems and make it such that the primary subsystems can each be tested better in isolation. Lastly, we have the lane confidence node which assists with handling when a lane disappears from view. Its purpose is to keep track of lanes while they're present and ignore lanes that only appear for a singular frame, and extend lanes into new frames when they disappear spontaneously.
 
 \subsubsection{Physical Architecture}
 
-The physical architecture for the system is a distributed system with four  significant hardware components: the camera, the onboard processing unit with ROS configured, the external processing unit with ROS configured, and the hardware/simulation for controlling the vehicle wheels. First, the camera sensor(s) capture the image data and sends that data to the onboard ROS environment. The onboard ROS environment then sends the data to an external laptop with stronger computing power which contains the software architecture described in section 1.4.1 and completes all calculations. The movement command is then sent back to the onboard processing unit which is then forwarded to the simulation or robot to execute the commands.
+The physical architecture for the system is a distributed system with four significant hardware components: the camera, the onboard processing unit with ROS configured, the external processing unit with ROS configured, and the hardware/simulation for controlling the vehicle wheels. First, the camera sensor(s) capture the image data and sends that data to the onboard ROS environment. The onboard processor holds three different versions of ROS to allow communication with ROS2 nodes on the processors local network, allowing for it to communicate with an external laptop with stronger computing power. This offboard laptop contains the software architecture described in section 1.4.1, broken down into two separate docker containers: one for the detection subsystem, and one for all the other subsystems. After the offboard processing has performed all the nessesary calculations and generated a movement command, the movement command is sent back to the onboard processing unit which is then forwarded to the simulation or robot to execute the commands.
 
 \subsection{Overview of Remainder of Report}
 
@@ -1511,7 +1518,7 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\end{minipage}
 \end{figure}
 
-\section{Second Appendix}
+\section{System Evaluation Graphs}
 \label{SecondAppendix}
 
 \begin{figure}[H]
@@ -1807,15 +1814,6 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\label{fig:merge_way_5}
 		\end{minipage}
 \end{figure}
-
-\section{Third Appendix}
-\label{ThirdAppendix}
-
-\section{Fourth Appendix}
-\label{FourthAppendix}
-
-
-
 
 \end{document}
 
