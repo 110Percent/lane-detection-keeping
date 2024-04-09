@@ -537,7 +537,10 @@ Subsystem-specific requirements:
 	      experience.
 \end{itemize}
 
+
 \subsubsection{Technologies and Methods}
+
+\underline{Line Detection}
 
 The backbone of the detection subsystem lies in its use of computer vision and machine learning to identify lane markers in video
 frames.
@@ -579,7 +582,16 @@ NVIDIA provides the CUDA (Compute Unified Device Architecture) Toolkit \cite{CUD
 GPUs for general-purpose computational tasks.
 A similar stack, ROCm, is provided by AMD for use with its Radeon series of GPUs. \cite{ROCm}
 
+
+\underline{Messaging and Data Transformations}
+
+A perspective transformation is a geometric transformation which can be applied to an image or list of points on a plane, to correct or modify its perspective. Perspective transformations can be used to correct distortions in an image or modify the viewpoint that an image is perceived at. 
+Homography refers to a transformation that maps points from one plane to another. In computer vision applications, homography is often used to describe the relationship of two images taken of the same scene, from different perspectives. Homography is useful for perspective transformations because it retains proportionality of the points within the image. To perform a perspective transformation, a homography matrix must be calculated. A homography matrix is a 3x3 matrix which describes the perspective transformation between two planes. 
+The first step of a typical method for generating a homography matrix is to identify sample points in the source image which form a polygon whose proportions are known, irrespective of how they may appear in the image. This is often done by identifying a quadrilateral within the source image which is known to be rectangular. For example, if an image contains a tile floor with rectangular tiles, the four corners of a tile may be used as the source points. The angles between these points are known to be 90 degrees, so the corresponding coordinates in the transformed image can be determined. From these source and destination points, the homography matrix may be generated and used the image or list of points within the image to complete the perspective transformation. Figure XX below gives an example perspective transformation. The source points in the source image are chosen, shown on the left, and their corresponding points on the destination image are shown on the right. 
+/includegraphics{transform_carleton.png}
+
 \subsubsection{Conceptualization}
+\underline{Line Detection}
 
 There are many possible approaches to the problem of detecting road lines from a camera mounted in a vehicle.
 In the planning phase of the project, we considered the use of detection techniques that did not use machine learning at all.
@@ -686,6 +698,14 @@ of view.
 Detected and inferred lanes also maintain a smooth shape, which is critical in our navigation system as we want to minimize
 jitter introduced by jagged lines caused by errors in the detection subsystem.
 
+\underline{Messaging and Data Transformations}
+The two main tasks of the Messaging and Data Transformations subsystem are to process the lane data into a format that can be published to a ROS topic, and to perform any transformations on the detected lane markings before they are used by the K&C subsystem. 
+
+After processing source images, the Detection module outputs lane markings as a list of lists, with each list representing a detected line, and each line consisting of several x,y coordinates denoting points on the line. TODO: reference appendix of message schema. This formatting is useful for parsing the lane data, but cannot be easily included in a ROS message. ROS offers a functionality for publishing multi-dimensional arrays to topics; however, gaining familiarity with this functionality would be time consuming and the Python implementation for flattening the list of lines was not overly complex. Because of this, the decision was made to flatten the lane data before publishing it in a ROS message, and unflatten the lane data after it was received. 
+
+The mechanism used in the K&C system, described in, CONCEPTUALIZATION SECTION FOR K&C, requires data where the lane markings are plotted on a cartesian grid from a top-down perspective of the scene. The K&C subsystem assumes the position of the camera to be at the origin, with lane markings extending in the positive y direction with lines to the left of the car having negative x coordinates and lines to the right of the car having positive x coordinates. These stipulations mean that after lanes have been detected from the source image, a perspective transformation must be performed to provide usable lane data to the K&C subsystem for making steering adjustments. This design decision increases the risk of issues resulting from propagation of error or latency through the additional calculations, but it allows for the integration with the chosen solution for the K&C subsystem. For future iterations of the system, the perspective transformation may become unnecessary, depending on the specific controller used in those future iterations. 
+
+
 \subsubsection{Software Architecture}
 
 The Lane Detection subsystem receives video frames from the Camera Controller node over a ROS topic, formatted as
@@ -713,6 +733,21 @@ The networking stack in ROS2 allows nodes between Docker containers to communica
 meaning that running lane detection in a separate container does not add any unnecessary complications in the system's architecture.
 
 \subsubsection{Implementation}
+\underline{Line Detection}
+
+\underline{Messaging and Data Transformations}
+The first challenge addressed by the Messaging and Data Transformations module is the reformatting of lane data into a ROS compatible data type. Publishing messages to ROS topics first requires the use of message interfaces. The interfaces for the system are defined in the \texttt{/ros2\_ws/src/lane\_interfaces} directory. The interface for sending lane location data is named LaneLocation and consists of five attributes, stamp, frame\_id, lanes, row\_lengths, and img\_shape. The stamp and frame\_id attributes are of type string and provide the timestamp for the message and filename for the image associated with the lanes respectively. These two attributes are not currently used by the system, but were added to include metadata that may become useful for future features. The lanes attribute is an array with elements of type float32. This attribute contains the data representing the lanes detected for an image. The row\_lengths attribute is an array with elements of type int32 and stores the number of points for each detected line. The image\_shape attribute is also an array with elements of type int32 and stores the dimensions of the image, to be used in the perspective transformation. 
+
+Flattening and Unflattening
+The lines detected by the Detection subsystem are outputted as a list of lists, with each list representing a detected line, and each line consisting of several x,y coordinates denoting points on the line, as described in CONCEPTUALIZATION SECTION FOR DET. Since the object is a multidimensional list, it must be restructured to allow for it to be published to a ROS topic. To account for this, the list was flattened by iterating through each list of points, and separately adding the x and y components to a list. The points remain ordered as they were in the original list. An example is shown below:
+
+\[ 1: \{[(x1, y1), (x2, y2), ...], [(x3, y3), (x4, y4), ...], [(x5, y5), (x6, y6), ...], ...\} \]
+\[ 2: \{x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, ...\} \]
+
+Object 1 depicts the structure of the lanes before flattening, and object 2 depicts the lanes after flattening. 
+
+
+
 \subsubsection{Evaluation}
 
 \subsection{Lane Keeping \& Control}
