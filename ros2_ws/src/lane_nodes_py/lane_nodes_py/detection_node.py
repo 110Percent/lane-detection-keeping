@@ -5,18 +5,14 @@ import torch
 import numpy as np
 
 from clrnet.utils.config import Config
-
 from rclpy.node import Node
-
 from lane_interfaces.msg import LaneLocation
-
 from sensor_msgs.msg import Image
-
 from cv_bridge import CvBridge, CvBridgeError
-
+import ros2_ws.src.lane_nodes_py.lane_nodes_py.transforms.line_transforms as line_transforms
 import cv2
 
-from .detection import Detection
+from .detection.detection import Detection
 
 # These paths are hardcoded for now, but should be moved to a config file or something similar.
 # We use /opt/clrnet because that's where CLRNet is installed in the Docker container.
@@ -71,7 +67,7 @@ class DetectionNode(Node):
             return
 
         # bev_lanes = self.lanes_to_birds_eye(lanes, cv_image)
-        flat_lanes = self.flatten_lanes(lanes)
+        flat_lanes = line_transforms.flatten_lanes(lanes)
 
         lane_data = LaneLocation()
         lane_data.stamp = str(datetime.now())
@@ -81,15 +77,6 @@ class DetectionNode(Node):
         lane_data.img_shape = [cv_image.shape[0], cv_image.shape[1]]
 
         self.lane_publisher_.publish(lane_data)
-
-    # Converts a list of tuples of lane points to a list of floats for the ROS message
-    def flatten_lanes(self, lanes):
-        flattened = []
-        for row in lanes:
-            for point in row:
-                flattened.append(point[0])
-                flattened.append(point[1])
-        return flattened
 
 
 def main(args=None):
