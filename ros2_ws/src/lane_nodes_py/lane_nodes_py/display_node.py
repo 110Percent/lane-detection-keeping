@@ -5,6 +5,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 
 from lane_interfaces.msg import LaneLocation
+import ros2_ws.src.lane_nodes_py.lane_nodes_py.transforms.line_transforms as line_transforms
 
 
 cv_bridge = CvBridge()
@@ -29,26 +30,7 @@ class DisplayNode(Node):
 
     def lane_location_callback(self, msg):
         # self.get_logger().info('Received lane location data')
-        self.lane_coords = self.unflatten_lanes(msg.lanes, msg.row_lengths, msg.img_shape)
-
-
-    def unflatten_lanes(self, lanes, row_lengths, img_shape):
-        unflat = []
-        for length in row_lengths:
-            flat_lane = lanes[:length * 2]
-            del lanes[:length * 2]
-            x_vals = []
-            y_vals = []
-            for i, val in enumerate(flat_lane):
-                if i % 2 == 0:
-                    x_vals.append(int(val * img_shape[1]))
-                else:
-                    y_vals.append(int(val * img_shape[0]))
-            unflat.append(list(zip(x_vals, y_vals)))
-        # self.get_logger().info('parsed lanes: ' + str(unflat))
-        # for i, lane in enumerate(unflat):
-        #     self.get_logger().info('lane ' + str(i) + ': length=' + str(len(lane)) + ' points=' + str(lane))
-        return unflat
+        self.lane_coords = line_transforms.unflatten_lanes(msg.lanes, msg.row_lengths, msg.img_shape)
 
     def update_frame_callback(self):
         if self.base_image is None or self.lane_coords is None:

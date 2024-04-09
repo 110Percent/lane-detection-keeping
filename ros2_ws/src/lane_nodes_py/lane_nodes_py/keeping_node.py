@@ -2,13 +2,10 @@ import rclpy
 from rclpy.node import Node
 
 from lane_interfaces.msg import LaneLocation, LaneLocation2
-
 from ackermann_msgs.msg import AckermannDrive
-
 from lane_nodes_py.keeping.keeping import Keeping
-
-
 from lane_nodes_py.keeping.lane_wrapper import LaneWrapper
+import ros2_ws.src.lane_nodes_py.lane_nodes_py.transforms.line_transforms as line_transforms
 
 import os
 
@@ -48,7 +45,7 @@ class KeepingNode(Node):
         lanes = msg.lanes
         row_lengths = msg.row_lengths
         img_shape = msg.img_shape
-        unflat = self.unflatten_lanes(lanes, row_lengths)
+        unflat = line_transforms.unflatten_lanes(lanes, row_lengths)
         lane_data = translator(unflat)
         self.keeping.lane_location_callback(lane_data)
         # self.get_logger().info('Received transformed lane')
@@ -74,24 +71,6 @@ class KeepingNode(Node):
         msg.jerk = ackermann_msg.jerk
         self.movement_publisher_.publish(msg)
         self.timer.reset()
-
-    def unflatten_lanes(self, lanes, row_lengths):
-        unflat = []
-        for length in row_lengths:
-            flat_lane = lanes[:length * 2]
-            del lanes[:length * 2]
-            x_vals = []
-            y_vals = []
-            for i, val in enumerate(flat_lane):
-                if i % 2 == 0:
-                    x_vals.append(val)
-                else:
-                    y_vals.append(val)
-            unflat.append(list(zip(x_vals, y_vals)))
-        # self.get_logger().info('parsed lanes: ' + str(unflat))
-        # for i, lane in enumerate(unflat):
-        #     self.get_logger().info('lane ' + str(i) + ': length=' + str(len(lane)) + ' points=' + str(lane))
-        return unflat
 
 
 def translator(lanedata):
