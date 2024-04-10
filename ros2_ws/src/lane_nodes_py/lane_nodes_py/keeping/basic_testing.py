@@ -1,6 +1,6 @@
 from typing import List, Tuple
 
-from ros2_ws.src.lane_nodes_py.lane_nodes_py.keeping.keeping import Keeping
+from lane_nodes_py.keeping.keeping import Keeping
 
 from ischedule import schedule, run_loop
 
