@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from lane_nodes_py.evaluation_helper import quaternion_to_euler, dist, euler_to_quaternion
+from lane_nodes_py.evaluation.evaluation_helper import quaternion_to_euler, dist, euler_to_quaternion
 import numpy as np
 
 
