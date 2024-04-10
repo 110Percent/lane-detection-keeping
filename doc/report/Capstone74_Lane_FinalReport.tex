@@ -392,7 +392,7 @@ Liam:
 \begin{figure}[H]
 	\centering
 	\includegraphics[angle=90,height=9in]{gantt}
-	\caption{Gantt Chart of Project Tasks Over Time}
+	\caption{Gantt Chart of Project Tasks over time}
 	\label{fig:gantt_chart}
 \end{figure}
 
@@ -986,14 +986,14 @@ a data type provided by ROS, and then published to a separate ROS topic. This da
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\textwidth]{KnC_diagrams}
-	\caption{UML Class Diagram of the K\&C Subsystem}
+	\caption{UML class diagram of the K\&C subsystem}
 	\label{fig:control_class}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.9\textwidth]{KnC_sequence.png}
-	\caption{UML Sequence Diagram of the K\&C Subsystem}
+	\caption{UML sequence diagram of the K\&C subsystem}
 	\label{fig:control_sequence}
 \end{figure}
 
@@ -1035,7 +1035,7 @@ The first step in implementing the internal map was to identify the path for the
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\textwidth]{lane_center}
-	\caption{Calculation of the Center of the Lanes}
+	\caption{Calculation of the center of the lanes}
 	\label{fig:lane_center_determination}
 \end{figure}
 
@@ -1046,7 +1046,7 @@ The steps for predicting the vehicles new position is done in four steps. The fi
 \begin{figure}
 	\centering
 	\includegraphics[width=5in]{update_description}
-	\caption{Calculating the Vehicles New Position Between Cycles Without New Data}
+	\caption{Calculating the vehicles new position between cycles without new data}
 	\label{fig:internal_update_determination}
 \end{figure}
 
@@ -1073,7 +1073,7 @@ First, it requires the heading error. This can easily be gathered from the contr
 \begin{figure}
 	\centering
 	\includegraphics[width=5in]{stanley_heading_error}
-	\caption{Calculation of the Heading Error for the Stanley Controller}
+	\caption{Calculation of the heading error for the stanley controller}
 	\label{fig:stanley_heading_calc}
 \end{figure}
 
@@ -1082,7 +1082,7 @@ Secondly, the cross track steering has to be configured. This is done by first i
 \begin{figure}
 	\centering
 	\includegraphics[width=5in]{stanley_lateral_error}
-	\caption{Calculation of the Lateral Error for the Stanley Controller}
+	\caption{Calculation of the lateral error for the Stanley controller}
 	\label{fig:stanley_lateral_calc}
 \end{figure}
 
@@ -1129,7 +1129,7 @@ Once the vehicle gets within 5 meters of the last waypoint, the evaluation subsy
 		1.5     & 8.0            & 4.665                      & 0.5294                   \\
 		\hline
 	\end{tabular}
-	\caption{Results of the Maximum Heading and Lateral Error for Various K and Speed Values}
+	\caption{Results of the maximum heading and lateral error for various k and speed values}
 	\label{tab:controller_test_values}
 \end{table}
 
@@ -1138,21 +1138,21 @@ The results of the testing identified that the best performance for both maximum
 \begin{figure}
 	\centering
 	\includegraphics[width=4in]{/knc_eval/waypoints_k-15_v-4}
-	\caption{Vehicle Path Compared to Waypoints for k=1.5 1/s and Base Velocity of 4.0 m/s Over Time}
+	\caption{Top-down view of vehicle path compared to waypoints for k=1.5 1/s and base velocity of 4.0 m/s over time}
 	\label{fig:waypointsk10v4}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=4in]{/knc_eval/lateral_k-15_v-4}
-	\caption{Lateral Error with k=1.5 1/s and Base Velocity of 4.0 m/s Over Time}
+	\caption{Lateral error with k=1.5 1/s and base velocity of 4.0 m/s over time}
 	\label{fig:lateralk10v4}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=4in]{/knc_eval/heading_k-15_v-4}
-	\caption{Heading Error with k=1.5 1/s and Base Velocity of 4.0 m/s Over Time}
+	\caption{Heading error with k=1.5 1/s and base velocity of 4.0 m/s over time}
 	\label{fig:headingk10v4}
 \end{figure}
 
@@ -1233,14 +1233,14 @@ Despite these issues, ROS provides huge benefits to the design and implementatio
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{ROS1Distros.png}
-		\captionof{figure}{A sample of ROS 1 distros from the ROS 1 wiki \cite{ROS1Distros}}
+		\caption{A sample of ROS 1 distros from the ROS 1 wiki \cite{ROS1Distros}}
 		\label{fig:ros1distros}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{ROS2Distros.png}
-		\captionof{figure}{A sample of ROS 2 distros from the ROS 2 wiki \cite{ROS2Distros}}
+		\caption{A sample of ROS 2 distros from the ROS 2 wiki \cite{ROS2Distros}}
 		\label{fig:ros2distros}
 	\end{minipage}
 \end{figure}
@@ -1284,9 +1284,9 @@ Our plan was to construct a test track for the JetAcker in order to test our sys
 
 \subsection{Evaluation - Results}
 
-Due to the complications that arose with the JetAcker, the primary method of evaluation for the system was done through the Carla simulation software. However, even though Carla is a great environment for testing there is a limited amount of information that can be extracted from the Carla-ROS bridge that makes it difficult to evaluate where the lane centre truly is. In order to get around this, the waypoint path that was used for the keeping and control subsystem was broken into four distinct parts that each exhibited a unique path characteristic that can be used to evaluate the system as a whole. The vehicle is then spawned at the beginning of each segment, and once the vehicle reaches the end the evaluation subsystem will output the maximum lateral error and the error over time associated with that trial.
+Due to the complications that arose with the JetAcker, the primary method of evaluation for the system was done through the Carla simulation software. However, even though Carla is a great environment for testing there is a limited amount of information that can be extracted from the Carla-ROS bridge that makes it difficult to evaluate where the lane centre truly is. In order to get around this, the waypoint path that was used for the keeping and control subsystem was broken into four distinct parts that each exhibited a unique path characteristic that can be used to evaluate the system as a whole. The vehicle is then spawned at the beginning of each segment, and once the vehicle reaches the end of that segment the evaluation subsystem will output the maximum lateral error and the error over time associated with that trial.
 
-The four different trial paths used for the evaluation are a straight line, a shallow snake curve, a moderately sharp circular curve, and a straight line that has a lane merge. The straight line is a path that has no turns associated with it, and it meant to confirm that the vehicle is actually capable of following a clear path. The second evaluation path is the shallow snake path. The purpose of this path is to determine that the vehicle is capable of identifying curves present in the vehicles field of view, and then to then proceed to follow the lanes. The two curves in the snake path have a radii of approximately 340 meters and 85 meters, respectively. Thirdly, a moderately sharp circular path was added to evaluate if the vehicle can control itself well on sharper corners. The curve of the circular shape has a radius of approximately 55 meters. Lastly, a straight lane path that has another lane merge into it was used to evaluate how the system is able to handle that scenario.
+The four different trial paths used for the evaluation are a straight line, a shallow snake curve, a moderately sharp circular curve, and a straight line that has a lane merge. The straight line is a path that has no turns associated with it, and it meant to confirm that the vehicle is actually capable of following a clear path. The second evaluation path is the shallow snake path. The purpose of this path is to determine that the vehicle is capable of identifying curves present in the vehicles field of view, and then to then proceed to follow the lanes. The two curves in the snake path have radii of approximately 340 meters and 85 meters. Thirdly, a moderately sharp circular path was added to evaluate if the vehicle can control itself well on sharper corners. The curve of the circular shape has a radius of approximately 55 meters. Lastly, a straight lane path that has another lane merge into it was used to evaluate how the system is able to handle a scenario where one of the lanes it was following disspaears.
 
 Each trial path was run through five times to achieve an average maximum lateral error over time. Additionally, each trial path outputted a line chart of the lateral error over time to identify any noticeable patterns present in the lateral error. Finally, each trial also outputted a line chart comparing the overall path of the vehicle to the path of the waypoints to provide a birds-eye view of the path the vehicle takes. The results of the testing can be found in Table \ref{tab:overal_eval}.
 
@@ -1295,13 +1295,13 @@ Each trial path was run through five times to achieve an average maximum lateral
 	\begin{tabular}{c c c c c c c c }
 		\textbf{Trial Path} & \textbf{Trial 1} & \textbf{Trial 2} & \textbf{Trial 3} & \textbf{Trial 4} & \textbf{Trial 5} & \textbf{Average} & \textbf{Standard Deviation} \\ [0.5ex]
 		\hline
-		Straight Path & 0.0529 m & 0.0405 m & 0.0491 m & 0.0573 m & 0.0535 m & 0.0506 m & 0.0064 m \\		
-		\hline
-		Snake Path & 0.3216 m & 0.3174 m & 0.3202 m & 0.3172 m & 0.3223 m & 0.3197 m & 0.0023 m \\		
-		\hline
-		Circle Path & 0.5086 m & 0.4997 m & 0.5119 m & 0.5104 m & 0.5455 m & 0.5152 m & 0.0176 m \\		
-		\hline
-		Merge Path & 1.4733 m & 1.3943 m & 1.4385 m & 1.4829 m & 1.4563 m & 1.4491 m & 0.0350 m \\		
+		Straight Path       & 0.0529 m         & 0.0405 m         & 0.0491 m         & 0.0573 m         & 0.0535 m         & 0.0506 m         & 0.0064 m            		\\		
+		\hline         
+		Snake Path          & 0.3216 m         & 0.3174 m         & 0.3202 m         & 0.3172 m         & 0.3223 m         & 0.3197 m         & 0.0023 m            		\\		
+		\hline         
+		Circle Path         & 0.5086 m         & 0.4997 m         & 0.5119 m         & 0.5104 m         & 0.5455 m         & 0.5152 m         & 0.0176 m            		\\		
+		\hline         
+		Merge Path          & 1.4733 m         & 1.3943 m         & 1.4385 m         & 1.4829 m         & 1.4563 m         & 1.4491 m         & 0.0350 m            		\\		
 		\hline
 	\end{tabular}
 	\caption{Results of Maximum Lateral Devation across 5 Trials for 4 Unique Paths}
@@ -1310,7 +1310,7 @@ Each trial path was run through five times to achieve an average maximum lateral
 
 \textbf{Straight Path}
 
-The straight path had little relevant insights to gain from it. The average maximum lateral error for this path was 0.0535 meters, which is well below the maximum lateral error threshold defined in Functional Requirement 2. Further analysis of the lateral error over time graphs does not highlight anything of note, as the lateral error remains too low to show anything meaningful as seen in Fig. \ref{fig:straight_lat_1}. Furthermore, a review of the vehicle path compared to the waypoint path demonstrates that there is almost a complete overlap between the vehicles path and the waypoints. Therefore, in the case of a completely straight path the system can maintain a maximum lateral heading below 0.45 meters.
+The straight path had little relevant insights to gain from it. The average maximum lateral error for this path was 0.0506 meters, which is well below the maximum lateral error threshold defined in Functional Requirement 1. Further analysis of the lateral error over time graphs does not highlight anything of note, as the lateral error remains too low to show anything meaningful as seen in Fig. \ref{fig:straight_lat_1}. Furthermore, a review of the vehicle path compared to the waypoint path demonstrates that there is almost a complete overlap between the vehicles path and the waypoints. Therefore, in the case of a completely straight path the system can maintain a maximum lateral heading below 0.45 meters.
 
 \begin{figure}
 	\centering
@@ -1331,42 +1331,42 @@ The straight path had little relevant insights to gain from it. The average maxi
 
 \textbf{Snake Path}
 
-The snake path was originally chosen to evaluate how effectively the autonomous driving system can deal with the existence of turns in the road in each direction. For this trial, the vehicle achieved an average maximum lateral error of 0.3457 meters, which while it is close to the maximum lateral error of 0.45 meters it still remains acceptable. Upon further investigation of the lateral error over time graph found at Fig. \ref{fig:snake_lat_1} in conjunction with the vehicle path graph found at Fig. \ref{fig:snake_way_1}, a few key points can be identified. For starters, the two halves of the vehicle path can be identified. The first half of the snake shape was a lot more shallow than the second half, which resulted in an average lateral error that visually appears around half of what was seen in th second half. Furthermore, The moment when the vehicle switches the direction of the curve there is a noticeable peak in the lateral error before the vehicle finds its footing and has a more steady lateral error. This increased initial error is likely due to the vehicle not responding quickly enough to the curvature of the path, and as a result it accidentally overshoots. All that said, in the case of a slightly curved path in both direction the system can maintain a maximum lateral heading below 0.45 meters.
+The snake path was originally chosen to evaluate how effectively the autonomous driving system can deal with the existence of turns in the road in each direction. For this trial, the vehicle achieved an average maximum lateral error of 0.3197 meters, which while it is close to the maximum lateral error of 0.45 meters it still remains acceptable. Upon further investigation of the lateral error over time graph found at Fig. \ref{fig:snake_lat_1} in conjunction with the vehicle path graph found at Fig. \ref{fig:snake_way_1}, a few key points can be identified. For starters, the two halves of the vehicle path can be identified. The first half of the snake shape was a lot more shallow than the second half, which resulted in an average lateral error that visually appears around half of what was seen in the second half. Furthermore, The moment when the vehicle switches the direction of the curve there is a noticeable peak in the lateral error before the vehicle finds its equilibrium and has a more steady lateral error. This increased initial error is likely due to the vehicle not responding quickly enough to the curvature of the path, and as a result it accidentally overshoots. All that said, in the case of a slightly curved path in both direction the system can maintain a maximum lateral heading below 0.45 meters.
 
 \begin{figure}
 	\centering
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_snake_1}
-		\captionof{figure}{Lateral Error over Time for Snake Path Trial 1}
+		\caption{Lateral error over Time for Snake Path Trial 1}
 		\label{fig:snake_lat_1}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_1}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 1}
+		\caption{Vehicle Path compared to Lane Center for Snake Path Trial 1}
 		\label{fig:snake_way_1}
 	\end{minipage}
 \end{figure}
 
 \textbf{Circle Path}
 
-The third trial map our team chose was the Circle path, which was originally chosen to evaluate how effectively the autonomous driving system can deal with sharper turns. For this trial, the vehicle achieved an average maximum lateral error of 0.5393 meters, which fails the requirement for maintaining a maximum lateral error below 0.45 meters. Upon further investigation of the lateral error over time graph found at Fig. \ref{fig:circle_lat_1} in conjunction with the vehicle path graph found at Fig. \ref{fig:circle_way_1}, a few notable patterns emerge. For starters, the same pattern observed with the snake path can be identified. When the vehicle begins on the track, it initially gets a very high lateral error which ends up being the maximum lateral error for the trial. However, this maximum lateral error is very quickly lowered to a more stable lateral error that does remain under the 0.45 meters identified in the requirements. As before, this is likely due to the initial overshoot of the vehicle not attempting to steer towards the lane centre at the beginning, but only after its already started moving away. However, while we can understand why this initial overshoot might be occurring the ability to handle this overshoot must exist in the lane evaluation system, and as a result in the case of a moderately curved path the system cannot maintain a maximum lateral heading below 0.45 meters.
+The third trial map our team chose was the circle path, which was originally chosen to evaluate how effectively the autonomous driving system can deal with sharper turns. For this trial, the vehicle achieved an average maximum lateral error of 0.5152 meters, which fails the requirement for maintaining a maximum lateral error below 0.45 meters. Upon further investigation of the lateral error over time graph found at Fig. \ref{fig:circle_lat_1} in conjunction with the vehicle path graph found at Fig. \ref{fig:circle_way_1}, a few notable patterns emerge. For starters, the same pattern observed with the snake path can be identified. When the vehicle begins on the track, it initially gets a very high lateral error which ends up being the maximum lateral error for the trial. However, this maximum lateral error is very quickly lowered to a more stable lateral error that does remain under the 0.45 meters identified in the requirements. As before, this is likely due to the initial overshoot of the vehicle not attempting to steer towards the lane centre at the beginning, but only after its already started moving away. However, while we can understand why this initial overshoot might be occurring the ability to handle this overshoot must exist in the lane evaluation system, and as a result in the case of a moderately curved path the system cannot maintain a maximum lateral heading below 0.45 meters.
 
 \begin{figure}
 	\centering
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_circle_1}
-		\captionof{figure}{Lateral Error over Time for Circle Path Trial 1}
+		\caption{Lateral error over Time for Circle Path Trial 1}
 		\label{fig:circle_lat_1}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_1}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 1}
+		\caption{Vehicle Path compared to Lane Center for Circle Path Trial 1}
 		\label{fig:circle_way_1}
 	\end{minipage}
 \end{figure}
@@ -1380,23 +1380,23 @@ The final trial that our team chose was a merge path. This means that the vehicl
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_merge_1}
-		\captionof{figure}{Lateral Error over Time for Merge Path Trial 1}
+		\caption{Lateral error over Time for Merge Path Trial 1}
 		\label{fig:merge_lat_1}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_1}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 1}
+		\caption{Vehicle Path compared to Lane Center for Merge Path Trial 1}
 		\label{fig:merge_way_1}
 	\end{minipage}
 \end{figure}
 
 \textbf{Conclusions}
 
-Overall, the system was not capable of maintaining a maximum lateral error below 0.45 meters in all tested environments. It was capable of maintaining a sufficiently low maximum lateral error when the shape of curves in the road was sufficiently shallow, but after a certain point was no longer capable of always remaining between the lane lines. Furthermore, the system was incapable of keeping when any disturbances to the lane data were present since when the other lane merged onto the vehicles path it was incapable of properly determining the lane centre and flew off course.
+Overall, the system was not capable of maintaining a maximum lateral error below 0.45 meters in all tested environments. It was capable of maintaining a sufficiently low maximum lateral error when the shape of curves in the road was sufficiently shallow, but after a certain point was no longer capable of always remaining between the lane lines. Furthermore, the system was incapable of keeping when any disturbances to the lane data were present since when the other lane merged onto the vehicle's path it was incapable of properly determining the lane centre and flew off course.
 
-Of further note, the other graphs generated in the other trials can be found in Appendix B.
+The graphs generated in the other trials can be found in Appendix B.
 
 \section{Reflections}
 
@@ -1463,14 +1463,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-05_v-4.png}
-		\captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 4.0 m/s Over Time}
+		\caption{Top-down view of vehicle path compared to waypoints for k=0.5 1/s and base velocity of 4.0 m/s over time}
 		\label{fig:wayk5v4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-05_v-4.png}
-		\captionof{figure}{Lateral Error with k=0.5 1/s and Base Velocity of 4.0 m/s Over Time}
+		\caption{Lateral error with k=0.5 1/s and base velocity of 4.0 m/s over time}
 		\label{fig:latk5v4}
 	\end{minipage}
 \end{figure}
@@ -1480,14 +1480,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/heading_k-05_v-4.png}
-		\captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 4.0 m/s Over Time}
+		\caption{Heading error with k=0.5 1/s and base velocity of 4.0 m/s over time}
 		\label{fig:headk5v4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-05_v-6.png}
-		\captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Top-down view of vehicle path compared to waypoints for k=0.5 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:wayk5v6}
 	\end{minipage}
 \end{figure}
@@ -1497,14 +1497,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-05_v-6.png}
-		\captionof{figure}{Lateral Error with k=0.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Lateral error with k=0.5 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:latk5v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/heading_k-05_v-6.png}
-		\captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Heading error with k=0.5 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:headk5v6}
 	\end{minipage}
 \end{figure}
@@ -1514,14 +1514,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-05_v-8.png}
-		\captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Top-down view of vehicle path compared to waypoints for k=0.5 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:wayk5v8}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-05_v-8.png}
-		\captionof{figure}{Lateral Error with k=0.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Lateral error with k=0.5 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:latk5v8}
 	\end{minipage}
 \end{figure}
@@ -1531,14 +1531,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/heading_k-05_v-8.png}
-		\captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Heading error with k=0.5 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:headk5v8}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-1_v-4.png}
-		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.0 1/s and Base Velocity of 4.0 m/s Over Time}
+		\caption{Top-down view of vehicle path compared to waypoints for k=1.0 1/s and base velocity of 4.0 m/s over time}
 		\label{fig:wayk10v4}
 	\end{minipage}
 \end{figure}
@@ -1548,14 +1548,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-1_v-4.png}
-		\captionof{figure}{Lateral Error with k=1.0 1/s and Base Velocity of 4.0 m/s Over Time}
+		\caption{Lateral error with k=1.0 1/s and base velocity of 4.0 m/s over time}
 		\label{fig:latk10v4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/heading_k-1_v-4.png}
-		\captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 4.0 m/s Over Time}
+		\caption{Heading error with k=1.0 1/s and base velocity of 4.0 m/s over time}
 		\label{fig:headk10v4}
 	\end{minipage}
 \end{figure}
@@ -1566,14 +1566,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-1_v-6.png}
-		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.0 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Top-down view of vehicle path compared to waypoints for k=1.0 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:wayk10v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-1_v-6.png}
-		\captionof{figure}{Lateral Error with k=1.0 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Lateral error with k=1.0 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:latk10v6}
 	\end{minipage}
 \end{figure}
@@ -1583,14 +1583,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/heading_k-1_v-6.png}
-		\captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Heading error with k=1.0 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:headk10v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-1_v-8.png}
-		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.0 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Top-down view of vehicle path compared to waypoints for k=1.0 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:wayk10v8}
 	\end{minipage}
 \end{figure}
@@ -1600,14 +1600,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-1_v-8.png}
-		\captionof{figure}{Lateral Error with k=1.0 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Lateral error with k=1.0 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:latk10v8}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/heading_k-1_v-8.png}
-		\captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Heading error with k=1.0 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:headk10v8}
 	\end{minipage}
 \end{figure}
@@ -1617,14 +1617,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-15_v-6.png}
-		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Top-down view of vehicle path compared to waypoints for k=1.5 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:wayk15v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-15_v-6.png}
-		\captionof{figure}{Lateral Error with k=1.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Lateral error with k=1.5 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:latk15v6}
 	\end{minipage}
 \end{figure}
@@ -1634,14 +1634,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/heading_k-15_v-6.png}
-		\captionof{figure}{Heading Error with k=1.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Heading error with k=1.5 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:headk15v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-15_v-8.png}
-		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Top-down view of vehicle path compared to waypoints for k=1.5 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:wayk15v8}
 	\end{minipage}
 \end{figure}
@@ -1651,14 +1651,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-15_v-8.png}
-		\captionof{figure}{Lateral Error with k=1.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Lateral error with k=1.5 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:latk15v8}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/heading_k-15_v-8.png}
-		\captionof{figure}{Heading Error with k=1.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Heading error with k=1.5 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:headk15v4}
 	\end{minipage}
 \end{figure}
@@ -1671,14 +1671,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_straight_2}
-		\captionof{figure}{Lateral Error over Time for Straight Path Trial 2}
+		\caption{Lateral error over Time for Straight Path Trial 2}
 		\label{fig:straight_lat_2}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_2}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 2}
+		\caption{Vehicle Path compared to Lane Center for Straight Path Trial 2}
 		\label{fig:straight_way_2}
 	\end{minipage}
 \end{figure}
@@ -1688,14 +1688,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_straight_3}
-		\captionof{figure}{Lateral Error over Time for Straight Path Trial 3}
+		\caption{Lateral error over Time for Straight Path Trial 3}
 		\label{fig:straight_lat_3}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_3}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 3}
+		\caption{Vehicle Path compared to Lane Center for Straight Path Trial 3}
 		\label{fig:straight_way_3}
 	\end{minipage}
 \end{figure}
@@ -1705,14 +1705,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_straight_4}
-		\captionof{figure}{Lateral Error over Time for Straight Path Trial 4}
+		\caption{Lateral error over Time for Straight Path Trial 4}
 		\label{fig:straight_lat_4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_4}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 4}
+		\caption{Vehicle Path compared to Lane Center for Straight Path Trial 4}
 		\label{fig:straight_way_4}
 	\end{minipage}
 \end{figure}
@@ -1722,14 +1722,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_straight_5}
-		\captionof{figure}{Lateral Error over Time for Straight Path Trial 5}
+		\caption{Lateral error over Time for Straight Path Trial 5}
 		\label{fig:straight_lat_5}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_5}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 5}
+		\caption{Vehicle Path compared to Lane Center for Straight Path Trial 5}
 		\label{fig:straight_way_5}
 	\end{minipage}
 \end{figure}
@@ -1747,14 +1747,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_snake_2}
-		\captionof{figure}{Lateral Error over Time for Snake Path Trial 2}
+		\caption{Lateral error over Time for Snake Path Trial 2}
 		\label{fig:snake_lat_2}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_2}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 2}
+		\caption{Vehicle Path compared to Lane Center for Snake Path Trial 2}
 		\label{fig:snake_way_2}
 	\end{minipage}
 \end{figure}
@@ -1764,14 +1764,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_snake_3}
-		\captionof{figure}{Lateral Error over Time for Snake Path Trial 3}
+		\caption{Lateral error over Time for Snake Path Trial 3}
 		\label{fig:snake_lat_3}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_3}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 3}
+		\caption{Vehicle Path compared to Lane Center for Snake Path Trial 3}
 		\label{fig:snake_way_3}
 	\end{minipage}
 \end{figure}
@@ -1781,14 +1781,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_snake_4}
-		\captionof{figure}{Lateral Error over Time for Snake Path Trial 4}
+		\caption{Lateral error over Time for Snake Path Trial 4}
 		\label{fig:snake_lat_4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_4}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 4}
+		\caption{Vehicle Path compared to Lane Center for Snake Path Trial 4}
 		\label{fig:snake_way_4}
 	\end{minipage}
 \end{figure}
@@ -1798,14 +1798,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_snake_5}
-		\captionof{figure}{Lateral Error over Time for Snake Path Trial 5}
+		\caption{Lateral error over Time for Snake Path Trial 5}
 		\label{fig:snake_lat_5}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_5}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 5}
+		\caption{Vehicle Path compared to Lane Center for Snake Path Trial 5}
 		\label{fig:snake_way_5}
 	\end{minipage}
 \end{figure}
@@ -1822,14 +1822,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_circle_2}
-		\captionof{figure}{Lateral Error over Time for Circle Path Trial 2}
+		\caption{Lateral error over Time for Circle Path Trial 2}
 		\label{fig:circle_lat_2}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_2}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 2}
+		\caption{Vehicle Path compared to Lane Center for Circle Path Trial 2}
 		\label{fig:circle_way_2}
 	\end{minipage}
 \end{figure}
@@ -1839,14 +1839,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_circle_3}
-		\captionof{figure}{Lateral Error over Time for Circle Path Trial 3}
+		\caption{Lateral error over Time for Circle Path Trial 3}
 		\label{fig:circle_lat_3}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_3}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 3}
+		\caption{Vehicle Path compared to Lane Center for Circle Path Trial 3}
 		\label{fig:circle_way_3}
 	\end{minipage}
 \end{figure}
@@ -1856,14 +1856,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_circle_4}
-		\captionof{figure}{Lateral Error over Time for Circle Path Trial 4}
+		\caption{Lateral error over Time for Circle Path Trial 4}
 		\label{fig:circle_lat_4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_4}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 4}
+		\caption{Vehicle Path compared to Lane Center for Circle Path Trial 4}
 		\label{fig:circle_way_4}
 	\end{minipage}
 \end{figure}
@@ -1873,14 +1873,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_circle_5}
-		\captionof{figure}{Lateral Error over Time for Circle Path Trial 5}
+		\caption{Lateral error over Time for Circle Path Trial 5}
 		\label{fig:circle_lat_5}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_5}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 5}
+		\caption{Vehicle Path compared to Lane Center for Circle Path Trial 5}
 		\label{fig:circle_way_5}
 	\end{minipage}
 \end{figure}
@@ -1897,14 +1897,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_merge_2}
-		\captionof{figure}{Lateral Error over Time for Merge Path Trial 2}
+		\caption{Lateral error over Time for Merge Path Trial 2}
 		\label{fig:merge_lat_2}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_2}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 2}
+		\caption{Vehicle Path compared to Lane Center for Merge Path Trial 2}
 		\label{fig:merge_way_2}
 	\end{minipage}
 \end{figure}
@@ -1914,14 +1914,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_merge_3}
-		\captionof{figure}{Lateral Error over Time for Merge Path Trial 3}
+		\caption{Lateral error over Time for Merge Path Trial 3}
 		\label{fig:merge_lat_3}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_3}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 3}
+		\caption{Vehicle Path compared to Lane Center for Merge Path Trial 3}
 		\label{fig:merge_way_3}
 	\end{minipage}
 \end{figure}
@@ -1931,14 +1931,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_merge_4}
-		\captionof{figure}{Lateral Error over Time for Merge Path Trial 4}
+		\caption{Lateral error over Time for Merge Path Trial 4}
 		\label{fig:merge_lat_4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_4}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 4}
+		\caption{Vehicle Path compared to Lane Center for Merge Path Trial 4}
 		\label{fig:merge_way_4}
 	\end{minipage}
 \end{figure}
@@ -1948,14 +1948,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_merge_5}
-		\captionof{figure}{Lateral Error over Time for Merge Path Trial 5}
+		\caption{Lateral error over Time for Merge Path Trial 5}
 		\label{fig:merge_lat_5}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_5}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 5}
+		\caption{Vehicle Path compared to Lane Center for Merge Path Trial 5}
 		\label{fig:merge_way_5}
 	\end{minipage}
 \end{figure}
