@@ -5,7 +5,7 @@ from lane_interfaces.msg import LaneLocation, LaneLocation2
 from ackermann_msgs.msg import AckermannDrive
 from lane_nodes_py.keeping.keeping import Keeping
 from lane_nodes_py.keeping.lane_wrapper import LaneWrapper
-import ros2_ws.src.lane_nodes_py.lane_nodes_py.transforms.line_transforms as line_transforms
+import lane_nodes_py.transforms.line_transforms as line_transforms
 
 import os
 
@@ -26,17 +26,18 @@ class KeepingNode(Node):
         self.timer = self.create_timer(1 / OUTPUT_FREQUENCY, self.movement_output_callback)
 
         # Create the subscriber for receiving lane data
-        self.lane_subscription = self.create_subscription(
-            LaneLocation,
-            'bev_lane_location_data',
-            self.lane_location_callback,
-            10)
-
-        self.eval_lane_subscription = self.create_subscription(
-            LaneLocation2,
-            'lane_location_data_eval',
-            self.lane_location_callback_eval,
-            10)
+        if os.environ['EVAL_MODE'] != "FULL":
+            self.lane_subscription = self.create_subscription(
+                LaneLocation,
+                'bev_lane_location_data',
+                self.lane_location_callback,
+                10)
+        else:
+            self.eval_lane_subscription = self.create_subscription(
+                LaneLocation2,
+                'lane_location_data_eval',
+                self.lane_location_callback_eval,
+                10)
 
     # Callback for receiving lane data. At the moment, just echoes it down the pipeline without any further processing.
     def lane_location_callback(self, msg):

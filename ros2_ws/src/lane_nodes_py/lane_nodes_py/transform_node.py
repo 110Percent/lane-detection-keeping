@@ -3,7 +3,7 @@ from rclpy.node import Node
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
-import ros2_ws.src.lane_nodes_py.lane_nodes_py.transforms.line_transforms as line_transforms
+import lane_nodes_py.transforms.line_transforms as line_transforms
 
 from lane_interfaces.msg import LaneLocation
 

@@ -30,7 +30,6 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 	"msg/LaneLocation.msg"
 	"msg/LaneLocation2.msg"
 	"msg/MovementInstruction.msg"
-	"msg/Lane.msg"
 )
 
 ament_package()
