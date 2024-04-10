@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from lane_nodes_py.evaluation_helper import quaternion_to_euler, dist, euler_to_quaternion
+from lane_nodes_py.evaluation.evaluation_helper import quaternion_to_euler, dist, euler_to_quaternion
 import numpy as np
 
 
@@ -17,7 +17,7 @@ class DataAnalyzer():
         self.calculate_error_over_time()
 
     def calculate_error_over_time(self):
-
+        start_time = self.vehicle_path[0].header.stamp.sec + (self.vehicle_path[0].header.stamp.nanosec * 0.000000001)
         for vehicle_point in self.vehicle_path:
             closest = None
 
@@ -53,7 +53,10 @@ class DataAnalyzer():
             p4 = front + n * (np.dot(v, n) / np.dot(n, n))
             d = dist(p4, p3)
 
-            # TODO: Figure out a way to differentiate between which side of the waypoint the lad is on
+            # noinspection PyUnreachableCode
+            if np.cross((front[0] - back[0], front[1] - back[1]),
+                        (current_location[0] - back[0], current_location[1] - back[1])) < 0:
+                d = -d
 
             angle = np.arctan2((front[1] - back[1]), (front[0] - back[0]))
 
@@ -67,26 +70,37 @@ class DataAnalyzer():
             while heading_error < -np.pi:
                 heading_error = heading_error + (2 * np.pi)
             self.heading_error += [
-                (vehicle_point.header.stamp.sec + (0.000000001 * vehicle_point.header.stamp.nanosec), heading_error)]
+                (vehicle_point.header.stamp.sec + (0.000000001 * vehicle_point.header.stamp.nanosec) - start_time, heading_error)]
 
             self.lateral_error += [
-                (vehicle_point.header.stamp.sec + (0.000000001 * vehicle_point.header.stamp.nanosec), d)]
+                (vehicle_point.header.stamp.sec + (0.000000001 * vehicle_point.header.stamp.nanosec) - start_time, d)]
 
     def print_measurement_diagrams(self, k, v):
+        # Lateral Error
         plt.plot(list(zip(*self.lateral_error))[0], list(zip(*self.lateral_error))[1])
-        plt.title('Lateral Error with k='+str(k)+' and base velocity of '+str(v)+'m/s Over Time')
+        # plt.title('Lateral Error with k=' + str(k) + ' and base velocity of ' + str(v) + 'm/s Over Time')
         plt.xlabel('Time(seconds)')
         plt.ylabel('Lateral Error(meters)')
-        plt.show()
-        plt.savefig('Lateral_Error.jpg')
 
+        ax = plt.gca()
+        globaly = [-5.5, 5.5]
+        ax.set_ylim(globaly)
+        plt.grid(axis='y')
+        plt.savefig('/root/Lateral_Error.png')
+        plt.clf()
+
+        # Heading Error
         plt.plot(list(zip(*self.heading_error))[0], list(zip(*self.heading_error))[1])
-        plt.title('Heading Error with k='+str(k)+' and base velocity of '+str(v)+'m/s Over Time')
+        # plt.title('Heading Error with k=' + str(k) + ' and base velocity of ' + str(v) + 'm/s Over Time')
         plt.xlabel('Time(seconds)')
         plt.ylabel('Heading Error(radians)')
-        plt.show()
-        plt.savefig('Heading_Error.jpg')
 
+        ax = plt.gca()
+        globaly2 = [-0.7, 0.7]
+        ax.set_ylim(globaly2)
+        plt.grid(axis='y')
+        plt.savefig('/root/Heading_Error.png')
+        plt.clf()
 
     def print_path_diagram(self, k, v):
         vehicle_path_points = []
@@ -94,19 +108,53 @@ class DataAnalyzer():
             vehicle_path_points += [(p.pose.pose.position.x, p.pose.pose.position.y)]
         plt.plot(list(zip(*self.waypoints))[0], list(zip(*self.waypoints))[1], label='Waypoint Path')
         plt.plot(list(zip(*vehicle_path_points))[0], list(zip(*vehicle_path_points))[1], label='Vehicle Path')
-        plt.title('Vehicle Path compared to Waypoints for k='+str(k)+' and base velocity of '+str(v)+'m/s')
-        plt.tick_params(
-            axis='both',  # changes apply to the x-axis
-            which='both',  # both major and minor ticks are affected
-            bottom=False,  # ticks along the bottom edge are off
-            top=False,  # ticks along the top edge are off
-            left=False,
-            right=False,
-            labelleft=False,
-            labelbottom=False)  # labels along the bottom edge are off
+        # plt.title('Vehicle Path compared to Waypoints for k=' + str(k) + ' and base velocity of ' + str(v) + 'm/s')
+
+        plt.xlabel('X-Coordinate (meters)')
+        plt.ylabel('Y-Coordinate (meters)')
+
         plt.legend()
-        plt.show()
-        plt.savefig('Vehicle_Path.jpg')
+
+        plt.text(self.vehicle_path[0].pose.pose.position.x, self.vehicle_path[0].pose.pose.position.y, 'Start')
+        plt.text(self.vehicle_path[-1].pose.pose.position.x, self.vehicle_path[-1].pose.pose.position.y, 'End')
+
+        wayxmax = max(list(zip(*self.waypoints))[0])
+        wayymax = max(list(zip(*self.waypoints))[1])
+
+        wayxmin = min(list(zip(*self.waypoints))[0])
+        wayymin = min(list(zip(*self.waypoints))[1])
+
+        pathxmax = max(list(zip(*vehicle_path_points))[0])
+        pathymax = max(list(zip(*vehicle_path_points))[1])
+
+        pathxmin = min(list(zip(*vehicle_path_points))[0])
+        pathymin = min(list(zip(*vehicle_path_points))[1])
+
+        globalx = [min([wayxmin, pathxmin]), max([wayxmax, pathxmax])]
+        globaly = [min([wayymin, pathymin]), max([wayymax, pathymax])]
+
+        if globalx[1] - globalx[0] < globaly[1] - globaly[0]:
+            diff = (globaly[1] - globaly[0]) - (globalx[1] - globalx[0])
+            globalx[1] += diff / 2
+            globalx[0] -= diff / 2
+        else:
+            diff = (globalx[1] - globalx[0]) - (globaly[1] - globaly[0])
+            globaly[1] += diff / 2
+            globaly[0] -= diff / 2
+
+        ten_percent_x = (globalx[1] - globalx[0]) / 10
+        globalx[1] += ten_percent_x
+        globalx[0] -= ten_percent_x
+
+        ten_percent_y = (globaly[1] - globaly[0]) / 10
+        globaly[1] += ten_percent_y
+        globaly[0] -= ten_percent_y
+
+        ax = plt.gca()
+        ax.set_xlim(globalx)
+        ax.set_ylim(globaly)
+        plt.savefig('/root/Vehicle_Path.png')
+        plt.clf()
 
     def get_maximum_errors(self):
         # Get the closest two points to the cars position
@@ -115,12 +163,15 @@ class DataAnalyzer():
         lateral_errors = list(zip(*self.lateral_error))[1]
 
         max_distance = max(lateral_errors)
+        min_distance = min(lateral_errors)
+
+        max_distance_error = max_distance if (abs(min_distance) < max_distance) else abs(min_distance)
 
         max_heading = max(heading_errors)
         min_heading = min(heading_errors)
         max_heading_error = max_heading if (abs(min_heading) < max_heading) else abs(min_heading)
 
-        return max_heading_error, max_distance
+        return max_heading_error, max_distance_error
 
 
 class orient():
