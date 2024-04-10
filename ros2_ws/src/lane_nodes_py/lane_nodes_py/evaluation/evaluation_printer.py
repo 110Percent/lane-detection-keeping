@@ -168,12 +168,15 @@ class DataAnalyzer():
         lateral_errors = list(zip(*self.lateral_error))[1]
 
         max_distance = max(lateral_errors)
+        min_distance = min(lateral_errors)
+
+        max_distance_error = max_distance if (abs(min_distance) < max_distance) else abs(min_distance)
 
         max_heading = max(heading_errors)
         min_heading = min(heading_errors)
         max_heading_error = max_heading if (abs(min_heading) < max_heading) else abs(min_heading)
 
-        return max_heading_error, max_distance
+        return max_heading_error, max_distance_error
 
 
 class orient():
