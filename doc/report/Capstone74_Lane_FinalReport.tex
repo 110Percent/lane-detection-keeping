@@ -389,7 +389,7 @@ Liam:
 \begin{figure}[H]
 	\centering
 	\includegraphics[angle=90,height=9in]{gantt}
-	\caption{Gantt Chart of Project Tasks Over Time}
+	\caption{Gantt Chart of Project Tasks over time}
 	\label{fig:gantt_chart}
 \end{figure}
 
@@ -455,27 +455,27 @@ Unfortunately, this identified risk did occur during the development of the proj
 
 \textbf{Hardware is not Powerful Enough}
 
-The second identified risk for the project was whether the hardware for the robot would be powerful enough. Since at the beginning of the project we did not have the proper technical specifications of the robot nor the technical requirements for the system to run, we were unsure if the final product could run on the robot. The chances of this were identified to be moderate since we knew there was a chance of this occurring, but thought it wouldn't be too likely. For severity, we identified this problem to be a moderate severity because the hardware should still be capable of running the neural network, but it would run it much slower than expected. As a result, the risk level identified with this risk was determined to be moderate. The plan of action for this risk was to instead make use of a distributed computing system, where a laptop would connect to the vehicle remotely and perform all the intensive action there.
+The second identified risk for the project was whether the hardware for the robot would be powerful enough. Since at the beginning of the project we did not have the proper technical specifications of the robot nor the technical requirements for the system to run, we were unsure if the final product could run on the robot. The chances of this were identified to be moderate since we knew there was a chance of this occurring, but thought it wouldn't be too likely. For severity, we identified this problem to be of moderate severity because the hardware should still be capable of running the neural network, but it would run it much slower than expected. As a result, the risk level identified with this risk was determined to be moderate. The plan of action for this risk was to instead make use of a distributed computing system, where a laptop would connect to the vehicle remotely and perform all the intensive action there.
 
 As with the first risk, this identified risk also occurred during the development of the project. The HiWonder JetAcker proved to lack numerous hardware requirements to have the project run entirely on it, and as a result a distributed approach had to be used. There were many problems with setting up the distributed network though, since the JetAcker proved to have poor documentation and technical issues that made it difficult to properly distribute. However, despite the complications that were presented this risk was properly managed.
 
 \textbf{Scope Creep}
 
-Another identified risk with the project is a risk that is present in most development projects: scope creep. Scope creep occurs when proposed features keep getting added to the list of tasks to do to the point where there is too much work to get done and the team fails to address some of the most important tasks. For our team, we identified that the probability we encounter scope creep to be rather low, as following the projects proposal no new features will begin to be implemented until after all other performable work has been accomplished. Furthermore, the risk of scope creep to the overall success of the project was identified to be low since even if the team does accidentally start adding more to the project scope, additional features can easily be dropped. Since the risk level of this risk was identified to be very low, no major plans had to be designed. However, the plan for the project would be to try and accomplish a minimum viable product(MVP) as soon as possible so that new features can only be brought on once the core functionality has been implemented.
+Another identified risk with the project is a risk that is present in most development projects: scope creep. Scope creep occurs when proposed features keep getting added to the list of tasks to do to the point where there is too much work to get done and the team fails to address some of the most important tasks. For our team, we identified that the probability we encounter scope creep to be rather low, as following the project's proposal no new features will begin to be implemented until after all other performable work has been accomplished. Furthermore, the risk of scope creep to the overall success of the project was identified to be low since even if the team does accidentally start adding more to the project scope, additional features can easily be dropped. Since the risk level of this risk was identified to be very low, no major plans had to be designed. However, the plan for the project would be to try and accomplish a minimum viable product(MVP) as soon as possible so that new features can only be brought on once the core functionality has been implemented.
 
 Over the course of the project, we did not encounter any issues with scope creep. The team did a good job of focusing on what needed to be done, and new features were only ever considered after individuals were left with nothing else to do. This risk was properly handled.
 
 \textbf{Future Integration Challenges}
 
-Since future projects might be building on this project, a significant risk is that of future integration challenges. While documentation and code readability will be prioritized, the time constraints put on the project could lead to quick solutions to problems that may not be easily read by future teams integrating our system with other autonomous driving systems. Given the amount of uncertainty in general with the project, it is moderately likely that this problem is encountered by the end of the projects development. However, even though it is quite likely to happen it is unlikely to affect the severity of this project since while integration with future self-driving systems is preferred but not critical to the project. Having software that is less interoperable with other services will not severely impact our system in itself. As a result, the overall risk level was determined to be low, and the plan of action to address this will be to always properly document code whenever code is submitted to the git repository.
+Since future projects might be building on this project, a significant risk is that of future integration challenges. While documentation and code readability will be prioritized, the time constraints put on the project could lead to quick solutions to problems that may not be easily read by future teams integrating our system with other autonomous driving systems. Given the amount of uncertainty in general with the project, it is moderately likely that this problem will be encountered by the end of the project's development. However, even though it is quite likely to happen, it is unlikely to affect the severity of this project since integration with future self-driving systems is desired but not critical to the project. Having software that is less interoperable with other services will not severely impact our system in itself. As a result, the overall risk level was determined to be low, and the plan of action to address this will be to always properly document code whenever code is submitted to the git repository.
 
-As with the first two identified risks, this risk also occurred during our projects development. While this was a concern that was had throughout the project, the rate at which development was occurring led to poor documentation of many important procedures within the project. This problem was eventually addressed at the end of the project since the team spent time reviewing all the work performed, so future groups should still be able to use this repository with relative ease.
+As with the first two identified risks, this risk also occurred during our project's development. While this was a concern that was had throughout the project, the rate at which development was occurring led to poor documentation of many important procedures within the project. This problem was eventually addressed at the end of the project since the team spent time reviewing all the work performed, so future groups should still be able to use this repository with relative ease.
 
 \textbf{Software Version Incompatibility}
 
 The final significant risk identified at the beginning of the project was the potential for software version incompatibilities. This was deemed unlikely to occur since ROS 2, Ubuntu, Carla, and the Carla ROS bridge all have their own versions that are only compatible with specific versions of the others, but these are fairly clearly documented and problems should be straightforward to avoid. Furthermore, it was also deemed unlikely to affect the severity of the project since if an incompatibility between chosen versions is found and cannot be worked around, we could migrate to versions that are compatible, which may require changing Ubuntu versions but should not require redoing much work. Overall this risk was identified to be very low risk. No plan of action was identified because initial research showed that the versioning of all required systems was sufficiently stable that no further action would be required.
 
-Unfortunately, this risk proved to be one of the largest problems encountered over the course of the project. While the software versions were compatible for the Carla, ROS 2, and Ubuntu portions, the version that existed on the JetAcker proved to be a very big problem. The result of this is discussed later, but to provide a short summary a member of the team spent several months dealing with an array of version incompatibilities to finally end with a functional system that works most of the time. For future reference, it should be noted that software incompatibility with this software should be considered a much larger risk than the team initially thought.
+Unfortunately, this risk proved to be one of the largest problems encountered over the course of the project. While the software versions were compatible for the Carla, ROS 2, and Ubuntu portions, the version that existed on the JetAcker proved to be a very big problem. The result of this is discussed in more detail later, but to provide a short summary, a member of the team spent several months dealing with an array of version incompatibilities to finally end with a functional system that works most of the time. For future reference, it should be noted that software incompatibility with this software should be considered a much larger risk than the team initially thought.
 
 
 \section{Software Subsystems}
@@ -500,7 +500,7 @@ Subsystem-specific requirements:
 	      road surfaces.
 
 	      When operating a vehicle, Assisted Driving systems are expected to work in most driving conditions where a human driver
-	      would reasonable be able to drive appropriately, such as night time or on roads with markings of varying colours.
+	      would reasonably be able to drive appropriately, such as at night or on roads with markings of varying colours.
 	      While these environmental variations are often trivial to human drivers, they can pose significant issues for software
 	      making decisions based on video data.
 	      The subsystem must be able to work in different driving environments to avoid confusion by the driver.
@@ -581,15 +581,7 @@ general-purpose computation.
 NVIDIA provides the CUDA (Compute Unified Device Architecture) Toolkit \cite{CUDA} to allow developers to interface with its
 GPUs for general-purpose computational tasks.
 A similar stack, ROCm, is provided by AMD for use with its Radeon series of GPUs. \cite{ROCm}
-\\~\\
-\underline{Confidence}
 
-The line detection system is not perfect. The exact position of the lines can fluctuate from frame to frame, and lines sometimes disappear briefly before being picked up again. To account for this, a system was designed to take past line data into account when deciding where lines are. This system works by maintaining a list of confidence lanes, which consist of a list of lines that are considered to be a part of the same lane and a confidence value between 0 and 1 that represents how confident the system is that the lane exists. Every time a new set of lines are detected, the system tries to match each one to an existing confidence lane by comparing the position of the line to the average of all the stored lines in each confidence lane. If it is close enough to one, it is added to that confidence lane's list, the oldest one is removed, and the confidence is increased. If it does not match anything, a new confidence lane is created with it as the only element in the list. After all lines have been processed, any confidence lanes that have not had a line added to them have their confidence decreased, and all confidence lanes with a high enough confidence have all their stored lines averaged and sent as output. The goal of this system is to smooth out the fluctuations in detected lines. The average of multiple past lines should reduce the side-to-side movement of the detected line, while the confidence aims to prevent lines from immediately disappearing from the output if they fail to be detected for a few frames.
-
-The confidence system also includes some transformations to normalize the line data. This works by taking all the points that form a line, clipping off a portion at the top towards the horizon, matching a polynomial to what is left, and replacing the original irregular points with evenly-spaced points along the y-axis on this polynomial. Doing this makes operations like averaging and matching lines much more straightforward, since the system can expect to find points at specific y-values and average those. The line detection system struggles towards the horizon, so these points have to be removed before matching the polynomial. This portion of the system should probably be separated out into its own node to improve separation of concerns and make it easier to make changes and improvements to it.
-
-Work on the confidence system began near the end of the semester, and it is not yet complete. The bulk of it is done, but there are still a few issues to iron out before it is useful. Clipping off the portion of the initial line near the horizon is not correctly implemented, resulting in the created polynomials being incorrect and turning the entire output into garbage.
-\\~\\
 \underline{Messaging and Data Transformations:}
 
 The main transformation peformed on the lane data is a perspective transformation. A perspective transformation is a geometric transformation which can be applied to an image or list of points on a plane, to correct or modify its perspective \cite{CarletonHomography}. Perspective transformations can be used to correct distortions in an image or modify the viewpoint that an image is perceived at.
@@ -620,7 +612,7 @@ One considered approach to lane detection was the use of heavier image pre-proce
 locations within video frames.
 Hough Transforms work by representing lines in an image using a ``parameter space,'' where each point represents a set of
 variables in a line or curve in the original image.
-Lines and curves are detected in the image by find local maxima in the image after it has been transposed to the parameter space
+Lines and curves are detected in the image by finding local maxima in the image after it has been transposed to the parameter space
 for the task.
 This can be seen in Figure \ref{HoughTransform}, where the parameters matching two straight lines are seen as white points in
 the parameter space after the image is transposed.
@@ -654,7 +646,7 @@ together in this space, meaning that light yellow and white road lines can be de
 \end{figure}
 
 Ultimately, the use of these techniques was abandoned as while their implementation seems simple enough to understand and work
-on, we feared the amount of extra work required to make the detection subsystem as usable in as many environments as possible
+on, we feared the amount of extra work required to make the detection subsystem usable in as many environments as possible
 would grow too large, given the amount of time allocated for this project.
 
 As an alternative to Hough Transforms, we looked into the use of machine learning for lane detection to leverage its versatility
@@ -714,7 +706,15 @@ This coincides with requirement \textbf{FR1.2}, allowing the system to infer roa
 of view.
 Detected and inferred lanes also maintain a smooth shape, which is critical in our navigation system as we want to minimize
 jitter introduced by jagged lines caused by errors in the detection subsystem.
-\\~\\
+
+\underline{Confidence}
+
+The line detection system is not perfect. The exact position of the lines can fluctuate from frame to frame, and lines sometimes disappear briefly before being picked up again. To account for this, a system was designed to take past line data into account when deciding where lines are. This system works by maintaining a list of ``confidence lanes'', which consist of a list of lines that are considered to be a part of the same lane and a confidence value between 0 and 1 that represents how confident the system is that the lane exists. Every time a new set of lines are detected, the system tries to match each one to an existing confidence lane by comparing the position of the line to the average of all the stored lines in each confidence lane. If it is close enough to one, it is added to that confidence lane's list, the oldest one is removed, and the confidence is increased. If it does not match anything, a new confidence lane is created with it as the only element in the list. After all lines have been processed, any confidence lanes that have not had a line added to them have their confidence decreased, and all confidence lanes with a high enough confidence have all their stored lines averaged and sent as output. The goal of this system is to smooth out the fluctuations in detected lines. The average of multiple past lines should reduce the side-to-side movement of the detected line, while the confidence aims to prevent lines from immediately disappearing from the output if they fail to be detected for a few frames.
+
+The confidence system also includes some transformations to normalize the line data. This works by taking all the points that form a line, clipping off a portion at the top towards the horizon, fitting a polynomial to what is left, and replacing the original irregular points with evenly-spaced points along the y-axis on this polynomial. Doing this makes operations like averaging and matching lines much more straightforward, since the system can expect to find points at specific y-values and average those. The line detection system struggles towards the horizon, so these points have to be removed before fitting the polynomial. Going forward, this portion of the system should be separated out into its own node to improve separation of concerns and make it easier to make changes and improvements to it.
+
+Work on the confidence system began near the end of the project, and it is not yet complete. The bulk of it is done, but there are still a few issues to iron out before it is useful. There is an issue with the implementation for clipping off the portion of the initial line near the horizon that results in the created polynomials being incorrect and making the entire output unusable.
+
 \underline{Messaging and Data Transformations}
 The two main tasks of the Messaging and Data Transformations subsystem are to process the lane data into a format that can be published to a ROS topic, and to perform any transformations on the detected lane markings before they are used by the K\&C subsystem.
 
@@ -845,40 +845,35 @@ The former is important for ensuring the vehicle has a clear understanding of wh
 is important for ensuring the vehicle does not make steering adjustments based on false positives derived from the video frame.
 
 \subsection{Lane Keeping \& Control}
-The Lane Keeping \& Control (K\&C) subsystem is responsible for taking in lane position data with relation to the vehicle, determining the best corrective action to take to steer the vehicle towards the center of its lane and execute the appropriate instructions to the hardware/simulation.
+The Lane Keeping \& Control (K\&C) subsystem is responsible for taking in lane position data with relation to the vehicle, determining the best corrective action to take to steer the vehicle towards the center of its lane and providng those instructions to the hardware/simulation.
 
 \subsubsection{Requirements}
 Requirement from system-wide requirements:
 
 \begin{itemize}
-	\item FR2: Lane Following Precision. The system should maintain a deviation of no more than 0.45 meters from the center of its lane under normal driving conditions.
+	\item FR1: Lane Following Precision. The system should maintain a deviation of no more than 0.45 meters from the center of its lane under normal driving conditions.
 
-	      As stated earlier, the ability to precisely follow the center of the lane is a very important functional requirement of the system. The primary purpose of this subsystem is therefore to fulfill that functional requirement by creating a control system that given the position of the lanes with respect to the vehicle, will be able to precisely follow their path.
+	      As stated earlier, the ability to precisely follow the center of the lane is a very important functional requirement of the system. The primary purpose of this subsystem is therefore to fulfill that functional requirement by creating a control system that given the position of the lanes with respect to the vehicle on a coordinate grid, will be able to precisely follow their path.
 
 \end{itemize}
 Subsystem-specific requirements:
 \begin{itemize}
 
-
-	\item FR2.1: Steering Control Stability. The control subsystem should aim to minimize the heading error of the vehicle.
-
-	      An important part of self-driving cars is the stability of the steering. It is not desirable for the humans in the vehicle if the steering of the car is continuously changing direction and overcompensating, meaning that the control system must minimize the heading error associated with the steering.
-
-	\item FR2.2: Control Frequency.
+	\item FR1.1: Control Frequency.
 	      The subsystem must produce movement command updates at a frequency of 50Hz.
 
 	      An important part of any real-time control system is that it must be able to reach deadlines. Additionally, a control system must exhibit continuous interaction with the environment which it is located within. To achieve these goals, the system must therefore be required to produce periodic movement commands that are frequent enough to give the appearance of continuous motion. The frequency of 50Hz was agreed upon by the group and the project supervisors as sufficiently frequent to represent continuous feedback from the control system.
 
-	\item FR2.3: Closed Loop Properties.
+	\item FR1.2: Closed Loop Properties.
 	      The subsystem must produce movement commands using the most recent information available.
 
 	      In control systems, there are usually two kinds of control systems: open and closed systems. Open control systems typically involve no feedback being provided to the control system between output commands, whereas closed loop systems are fed information which is to be used as part of the command generation. It is our intention to make the control system closed loop because it is important that the subsystem is continuously fed data about its positioning for subsequent commands.
 
 	      However, one potential issue with a purely closed loop system is due to a timing concern. The rate at which lane data is received from the detection module may not be able to keep up with the rate of the desired control frequency defined in FR2.2. This means that there may be times which the system is required to produce an output without having received information about its position within the system, which represents an open control loop.
 
-	      Therefore, it is important for our system to use as much closed loop properties as possible, and only rely on open loop properties when the latest data is not available.
+	      Therefore, it is important for our system to use closed loop properties as frequently possible, and only rely on open loop properties when the latest data is not available.
 
-	\item FR2.4: Output Attributes. The output commands produced by the subsystem must output the fewest parameters required for path execution.
+	\item FR1.3: Output Attributes. The output commands produced by the subsystem must output the fewest parameters required for path execution.
 
 	      One of the primary goals of the system is to be very easy to configure for new hardware environments. For the control system, this means that the system must be able to output movement commands that are easily interpretable for any hardware environment it might be in. This does not mean that it must automatically be compatible with every hardware setup, but it must provide sufficient information such that an adapter can be used to convert between the control systems movement command and the hardware's execution.
 \end{itemize}
@@ -889,9 +884,9 @@ The development of the K\&C subsystem requires the use of three primary technolo
 
 For starters, the K\&C system will require the use of multi-threading. Multithreading is the process by which a system has multiple concurrent threads, a program in execution, running concurrently in parallel. There are several advantages of using multi-threading, including better performance due to being able to run tasks during I/O blocking time, greater scheduling flexibility, and it separates the concern of what a task does and when it does it. With respect to our system, multithreading will need to be used to have our PID processing run in parallel to receiving new system environments from the lane detection subsystem. Multithreading was instructed as part of the SYSC 3303 Introduction to Real Time Systems course offered at Carleton.
 
-Another important methodology for this project is that of feedback control systems. These systems are control systems that incorporate comparing the measured variable with its target value and then manipulates the system to minimize this error\cite{intro_to_feedback_sys}. Feedback control systems are advantageous since the controller takes into account any unforeseen changes present in the system such as friction from the environment or older data such as from long input processing times, both of which are likely to happen with our system\cite{intro_to_feedback_sys}. These concepts are taught as part of the SYSC 3600 and SYSC 4505 courses offered at Carleton University. While these courses are not required as part of a Software Engineering degree, they can be taken as electives for students in Software Engineering and the project supervisors have experience with this concept that can be shared with the students.
+Another important methodology for this project is that of feedback control systems. These systems are control systems that incorporate comparing the measured variable with its target value and then manipulates the system to minimize this error \cite{intro_to_feedback_sys}. Feedback control systems are advantageous since the controller takes into account any unforeseen changes present in the system such as friction from the environment or older data such as from long input processing times, both of which are likely to happen with our system \cite{intro_to_feedback_sys}. These concepts are taught as part of the SYSC 3600 and SYSC 4505 courses offered at Carleton University. While these courses are not required as part of a Software Engineering degree, they can be taken as electives for students in Software Engineering and the project supervisors have experience with this concept that can be shared with the students.
 
-Cars and car-like vehicles use an arrangement of linkages called an Ackermann steering geometry in order to steer effectively[17]. It allows for the wheels on the inside and outside of a turn to trace circles of different radii, preventing slipping. In systems that use Ackermann steering or something similar, the front wheels turn while the rear wheels remain in place. In contrast, robots like the JetAuto use mecanum wheels, which allow for omnidirectional movement. While this is a useful property for robots, we intend to use the JetAuto to evaluate the system’s capabilities for car-like vehicles. As such, this subsystem should be able to send commands to vehicles with mecanum wheels that result in Ackermann-like movement. While this concept was not explicitly taught as part of a software engineering degree at Carleton, the integration of hardware components with embedded systems relates to the practices discussed in SYSC 3310 Introduction to Real-Time Systems.
+Cars and car-like vehicles use an arrangement of linkages called an Ackermann steering geometry in order to steer effectively \cite{AckermannSteer}. It allows for the wheels on the inside and outside of a turn to trace circles of different radii, preventing slipping. In systems that use Ackermann steering or something similar, the front wheels turn while the rear wheels remain in place. We intend to use the JetAcker to evaluate the system’s capabilities for car-like vehicles. While this concept was not explicitly taught as part of a software engineering degree at Carleton, the integration of hardware components with embedded systems relates to the practices discussed in SYSC 3310 Introduction to Real-Time Systems.
 
 \subsubsection{Conceptualization}
 \label{KCConcept}
@@ -901,24 +896,24 @@ There are many control loops that could be used to handle the lane keeping and c
 
 \underline{PID Controller:}
 
-A PID controller is an error driven controller. This means it works by being fed a source of error, and outputs actions intended to minimize it. The output is calculated using three components: a proportional, a derivative, and an integral component.
+A PID controller is an error driven controller. This means it works by being fed a source of error, and outputs actions intended to minimize it. The output is calculated using three components: a proportional, a derivative, and an integral component \cite{pid_explanation}. 
 
-First, the proportional component calculates an output value that is directly proportional to the source of error. The effect of the proportional controller on the output is typically a significant immediate reaction to the output of the device. Next is the derivative component, which calculates an output value using the derivative of the error at the current point in time. The derivative component in PID controllers is typically used as a means of dampening the oscillation in the source of error that arises from the proportional component. Lastly, the integral component works by outputting a value proportional to the total error up to the current point in time. Integral components are largely effective at reducing the steady state error of the system to ensure that it reaches the desired value faster.  Using the outputs of these three values, the PID controller adds them together and outputs a command that is intended to minimize the error, which then starts the next cycle of the PID controller\cite{pid_explanation}. Fig.\ref{fig:piddiagram} illustrates a diagram of a typical PID controller.\\
+First, the proportional component calculates an output value that is directly proportional to the source of error. The effect of the proportional controller on the output is typically a significant immediate reaction to the output of the device. Next is the derivative component, which calculates an output value using the derivative of the error at the current point in time. The derivative component in PID controllers is typically used as a means of dampening the oscillation in the source of error that arises from the proportional component. Lastly, the integral component works by outputting a value proportional to the total error up to the current point in time. Integral components are largely effective at reducing the steady state error of the system to ensure that it reaches the desired value faster.  Using the outputs of these three values, the PID controller adds them together and outputs a command that is intended to minimize the error, which then starts the next cycle of the PID controller \cite{pid_explanation}. Fig.\ref{fig:piddiagram} illustrates a diagram of a typical PID controller.\\
 
 \begin{figure}
 	\centering
 	\includegraphics[width=4in]{PID2.jpg}
-	\caption{Diagram of a Typical PID Controller}
+	\caption{Diagram of a typical PID controller from ThorLabs \cite{PIDDiagram}}
 	\label{fig:piddiagram}
 \end{figure}
 
-One of the things that makes PID controllers desirable is its tuning process. PID controllers only have three tunable constants, being the proportional constant \((K_p)\), the integral component \((K_i)\), and the derivative component \((K_d)\). After the PID controller is implemented, these three constants are then used to tune the system to a desired effect. \cite{pid_advantages}
+One of the things that makes PID controllers desirable is its tuning process. PID controllers only have three tunable constants, being the proportional constant \((K_p)\), the integral component \((K_i)\), and the derivative component \((K_d)\). After the PID controller is implemented, these three constants are then used to tune the system to a desired effect \cite{pid_advantages}.
 
 The three main measurements used for evaluating a PID controller are the settling time, overshoot, and rise time. Within a PID controller, the settling time is typically defined as the time required to enter the 5\% error strip. The overshoot of the system is defined as the maximum amount by which the response overshoots the steady state value. Lastly, the rise time is typically defined as the time it takes for the controller to get from 10\% to 90\% of the steady state value. Each of these attributes are affected by the three constants in a PID controller, and the effect that each constant has on the overall controller can be found in Table \ref{tab:pidvals}.
 
 \begin{table}[H]
 	\centering
-	\caption{Effect of PID Controller Characteristics Through Changing Constants \cite{pid_characteristics}}
+	\caption{Effect of PID controller characteristics through changing constants from Control Tutorials for MatLab and Simulink \cite{pid_characteristics}}
 	\begin{tabular}{|c | c | c | c | c |}
 		\hline
 		Increase in Constant & Rise Time    & Overshoot & Settling Time & S-S Error  \\ [0.5ex]
@@ -940,9 +935,9 @@ Despite the advantages, there are numerous drawbacks to using a PID controller. 
 
 \underline{Model Predictive Control:}
 
-The MPC controller is a more sophisticated control system compared to the PID controller, with use in various industries and areas in academia.\cite{GARCIA1989335} It utilizes a model of the system, a cost function, and an optimization algorithm to determine the optimal strategy for minimizing error, which in this case is the distance between the car's centre and the centre of its lane.
+The MPC controller is a more sophisticated control system compared to the PID controller, with use in various industries and areas in academia \cite{GARCIA1989335}. It utilizes a model of the system, a cost function, and an optimization algorithm to determine the optimal strategy for minimizing error, which in this case is the distance between the car's centre and the centre of its lane.
 
-One significant advantage of this controller is its potential for high accuracy when implemented effectively. The MPC controller takes a wider array of variables and information into account when making decisions, offering greater potential for improved performance metrics.
+One significant advantage of this controller is its potential for high accuracy when implemented effectively. The MPC controller takes a wider array of variables and information into account when making decisions, offering greater potential for improved performance metrics \cite{GARCIA1989335}.
 
 However, MPC comes with the drawback of increased complexity. Unlike a PID controller, which is relatively straightforward to set up and configure, implementing an MPC controller involves considering a larger set of variables and a model of the environment surrounding the system, making it more challenging during the initial stages of development.
 \\
@@ -956,14 +951,14 @@ The Stanley controller is composed of two schemes that are used to model the veh
 \begin{figure}
 	\centering
 	\includegraphics[width=4in]{stanley_kinematic}
-	\caption{Kinematic Model of a Stanley Controller\cite{4282788}}
+	\caption{Kinematic model of a stanley controller from 2007 American Control Conference \cite{4282788}}
 	\label{fig:stankine}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=4in]{stanley_dynamic}
-	\caption{Dynamic Model of a Stanley Controller\cite{4282788}}
+	\caption{Dynamic model of a Stanley controller from 2007 American Control Conference \cite{4282788}}
 	\label{fig:standyna}
 \end{figure}
 
@@ -988,14 +983,14 @@ a data type provided by ROS, and then published to a separate ROS topic. This da
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\textwidth]{KnC_diagrams}
-	\caption{UML Class Diagram of the K\&C Subsystem}
+	\caption{UML class diagram of the K\&C subsystem}
 	\label{fig:control_class}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.9\textwidth]{KnC_sequence.png}
-	\caption{UML Sequence Diagram of the K\&C Subsystem}
+	\caption{UML sequence diagram of the K\&C subsystem}
 	\label{fig:control_sequence}
 \end{figure}
 
@@ -1007,27 +1002,20 @@ The subsystem makes use of a proxy pattern for handling and sending requests. Th
 
 The first step in building the K\&C subsystem was by establishing the communication schema between this subsystem and the adjacent control systems. This was imperative since without an idea of how each subsystem would communicate with this one, it would be impossible to start the development process. This meant identifying the correct input to the system, and the correct output from the system to the environment.
 
-For the output of the system, the decision was made to use the built-in AckermannDrive message type that is already built into ROS. The reason for this was because it was already built into ROS, and was already integrated into the CARLA ROS Bridge which means it required less configuration to integrate the subsystem with CARLA. The AckermannDrive message asks for five parameters. The first parameter in the AckermannDrive message is the steering angle. This represents the desired steering angle that the vehicles front axis should be set to. The system will attempt to adjust the orientation of the wheels to that desired steering angle as quickly as possible. The second parameter is the steering angle velocity, which works in conjunction with the steering angle. This parameter specifies the maximum velocity that the yaw of the steering angle can achieve, where a zero represents no limit. This parameter is important as it prevents severe amounts of jerk with the steering, but it was not an important parameter for our system. The third parameter for the AckermannDrive message is the velocity. This represents the target velocity that the vehicle should aim to reach, to be achieved however the vehicle deems fit. The fourth and fifth parameters are the acceleration and jerk parameters, which set a maximum acceleration and jerk that the vehicle can achieve while attempting to adjust to the desired speed. The definition of this message type can be found in Fig. \ref{fig:ackermann}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.3\textwidth]{ackeramnn_drive}
-	\caption{Structure of the ROS AckermannDrive Message Type}
-	\label{fig:ackermann}
-\end{figure}
+For the output of the system, the decision was made to use the built-in AckermannDrive message type that is already built into ROS. The reason for this was because it was already built into ROS, and was already integrated into the CARLA ROS Bridge which means it required less configurations overall. The AckermannDrive message asks for five parameters. The first parameter in the AckermannDrive message is the steering angle. This represents the desired steering angle that the vehicles front axis should be set to. The system will attempt to adjust the orientation of the wheels to that desired steering angle as quickly as possible. The second parameter is the steering angle velocity, which works in conjunction with the steering angle. This parameter specifies the maximum velocity that the yaw of the steering angle can achieve, where a zero represents no limit. This parameter is important as it prevents severe amounts of jerk with the steering, but it was not an important parameter for our system. The third parameter for the AckermannDrive message is the velocity. This represents the target velocity that the vehicle should aim to reach, to be achieved however the vehicle deems fit. The fourth and fifth parameters are the acceleration and jerk parameters, which set a maximum acceleration and jerk that the vehicle can achieve while attempting to adjust to the desired speed. For our system, we were primarily concerned with the steering angle as well as the velocity but the ability to fine tune the other parameters provides a lot of flexibility for future descisions.
 
 For the input to the system, a schema needed to be designed that allowed for a list of lane data points to be sent to the control subsystem. The first idea for this would be to have a list of list of tuples that contains the data points for each line. That is, a list of lanes where each lane is represented by a list of points, where each point is represented as a tuple. However, one problem that we had with this is that it was not the exact format that we thought that the detection subsystem would naturally produce. In research, it was determined that the output of the detection subsystem would more closely resemble the TuSimple schema which can be found in Fig. \ref{fig:tusimple_dataformat}. This is because we would be comparing the output of the detection to the TuSimple dataset, so our data would already be in this format. Furthermore, this format for the data is more efficient to send because it normalizes the data points by providing a list of Y-coordinates and each lane is instead represented by a list of X-coordinates, where points are generated by matching indexes. Due to the similarity with the TuSimple dataset output and the more efficient transformation method, this data scheme was chosen as the communication the subsystem would get from the detection subsystem.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.6\textwidth]{tusimple_data_example}
-	\caption{Example of the Structure of the TuSimple Dataset}
+	\caption{Example of the structure of the TuSimple dataset from Kaggle \cite{tusimpleStructure}}
 	\label{fig:tusimple_dataformat}
 \end{figure}
 
 \underline{Creating the PID Controller}
 
-After the control schema was established, the next step was to create the PID controller. The PID controller was originally chosen as the control system due to its simplicity of design, so this represented the next hurdle for implementing this subsystem.
+After the data schema was established, the next step was the PID controller. The PID controller was originally chosen as the control system due to its simplicity of design, so this represented the next hurdle for implementing this subsystem.
 
 The first step in implementing the PID controller was actually creating the PID controller. In general, PID controllers are straightforward to create. Through the use of various tutorials and discussing PID controllers with fellow students, a functional PID controller was implemented. Afterwards, the PID controller was tested in a console environment to ensure that it worked as expected, and could theoretically be used for the control system.
 
@@ -1039,27 +1027,28 @@ repository at \\\texttt{/lane-detection-keeping/ros2\textunderscore ws/src/lane\
 
 After the PID controller was implemented, the next step was creating an internal representation of the vehicle's environment. This is important for two reasons. For starters, having an internal representation of the environment would be essential in calculating the error that needs to be fed into the PID controller for it to work. Without an appropriate model of the environment available, it would be hard to determine the error and the control system would have a hard time properly steering. Additionally, since the rate at which lane data is produced is much slower than the rate at which the control system must enact movement commands, the system must be able to track roughly how far the vehicle has moved through its environment as it generates movement commands. Without this, the subsystem would not be able to achieve its output frequency of 50Hz.
 
-The first step in implementing the internal map was to identify the path for the vehicle to follow. This means that in order for a model of its environment to exist, it must be created from the passed lane data from the detection subsystem. To do this, the internal map parses the lane data received from the detection and attempts to map each lane into a polynomial. The purpose of this is to smooth the lane curve to get rid of any jagged shapes that might appear in the lane lines. Through a mild amount of testing, a degree of 3 was chosen for the polynomial fitting. This is because the shape of curves is rarely straight enough for a degree of 1 or 2, and a degree of 4 or higher starts to suffer from overfitting which destroys the accuracy of the polynomial. After the lanes are turned into polynomials, the system identifies the closest lane that appears on each side of the origin by comparing the y-intercepts of the lanes. The system finds the smallest y-intercept above 0 and sets that as the left lane, and the lane with the largest y-intercept below 0 and sets that as the right lane. Then, it averages the polynomials for the two lanes to determine the centre of the two lanes, and stores that path as the centre lane for the vehicle to follow. Fig. \ref{fig:lane_center_determination} illustrates this process.
+The first step in implementing the internal map was to identify the path for the vehicle to follow. This means that in order for a model of its environment to exist, it must be created from the passed lane data from the detection subsystem. To do this, the internal map parses the lane data received from the detection and attempts to map each lane into a polynomial. The purpose of this is to smooth the lane curve to get rid of any jagged shapes that might appear in the lane lines, mitigating any noise from the detection module. a degree of 3 was chosen for the polynomial fitting because the shape of curves is rarely straight enough for a degree of 1 or 2, and a degree of 4 or higher starts to suffer from overfitting which destroys the accuracy of the polynomial. After the lanes are turned into polynomials, the system identifies the closest lane that appears on each side of the origin by comparing the y-intercepts of the lanes. The system finds the smallest y-intercept above 0 and sets that as the left lane, and the lane with the largest y-intercept below 0 and sets that as the right lane. Then, it averages the polynomials for the two lanes to determine the centre of the two lanes, and stores that path as the centre lane for the vehicle to follow. Fig. \ref{fig:lane_center_determination} illustrates this process.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\textwidth]{lane_center}
-	\caption{Calculation of the Center of the Lanes}
+	\caption{Calculation of the center of the lanes}
 	\label{fig:lane_center_determination}
 \end{figure}
 
-The second step in implementing the internal map is to be able to predict where the vehicle is if no new lane data is received. This is important for the system because one of the requirements is to be able to use the latest available data for each command output, so its important that when the system is relying on old data it can predict where the vehicle moves between output commands. The first thing done to implement this was to set a flag on the internal grid called "fresh" which is set to true whenever a lane centre is configured, but then swapped to false after a movement command is generated. If the lane data is not fresh, the system will then update the position of the vehicle in the internal grid based on how much time has passed, and the last movement command enacted.
+The second step in implementing the internal map is to be able to predict where the vehicle is if no new lane data is received. This is important for the system because one of the requirements is to be able to use the latest available data for each command output, so its important that when the system is relying on old data it can predict where the vehicle moves between output commands. The first thing done to implement this was to set a flag on the internal grid called "fresh" which is set to true whenever a lane centre is configured, but then swapped to false after a movement command is generated. If the lane data is not fresh, the system will attempt to update the position of the vehicle in the internal grid based on how much time has passed, and the last movement command enacted.
 
-The steps for predicting the vehicles new position is done in four steps. The first step is to find the pivot point. An important part of Ackermann steering is that it works by having all the wheels oriented perpendicular to a singular pivot point. This means that given the last movement commands heading, we can take the distance between the axis and the angle of the heading to find the point which the vehicle will pivot around. Next, the system has to determine how far the vehicle actually travels. This is done by taking the time between the last movement command and the present, and multiplying it by the speed of the last movement command to get a distance. Afterwards, the number of radians travelled around with respect to the pivot point is calculated. Lastly, using the amount of radians that the system rotated about the pivot point the vehicles new position is calculated. Figure \ref{fig:internal_update_determination} provides a visual representation of the math. It should be noted that this method of predicting the vehicles location is not very accurate, as it works in an ideal world and simplifies a lot of the movement that is occurring.
+The steps for predicting the vehicles new position is done in four steps. The first step is to find the pivot point. An important part of Ackermann steering is that it works by having all the wheels oriented perpendicular to a singular pivot point. This means that given the last movement commands heading, we can take the distance between the axis and the angle of the heading to find the point which the vehicle will pivot around. Next, the system has to determine how far the vehicle actually travels. This is done by taking the time between the last movement command and the present, and multiplying it by the speed of the last movement command to get a distance. Afterwards, the number of radians travelled around with respect to the pivot point is calculated. Lastly, using the amount of radians that the system rotated about the pivot point the vehicles new position is calculated. Figure \ref{fig:internal_update_determination} provides a visual representation of the math. It should be noted that this method of predicting the vehicle's location is not very accurate, as it works in an ideal world and simplifies a lot of the movement that is occurring.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=5in]{update_description}
-	\caption{Calculating the Vehicles New Position Between Cycles Without New Data}
+	\caption{Calculating the vehicles new position between cycles without new data}
 	\label{fig:internal_update_determination}
 \end{figure}
 
-The full implementation of the internal mapping system can be found within the code repository at \texttt{/lane-detection-keeping/ros2\textunderscore ws/src/lane\textunderscore nodes\textunderscore py/lane\textunderscore odes\textunderscore py/keeping/robot\textunderscore path.py}
+The full implementation of the internal mapping system can be found within the code repository at \\
+\texttt{/lane-detection-keeping/ros2\textunderscore ws/src/lane\textunderscore nodes\textunderscore py/lane\textunderscore odes\textunderscore py/keeping/robot\textunderscore path.py}
 \\
 
 \underline{The Problem with PID}
@@ -1069,7 +1058,7 @@ After having created the PID controller and the internal representation of the v
 
 \underline{The Discovery of the Stanley Controller}
 
-Further research conducted on simple control systems for autonomous driving led to the discovery of the Stanley Controller. This controller was originally designed in 2005 by Stanford University for autonomous driving in the 2005 DARPA Autonomous Driving Challenge, and works by using a mathematical model of the vehicles position to the centre of the lane and provides a means of effectively balancing the cross track error and the heading error of the vehicle at the same time, addressing the issues with implementing a PID controller. Since this control method looked functional and there was sufficient documentation from the control systems original page, the team worked to implement this control system instead.
+Further research conducted on simple control systems for autonomous driving led to the discovery of the Stanley Controller. This controller was originally designed in 2005 by Stanford University for autonomous driving in the 2005 DARPA Autonomous Driving Challenge, and works by using a mathematical model of the vehicles position to the centre of the lane and provides a means of effectively balancing the cross track error and the heading error of the vehicle at the same time \cite{4282788}, addressing the issues with implementing a PID controller. Since this control method looked functional and there was sufficient documentation from the control systems original page, the team worked to implement this control system instead.
 \\
 
 \underline{The Implementation of the Stanley Controller}
@@ -1081,16 +1070,16 @@ First, it requires the heading error. This can easily be gathered from the contr
 \begin{figure}
 	\centering
 	\includegraphics[width=5in]{stanley_heading_error}
-	\caption{Calculation of the Heading Error for the Stanley Controller}
+	\caption{Calculation of the heading error for the stanley controller}
 	\label{fig:stanley_heading_calc}
 \end{figure}
 
-Secondly, the cross track steering has to be configured. This is done by first identifying the cross track error, also known as the distance between the center of the front axis of the vehicle and the center of the lane. After the cross track error is calculated, it needs to be turned into a heading. The stanley controller uses the cross track error and calculates an angle by taking the inverse tangent of the ratio between the cross track error multiplied by a gain constant and the velocity of the vehicle. The result of this operation is the cross track heading, which is to be used as part of the final heading calculation. This calculation can be seen in Fig. \ref{fig:stanley_lateral_calc}.
+Secondly, the cross track steering has to be configured. This is done by first identifying the cross track error, also known as the distance between the center of the front axis of the vehicle and the center of the lane. After the cross track error is calculated, it needs to be turned into a heading. The Stanley controller uses the cross track error and calculates an angle by taking the inverse tangent of the ratio between the cross track error multiplied by a gain constant and the velocity of the vehicle. The result of this operation is the cross track heading, which is to be used as part of the final heading calculation. This calculation can be seen in Fig. \ref{fig:stanley_lateral_calc}.
 
 \begin{figure}
 	\centering
 	\includegraphics[width=5in]{stanley_lateral_error}
-	\caption{Calculation of the Lateral Error for the Stanley Controller}
+	\caption{Calculation of the lateral error for the Stanley controller}
 	\label{fig:stanley_lateral_calc}
 \end{figure}
 
@@ -1104,7 +1093,7 @@ Another important part of the output command is the output velocity. The Ackerma
 After the controller was implemented, necessary procedures had to be created in order to properly evaluate the controller. Since at this point in time only CARLA has been properly integrated, a means of evaluating the performance of the controller though CARLA had to be used. Fortunately, within CARLA is as series of waypoints that are generated whenever a vehicle spawns into a map. Those waypoints can be taken and then modified to be fed into the control system as a means of providing a path without the detection module by providing those waypoints in a form similar to the way lanes are presented to the subsystem. In order to send the right waypoints, a new evaluation subsystem was designed that listens to CARLA for the vehicles current position in the map which then generates a series of points which is then sent to the vehicle. Furthermore, since this subsystem can listen to the vehicles position at all times, it is able to output graphs detailing the path of the vehicle as it travels through the system, and with the waypoints being followed identify how far away from the center of the road the vehicle is at all times. The visualizations for the vehicle were created with pythons MatPlotLib package.
 
 \subsubsection{Evaluation}
-\textbf{Evaluating FR2}
+\textbf{Evaluating FR1}
 
 When it comes to evaluating the subsystem, the most important requirement for the quality of the control system is the maximum lateral error, also known as the maximum deviation from the center of the lane.
 
@@ -1137,7 +1126,7 @@ Once the vehicle gets within 5 meters of the last waypoint, the evaluation subsy
 		1.5     & 8.0            & 4.665                      & 0.5294                   \\
 		\hline
 	\end{tabular}
-	\caption{Results of the Maximum Heading and Lateral Error for Various K and Speed Values}
+	\caption{Results of the maximum heading and lateral error for various k and speed values}
 	\label{tab:controller_test_values}
 \end{table}
 
@@ -1146,40 +1135,31 @@ The results of the testing identified that the best performance for both maximum
 \begin{figure}
 	\centering
 	\includegraphics[width=4in]{/knc_eval/waypoints_k-15_v-4}
-	\caption{Vehicle Path Compared to Waypoints for k=1.5 1/s and Base Velocity of 4.0 m/s Over Time}
+	\caption{Top-down view of vehicle path compared to waypoints for k=1.5 1/s and base velocity of 4.0 m/s over time}
 	\label{fig:waypointsk10v4}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=4in]{/knc_eval/lateral_k-15_v-4}
-	\caption{Lateral Error with k=1.5 1/s and Base Velocity of 4.0 m/s Over Time}
+	\caption{Lateral error with k=1.5 1/s and base velocity of 4.0 m/s over time}
 	\label{fig:lateralk10v4}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=4in]{/knc_eval/heading_k-15_v-4}
-	\caption{Heading Error with k=1.5 1/s and Base Velocity of 4.0 m/s Over Time}
+	\caption{Heading error with k=1.5 1/s and base velocity of 4.0 m/s over time}
 	\label{fig:headingk10v4}
 \end{figure}
 
 Upon further analysis of the figures, it can be identified that there were only two instances where the vehicle deviated beyond the required \texttt{0.45 meters} maximum deviation. When compared to the path of the vehicle, it can be identified that these two instances occurred when the vehicle was performing the left-hand turn approximately 35\% of the way through the course and the sharp right-handed turn at the end of the path. If these two instances are removed, the vehicle demonstrates a strong ability to stay within the requirement of a maximum lateral error of \texttt{0.45 meters}. However, these two cases are important for evaluating the lane following of the vehicle as sharp turns in a road can appear and the vehicle must be ready for them.
 
-Additionally, it should be noted that all tests were performed a singular time. For a better performance evaluation, additional tests should be used to calculate a proper confidence interval.
-
-\textbf{Evaluating FR2.1}
-
-The evaluation for determining whether FR2.1 was satisfied comes down to the maximum heading error. There are many different ways to interpret what stability is represented by in the vehicle, but for our system we defined stability as the maximum heading error that the vehicle exhibits during a drive. As a team, we decided that the maximum heading error for our vechicle should be a 22.5 degree angle, or \(\pi/8\) radians in order to satisfy this requirement. This is not based on any actual calculation, but rather is an estimate as to the largest possible heading error a vehicle could have at the center of the land without exiting the lane.
-
-In order to evaluate this requirement, the same methodology as FR2 was performed. The vehicle was spawned at a specific point on the Town04 map, and follows a set of waypoints. As before, the path was chosen because the path exhibits a wide range of steerings that would be useful for assessing the performance of the subsystem. The results for this test have been included in the evaluation for FR2, as both requirements were performed at the same point in time.
-
-The results of the test found that even with the best possible configuration of standing velocity and control constant, the lowest heading error occurred with a k value of \texttt{1.5 1/s} and the standing velocity was equal to \texttt{4.0 m/s} with a maximum heading error of 0.4508 radians. Unfortunately, this also falls short of the requirement for this section.
-
 A closer look at the heading error chart demonstrates as well that for a vast majority of the vehicles path the heading error remains very low, and only becomes much larger as the vehicle approaches much sharper turns. As a result, future work on this domain should be placed on improving the quality of the land following when sharper turns are present as this appears to be the most difficult part for the system to achieve.
 
+Additionally, it should be noted that all tests were performed a singular time. For a better performance evaluation, additional tests should be used to calculate a proper confidence interval.
 
-\textbf{Evaluating FR2.2}
+\textbf{Evaluating FR1.1}
 
 Another important requirement for this subsystem is the output frequency. This is important because the system must be able to output a sufficient number of movement commands each second in order to achieve the illusion of continuous driving.
 
@@ -1211,7 +1191,7 @@ The procedure by which this requirement was tested was through using a logger to
 
 The results of this experiment show that at both long and short intervals of time, the output frequency of the system is approximately 46.4Hz. While this is not the required 50Hz frequency outlined in the functional requirements of the system, it is sufficiently close to the functional requirement to be considered achieved. This is in part due to the fact that the control system for this is not hard real time, and is instead soft real-time which means it is acceptable for the system to miss the occasional timer. As a result, this functional requirement has been achieved.
 
-\textbf{Evaluating FR2.3}
+\textbf{Evaluating FR1.2}
 
 One very important part of the system is the ability for the controller to be able to generate new movement commands using the latest availible data. This means that it must be able to interpret how far the vehicle has moved since the last image and predict where it currently is for the current movement command.
 
@@ -1226,7 +1206,7 @@ In order to evaluate this, the logs for the subsystem have to be observed. A log
 
 The contents of the figure illustrate several instances between two lane being received logs where two or more movement commands were published, where each movement command was unique compared to the adjacent movement commands illustrating that the system exhibited closed loop properties and based movement commands on the latest available information, fulfilling the requirement.
 
-\textbf{Evaluating FR2.4}
+\textbf{Evaluating FR1.3}
 Our system outputs movement commands in the form of Ackermann messages, which are easily modifiable to fit any system requirement. Therefore, this requirement is fulfilled.
 
 
@@ -1250,14 +1230,14 @@ Despite these issues, ROS provides huge benefits to the design and implementatio
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{ROS1Distros.png}
-		\captionof{figure}{A sample of ROS 1 distros from the ROS 1 wiki \cite{ROS1Distros}}
+		\caption{A sample of ROS 1 distros from the ROS 1 wiki \cite{ROS1Distros}}
 		\label{fig:ros1distros}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{ROS2Distros.png}
-		\captionof{figure}{A sample of ROS 2 distros from the ROS 2 wiki \cite{ROS2Distros}}
+		\caption{A sample of ROS 2 distros from the ROS 2 wiki \cite{ROS2Distros}}
 		\label{fig:ros2distros}
 	\end{minipage}
 \end{figure}
@@ -1301,9 +1281,9 @@ Our plan was to construct a test track for the JetAcker in order to test our sys
 
 \subsection{Evaluation - Results}
 
-Due to the complications that arose with the JetAcker, the primary method of evaluation for the system was done through the Carla simulation software. However, even though Carla is a great environment for testing there is a limited amount of information that can be extracted from the Carla-ROS bridge that makes it difficult to evaluate where the lane centre truly is. In order to get around this, the waypoint path that was used for the keeping and control subsystem was broken into four distinct parts that each exhibited a unique path characteristic that can be used to evaluate the system as a whole. The vehicle is then spawned at the beginning of each segment, and once the vehicle reaches the end the evaluation subsystem will output the maximum lateral error and the error over time associated with that trial.
+Due to the complications that arose with the JetAcker, the primary method of evaluation for the system was done through the Carla simulation software. However, even though Carla is a great environment for testing there is a limited amount of information that can be extracted from the Carla-ROS bridge that makes it difficult to evaluate where the lane centre truly is. In order to get around this, the waypoint path that was used for the keeping and control subsystem was broken into four distinct parts that each exhibited a unique path characteristic that can be used to evaluate the system as a whole. The vehicle is then spawned at the beginning of each segment, and once the vehicle reaches the end of that segment the evaluation subsystem will output the maximum lateral error and the error over time associated with that trial.
 
-The four different trial paths used for the evaluation are a straight line, a shallow snake curve, a moderately sharp circular curve, and a straight line that has a lane merge. The straight line is a path that has no turns associated with it, and it meant to confirm that the vehicle is actually capable of following a clear path. The second evaluation path is the shallow snake path. The purpose of this path is to determine that the vehicle is capable of identifying curves present in the vehicles field of view, and then to then proceed to follow the lanes. The two curves in the snake path have a radii of approximately 340 meters and 85 meters, respectively. Thirdly, a moderately sharp circular path was added to evaluate if the vehicle can control itself well on sharper corners. The curve of the circular shape has a radius of approximately 55 meters. Lastly, a straight lane path that has another lane merge into it was used to evaluate how the system is able to handle that scenario.
+The four different trial paths used for the evaluation are a straight line, a shallow snake curve, a moderately sharp circular curve, and a straight line that has a lane merge. The straight line is a path that has no turns associated with it, and it meant to confirm that the vehicle is actually capable of following a clear path. The second evaluation path is the shallow snake path. The purpose of this path is to determine that the vehicle is capable of identifying curves present in the vehicles field of view, and then to then proceed to follow the lanes. The two curves in the snake path have radii of approximately 340 meters and 85 meters. Thirdly, a moderately sharp circular path was added to evaluate if the vehicle can control itself well on sharper corners. The curve of the circular shape has a radius of approximately 55 meters. Lastly, a straight lane path that has another lane merge into it was used to evaluate how the system is able to handle a scenario where one of the lanes it was following disspaears.
 
 Each trial path was run through five times to achieve an average maximum lateral error over time. Additionally, each trial path outputted a line chart of the lateral error over time to identify any noticeable patterns present in the lateral error. Finally, each trial also outputted a line chart comparing the overall path of the vehicle to the path of the waypoints to provide a birds-eye view of the path the vehicle takes. The results of the testing can be found in Table \ref{tab:overal_eval}.
 
@@ -1312,13 +1292,13 @@ Each trial path was run through five times to achieve an average maximum lateral
 	\begin{tabular}{c c c c c c c c }
 		\textbf{Trial Path} & \textbf{Trial 1} & \textbf{Trial 2} & \textbf{Trial 3} & \textbf{Trial 4} & \textbf{Trial 5} & \textbf{Average} & \textbf{Standard Deviation} \\ [0.5ex]
 		\hline
-		Straight Path & 0.0529 m & 0.0405 m & 0.0491 m & 0.0573 m & 0.0535 m & 0.0506 m & 0.0064 m \\		
-		\hline
-		Snake Path & 0.3216 m & 0.3174 m & 0.3202 m & 0.3172 m & 0.3223 m & 0.3197 m & 0.0023 m \\		
-		\hline
-		Circle Path & 0.5086 m & 0.4997 m & 0.5119 m & 0.5104 m & 0.5455 m & 0.5152 m & 0.0176 m \\		
-		\hline
-		Merge Path & 1.4733 m & 1.3943 m & 1.4385 m & 1.4829 m & 1.4563 m & 1.4491 m & 0.0350 m \\		
+		Straight Path       & 0.0529 m         & 0.0405 m         & 0.0491 m         & 0.0573 m         & 0.0535 m         & 0.0506 m         & 0.0064 m            		\\		
+		\hline         
+		Snake Path          & 0.3216 m         & 0.3174 m         & 0.3202 m         & 0.3172 m         & 0.3223 m         & 0.3197 m         & 0.0023 m            		\\		
+		\hline         
+		Circle Path         & 0.5086 m         & 0.4997 m         & 0.5119 m         & 0.5104 m         & 0.5455 m         & 0.5152 m         & 0.0176 m            		\\		
+		\hline         
+		Merge Path          & 1.4733 m         & 1.3943 m         & 1.4385 m         & 1.4829 m         & 1.4563 m         & 1.4491 m         & 0.0350 m            		\\		
 		\hline
 	\end{tabular}
 	\caption{Results of Maximum Lateral Devation across 5 Trials for 4 Unique Paths}
@@ -1327,7 +1307,7 @@ Each trial path was run through five times to achieve an average maximum lateral
 
 \textbf{Straight Path}
 
-The straight path had little relevant insights to gain from it. The average maximum lateral error for this path was 0.0535 meters, which is well below the maximum lateral error threshold defined in Functional Requirement 2. Further analysis of the lateral error over time graphs does not highlight anything of note, as the lateral error remains too low to show anything meaningful as seen in Fig. \ref{fig:straight_lat_1}. Furthermore, a review of the vehicle path compared to the waypoint path demonstrates that there is almost a complete overlap between the vehicles path and the waypoints. Therefore, in the case of a completely straight path the system can maintain a maximum lateral heading below 0.45 meters.
+The straight path had little relevant insights to gain from it. The average maximum lateral error for this path was 0.0506 meters, which is well below the maximum lateral error threshold defined in Functional Requirement 1. Further analysis of the lateral error over time graphs does not highlight anything of note, as the lateral error remains too low to show anything meaningful as seen in Fig. \ref{fig:straight_lat_1}. Furthermore, a review of the vehicle path compared to the waypoint path demonstrates that there is almost a complete overlap between the vehicles path and the waypoints. Therefore, in the case of a completely straight path the system can maintain a maximum lateral heading below 0.45 meters.
 
 \begin{figure}
 	\centering
@@ -1348,42 +1328,42 @@ The straight path had little relevant insights to gain from it. The average maxi
 
 \textbf{Snake Path}
 
-The snake path was originally chosen to evaluate how effectively the autonomous driving system can deal with the existence of turns in the road in each direction. For this trial, the vehicle achieved an average maximum lateral error of 0.3457 meters, which while it is close to the maximum lateral error of 0.45 meters it still remains acceptable. Upon further investigation of the lateral error over time graph found at Fig. \ref{fig:snake_lat_1} in conjunction with the vehicle path graph found at Fig. \ref{fig:snake_way_1}, a few key points can be identified. For starters, the two halves of the vehicle path can be identified. The first half of the snake shape was a lot more shallow than the second half, which resulted in an average lateral error that visually appears around half of what was seen in th second half. Furthermore, The moment when the vehicle switches the direction of the curve there is a noticeable peak in the lateral error before the vehicle finds its footing and has a more steady lateral error. This increased initial error is likely due to the vehicle not responding quickly enough to the curvature of the path, and as a result it accidentally overshoots. All that said, in the case of a slightly curved path in both direction the system can maintain a maximum lateral heading below 0.45 meters.
+The snake path was originally chosen to evaluate how effectively the autonomous driving system can deal with the existence of turns in the road in each direction. For this trial, the vehicle achieved an average maximum lateral error of 0.3197 meters, which while it is close to the maximum lateral error of 0.45 meters it still remains acceptable. Upon further investigation of the lateral error over time graph found at Fig. \ref{fig:snake_lat_1} in conjunction with the vehicle path graph found at Fig. \ref{fig:snake_way_1}, a few key points can be identified. For starters, the two halves of the vehicle path can be identified. The first half of the snake shape was a lot more shallow than the second half, which resulted in an average lateral error that visually appears around half of what was seen in the second half. Furthermore, The moment when the vehicle switches the direction of the curve there is a noticeable peak in the lateral error before the vehicle finds its equilibrium and has a more steady lateral error. This increased initial error is likely due to the vehicle not responding quickly enough to the curvature of the path, and as a result it accidentally overshoots. All that said, in the case of a slightly curved path in both direction the system can maintain a maximum lateral heading below 0.45 meters.
 
 \begin{figure}
 	\centering
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_snake_1}
-		\captionof{figure}{Lateral Error over Time for Snake Path Trial 1}
+		\caption{Lateral error over Time for Snake Path Trial 1}
 		\label{fig:snake_lat_1}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_1}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 1}
+		\caption{Vehicle Path compared to Lane Center for Snake Path Trial 1}
 		\label{fig:snake_way_1}
 	\end{minipage}
 \end{figure}
 
 \textbf{Circle Path}
 
-The third trial map our team chose was the Circle path, which was originally chosen to evaluate how effectively the autonomous driving system can deal with sharper turns. For this trial, the vehicle achieved an average maximum lateral error of 0.5393 meters, which fails the requirement for maintaining a maximum lateral error below 0.45 meters. Upon further investigation of the lateral error over time graph found at Fig. \ref{fig:circle_lat_1} in conjunction with the vehicle path graph found at Fig. \ref{fig:circle_way_1}, a few notable patterns emerge. For starters, the same pattern observed with the snake path can be identified. When the vehicle begins on the track, it initially gets a very high lateral error which ends up being the maximum lateral error for the trial. However, this maximum lateral error is very quickly lowered to a more stable lateral error that does remain under the 0.45 meters identified in the requirements. As before, this is likely due to the initial overshoot of the vehicle not attempting to steer towards the lane centre at the beginning, but only after its already started moving away. However, while we can understand why this initial overshoot might be occurring the ability to handle this overshoot must exist in the lane evaluation system, and as a result in the case of a moderately curved path the system cannot maintain a maximum lateral heading below 0.45 meters.
+The third trial map our team chose was the circle path, which was originally chosen to evaluate how effectively the autonomous driving system can deal with sharper turns. For this trial, the vehicle achieved an average maximum lateral error of 0.5152 meters, which fails the requirement for maintaining a maximum lateral error below 0.45 meters. Upon further investigation of the lateral error over time graph found at Fig. \ref{fig:circle_lat_1} in conjunction with the vehicle path graph found at Fig. \ref{fig:circle_way_1}, a few notable patterns emerge. For starters, the same pattern observed with the snake path can be identified. When the vehicle begins on the track, it initially gets a very high lateral error which ends up being the maximum lateral error for the trial. However, this maximum lateral error is very quickly lowered to a more stable lateral error that does remain under the 0.45 meters identified in the requirements. As before, this is likely due to the initial overshoot of the vehicle not attempting to steer towards the lane centre at the beginning, but only after its already started moving away. However, while we can understand why this initial overshoot might be occurring the ability to handle this overshoot must exist in the lane evaluation system, and as a result in the case of a moderately curved path the system cannot maintain a maximum lateral heading below 0.45 meters.
 
 \begin{figure}
 	\centering
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_circle_1}
-		\captionof{figure}{Lateral Error over Time for Circle Path Trial 1}
+		\caption{Lateral error over Time for Circle Path Trial 1}
 		\label{fig:circle_lat_1}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_1}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 1}
+		\caption{Vehicle Path compared to Lane Center for Circle Path Trial 1}
 		\label{fig:circle_way_1}
 	\end{minipage}
 \end{figure}
@@ -1397,23 +1377,23 @@ The final trial that our team chose was a merge path. This means that the vehicl
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_merge_1}
-		\captionof{figure}{Lateral Error over Time for Merge Path Trial 1}
+		\caption{Lateral error over Time for Merge Path Trial 1}
 		\label{fig:merge_lat_1}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_1}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 1}
+		\caption{Vehicle Path compared to Lane Center for Merge Path Trial 1}
 		\label{fig:merge_way_1}
 	\end{minipage}
 \end{figure}
 
 \textbf{Conclusions}
 
-Overall, the system was not capable of maintaining a maximum lateral error below 0.45 meters in all tested environments. It was capable of maintaining a sufficiently low maximum lateral error when the shape of curves in the road was sufficiently shallow, but after a certain point was no longer capable of always remaining between the lane lines. Furthermore, the system was incapable of keeping when any disturbances to the lane data were present since when the other lane merged onto the vehicles path it was incapable of properly determining the lane centre and flew off course.
+Overall, the system was not capable of maintaining a maximum lateral error below 0.45 meters in all tested environments. It was capable of maintaining a sufficiently low maximum lateral error when the shape of curves in the road was sufficiently shallow, but after a certain point was no longer capable of always remaining between the lane lines. Furthermore, the system was incapable of keeping when any disturbances to the lane data were present since when the other lane merged onto the vehicle's path it was incapable of properly determining the lane centre and flew off course.
 
-Of further note, the other graphs generated in the other trials can be found in Appendix B.
+The graphs generated in the other trials can be found in Appendix B.
 
 \section{Reflections}
 
@@ -1480,14 +1460,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-05_v-4.png}
-		\captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 4.0 m/s Over Time}
+		\caption{Top-down view of vehicle path compared to waypoints for k=0.5 1/s and base velocity of 4.0 m/s over time}
 		\label{fig:wayk5v4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-05_v-4.png}
-		\captionof{figure}{Lateral Error with k=0.5 1/s and Base Velocity of 4.0 m/s Over Time}
+		\caption{Lateral error with k=0.5 1/s and base velocity of 4.0 m/s over time}
 		\label{fig:latk5v4}
 	\end{minipage}
 \end{figure}
@@ -1497,14 +1477,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/heading_k-05_v-4.png}
-		\captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 4.0 m/s Over Time}
+		\caption{Heading error with k=0.5 1/s and base velocity of 4.0 m/s over time}
 		\label{fig:headk5v4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-05_v-6.png}
-		\captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Top-down view of vehicle path compared to waypoints for k=0.5 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:wayk5v6}
 	\end{minipage}
 \end{figure}
@@ -1514,14 +1494,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-05_v-6.png}
-		\captionof{figure}{Lateral Error with k=0.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Lateral error with k=0.5 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:latk5v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/heading_k-05_v-6.png}
-		\captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Heading error with k=0.5 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:headk5v6}
 	\end{minipage}
 \end{figure}
@@ -1531,14 +1511,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-05_v-8.png}
-		\captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Top-down view of vehicle path compared to waypoints for k=0.5 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:wayk5v8}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-05_v-8.png}
-		\captionof{figure}{Lateral Error with k=0.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Lateral error with k=0.5 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:latk5v8}
 	\end{minipage}
 \end{figure}
@@ -1548,14 +1528,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/heading_k-05_v-8.png}
-		\captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Heading error with k=0.5 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:headk5v8}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-1_v-4.png}
-		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.0 1/s and Base Velocity of 4.0 m/s Over Time}
+		\caption{Top-down view of vehicle path compared to waypoints for k=1.0 1/s and base velocity of 4.0 m/s over time}
 		\label{fig:wayk10v4}
 	\end{minipage}
 \end{figure}
@@ -1565,14 +1545,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-1_v-4.png}
-		\captionof{figure}{Lateral Error with k=1.0 1/s and Base Velocity of 4.0 m/s Over Time}
+		\caption{Lateral error with k=1.0 1/s and base velocity of 4.0 m/s over time}
 		\label{fig:latk10v4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/heading_k-1_v-4.png}
-		\captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 4.0 m/s Over Time}
+		\caption{Heading error with k=1.0 1/s and base velocity of 4.0 m/s over time}
 		\label{fig:headk10v4}
 	\end{minipage}
 \end{figure}
@@ -1583,14 +1563,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-1_v-6.png}
-		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.0 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Top-down view of vehicle path compared to waypoints for k=1.0 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:wayk10v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-1_v-6.png}
-		\captionof{figure}{Lateral Error with k=1.0 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Lateral error with k=1.0 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:latk10v6}
 	\end{minipage}
 \end{figure}
@@ -1600,14 +1580,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/heading_k-1_v-6.png}
-		\captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Heading error with k=1.0 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:headk10v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-1_v-8.png}
-		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.0 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Top-down view of vehicle path compared to waypoints for k=1.0 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:wayk10v8}
 	\end{minipage}
 \end{figure}
@@ -1617,14 +1597,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-1_v-8.png}
-		\captionof{figure}{Lateral Error with k=1.0 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Lateral error with k=1.0 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:latk10v8}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/heading_k-1_v-8.png}
-		\captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Heading error with k=1.0 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:headk10v8}
 	\end{minipage}
 \end{figure}
@@ -1634,14 +1614,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-15_v-6.png}
-		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Top-down view of vehicle path compared to waypoints for k=1.5 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:wayk15v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-15_v-6.png}
-		\captionof{figure}{Lateral Error with k=1.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Lateral error with k=1.5 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:latk15v6}
 	\end{minipage}
 \end{figure}
@@ -1651,14 +1631,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/heading_k-15_v-6.png}
-		\captionof{figure}{Heading Error with k=1.5 1/s and Base Velocity of 6.0 m/s Over Time}
+		\caption{Heading error with k=1.5 1/s and base velocity of 6.0 m/s over time}
 		\label{fig:headk15v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-15_v-8.png}
-		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Top-down view of vehicle path compared to waypoints for k=1.5 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:wayk15v8}
 	\end{minipage}
 \end{figure}
@@ -1668,14 +1648,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-15_v-8.png}
-		\captionof{figure}{Lateral Error with k=1.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Lateral error with k=1.5 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:latk15v8}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/knc_eval/heading_k-15_v-8.png}
-		\captionof{figure}{Heading Error with k=1.5 1/s and Base Velocity of 8.0 m/s Over Time}
+		\caption{Heading error with k=1.5 1/s and base velocity of 8.0 m/s over time}
 		\label{fig:headk15v4}
 	\end{minipage}
 \end{figure}
@@ -1688,14 +1668,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_straight_2}
-		\captionof{figure}{Lateral Error over Time for Straight Path Trial 2}
+		\caption{Lateral error over Time for Straight Path Trial 2}
 		\label{fig:straight_lat_2}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_2}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 2}
+		\caption{Vehicle Path compared to Lane Center for Straight Path Trial 2}
 		\label{fig:straight_way_2}
 	\end{minipage}
 \end{figure}
@@ -1705,14 +1685,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_straight_3}
-		\captionof{figure}{Lateral Error over Time for Straight Path Trial 3}
+		\caption{Lateral error over Time for Straight Path Trial 3}
 		\label{fig:straight_lat_3}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_3}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 3}
+		\caption{Vehicle Path compared to Lane Center for Straight Path Trial 3}
 		\label{fig:straight_way_3}
 	\end{minipage}
 \end{figure}
@@ -1722,14 +1702,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_straight_4}
-		\captionof{figure}{Lateral Error over Time for Straight Path Trial 4}
+		\caption{Lateral error over Time for Straight Path Trial 4}
 		\label{fig:straight_lat_4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_4}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 4}
+		\caption{Vehicle Path compared to Lane Center for Straight Path Trial 4}
 		\label{fig:straight_way_4}
 	\end{minipage}
 \end{figure}
@@ -1739,14 +1719,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_straight_5}
-		\captionof{figure}{Lateral Error over Time for Straight Path Trial 5}
+		\caption{Lateral error over Time for Straight Path Trial 5}
 		\label{fig:straight_lat_5}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_5}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 5}
+		\caption{Vehicle Path compared to Lane Center for Straight Path Trial 5}
 		\label{fig:straight_way_5}
 	\end{minipage}
 \end{figure}
@@ -1764,14 +1744,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_snake_2}
-		\captionof{figure}{Lateral Error over Time for Snake Path Trial 2}
+		\caption{Lateral error over Time for Snake Path Trial 2}
 		\label{fig:snake_lat_2}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_2}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 2}
+		\caption{Vehicle Path compared to Lane Center for Snake Path Trial 2}
 		\label{fig:snake_way_2}
 	\end{minipage}
 \end{figure}
@@ -1781,14 +1761,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_snake_3}
-		\captionof{figure}{Lateral Error over Time for Snake Path Trial 3}
+		\caption{Lateral error over Time for Snake Path Trial 3}
 		\label{fig:snake_lat_3}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_3}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 3}
+		\caption{Vehicle Path compared to Lane Center for Snake Path Trial 3}
 		\label{fig:snake_way_3}
 	\end{minipage}
 \end{figure}
@@ -1798,14 +1778,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_snake_4}
-		\captionof{figure}{Lateral Error over Time for Snake Path Trial 4}
+		\caption{Lateral error over Time for Snake Path Trial 4}
 		\label{fig:snake_lat_4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_4}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 4}
+		\caption{Vehicle Path compared to Lane Center for Snake Path Trial 4}
 		\label{fig:snake_way_4}
 	\end{minipage}
 \end{figure}
@@ -1815,14 +1795,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_snake_5}
-		\captionof{figure}{Lateral Error over Time for Snake Path Trial 5}
+		\caption{Lateral error over Time for Snake Path Trial 5}
 		\label{fig:snake_lat_5}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_5}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 5}
+		\caption{Vehicle Path compared to Lane Center for Snake Path Trial 5}
 		\label{fig:snake_way_5}
 	\end{minipage}
 \end{figure}
@@ -1839,14 +1819,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_circle_2}
-		\captionof{figure}{Lateral Error over Time for Circle Path Trial 2}
+		\caption{Lateral error over Time for Circle Path Trial 2}
 		\label{fig:circle_lat_2}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_2}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 2}
+		\caption{Vehicle Path compared to Lane Center for Circle Path Trial 2}
 		\label{fig:circle_way_2}
 	\end{minipage}
 \end{figure}
@@ -1856,14 +1836,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_circle_3}
-		\captionof{figure}{Lateral Error over Time for Circle Path Trial 3}
+		\caption{Lateral error over Time for Circle Path Trial 3}
 		\label{fig:circle_lat_3}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_3}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 3}
+		\caption{Vehicle Path compared to Lane Center for Circle Path Trial 3}
 		\label{fig:circle_way_3}
 	\end{minipage}
 \end{figure}
@@ -1873,14 +1853,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_circle_4}
-		\captionof{figure}{Lateral Error over Time for Circle Path Trial 4}
+		\caption{Lateral error over Time for Circle Path Trial 4}
 		\label{fig:circle_lat_4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_4}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 4}
+		\caption{Vehicle Path compared to Lane Center for Circle Path Trial 4}
 		\label{fig:circle_way_4}
 	\end{minipage}
 \end{figure}
@@ -1890,14 +1870,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_circle_5}
-		\captionof{figure}{Lateral Error over Time for Circle Path Trial 5}
+		\caption{Lateral error over Time for Circle Path Trial 5}
 		\label{fig:circle_lat_5}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_5}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 5}
+		\caption{Vehicle Path compared to Lane Center for Circle Path Trial 5}
 		\label{fig:circle_way_5}
 	\end{minipage}
 \end{figure}
@@ -1914,14 +1894,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_merge_2}
-		\captionof{figure}{Lateral Error over Time for Merge Path Trial 2}
+		\caption{Lateral error over Time for Merge Path Trial 2}
 		\label{fig:merge_lat_2}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_2}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 2}
+		\caption{Vehicle Path compared to Lane Center for Merge Path Trial 2}
 		\label{fig:merge_way_2}
 	\end{minipage}
 \end{figure}
@@ -1931,14 +1911,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_merge_3}
-		\captionof{figure}{Lateral Error over Time for Merge Path Trial 3}
+		\caption{Lateral error over Time for Merge Path Trial 3}
 		\label{fig:merge_lat_3}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_3}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 3}
+		\caption{Vehicle Path compared to Lane Center for Merge Path Trial 3}
 		\label{fig:merge_way_3}
 	\end{minipage}
 \end{figure}
@@ -1948,14 +1928,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_merge_4}
-		\captionof{figure}{Lateral Error over Time for Merge Path Trial 4}
+		\caption{Lateral error over Time for Merge Path Trial 4}
 		\label{fig:merge_lat_4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_4}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 4}
+		\caption{Vehicle Path compared to Lane Center for Merge Path Trial 4}
 		\label{fig:merge_way_4}
 	\end{minipage}
 \end{figure}
@@ -1965,14 +1945,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/lateral_merge_5}
-		\captionof{figure}{Lateral Error over Time for Merge Path Trial 5}
+		\caption{Lateral error over Time for Merge Path Trial 5}
 		\label{fig:merge_lat_5}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_5}
-		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 5}
+		\caption{Vehicle Path compared to Lane Center for Merge Path Trial 5}
 		\label{fig:merge_way_5}
 	\end{minipage}
 \end{figure}
