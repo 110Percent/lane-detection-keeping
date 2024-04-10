@@ -588,7 +588,7 @@ A similar stack, ROCm, is provided by AMD for use with its Radeon series of GPUs
 A perspective transformation is a geometric transformation which can be applied to an image or list of points on a plane, to correct or modify its perspective. Perspective transformations can be used to correct distortions in an image or modify the viewpoint that an image is perceived at. 
 Homography refers to a transformation that maps points from one plane to another. In computer vision applications, homography is often used to describe the relationship of two images taken of the same scene, from different perspectives. Homography is useful for perspective transformations because it retains proportionality of the points within the image. To perform a perspective transformation, a homography matrix must be calculated. A homography matrix is a 3x3 matrix which describes the perspective transformation between two planes. 
 The first step of a typical method for generating a homography matrix is to identify sample points in the source image which form a polygon whose proportions are known, irrespective of how they may appear in the image. This is often done by identifying a quadrilateral within the source image which is known to be rectangular. For example, if an image contains a tile floor with rectangular tiles, the four corners of a tile may be used as the source points. The angles between these points are known to be 90 degrees, so the corresponding coordinates in the transformed image can be determined. From these source and destination points, the homography matrix may be generated and used the image or list of points within the image to complete the perspective transformation. Figure XX below gives an example perspective transformation. The source points in the source image are chosen, shown on the left, and their corresponding points on the destination image are shown on the right. 
-/includegraphics{transform_carleton.png}
+
 
 \subsubsection{Conceptualization}
 \underline{Line Detection}
@@ -699,11 +699,11 @@ Detected and inferred lanes also maintain a smooth shape, which is critical in o
 jitter introduced by jagged lines caused by errors in the detection subsystem.
 
 \underline{Messaging and Data Transformations}
-The two main tasks of the Messaging and Data Transformations subsystem are to process the lane data into a format that can be published to a ROS topic, and to perform any transformations on the detected lane markings before they are used by the K&C subsystem. 
+The two main tasks of the Messaging and Data Transformations subsystem are to process the lane data into a format that can be published to a ROS topic, and to perform any transformations on the detected lane markings before they are used by the K\&C subsystem. 
 
 After processing source images, the Detection module outputs lane markings as a list of lists, with each list representing a detected line, and each line consisting of several x,y coordinates denoting points on the line. TODO: reference appendix of message schema. This formatting is useful for parsing the lane data, but cannot be easily included in a ROS message. ROS offers a functionality for publishing multi-dimensional arrays to topics; however, gaining familiarity with this functionality would be time consuming and the Python implementation for flattening the list of lines was not overly complex. Because of this, the decision was made to flatten the lane data before publishing it in a ROS message, and unflatten the lane data after it was received. 
 
-The mechanism used in the K&C system, described in, CONCEPTUALIZATION SECTION FOR K&C, requires data where the lane markings are plotted on a cartesian grid from a top-down perspective of the scene. The K&C subsystem assumes the position of the camera to be at the origin, with lane markings extending in the positive y direction with lines to the left of the car having negative x coordinates and lines to the right of the car having positive x coordinates. These stipulations mean that after lanes have been detected from the source image, a perspective transformation must be performed to provide usable lane data to the K&C subsystem for making steering adjustments. This design decision increases the risk of issues resulting from propagation of error or latency through the additional calculations, but it allows for the integration with the chosen solution for the K&C subsystem. For future iterations of the system, the perspective transformation may become unnecessary, depending on the specific controller used in those future iterations. 
+The mechanism used in the K\&C system, described in, CONCEPTUALIZATION SECTION FOR K\&C, requires data where the lane markings are plotted on a cartesian grid from a top-down perspective of the scene. The K\&C subsystem assumes the position of the camera to be at the origin, with lane markings extending in the positive y direction with lines to the left of the car having negative x coordinates and lines to the right of the car having positive x coordinates. These stipulations mean that after lanes have been detected from the source image, a perspective transformation must be performed to provide usable lane data to the K\&C subsystem for making steering adjustments. This design decision increases the risk of issues resulting from propagation of error or latency through the additional calculations, but it allows for the integration with the chosen solution for the K\&C subsystem. For future iterations of the system, the perspective transformation may become unnecessary, depending on the specific controller used in those future iterations. 
 
 
 \subsubsection{Software Architecture}
@@ -1006,23 +1006,23 @@ Once the vehicle gets within 5 meters of the last waypoint, the evaluation subsy
 		\hline
 		k (1/s) & Velocity (m/s) & max lateral error (meters) & max heading error (rads) \\ [0.5ex]
 		\hline
-		0.5     & 4.0            & 2.540                      & 0.6214                   \\
+		0.5     & 4.0            & 2.504                      & 0.6159                   \\
 		\hline
-		0.5     & 6.0            & 3.613                      & 0.6305                   \\
+		0.5     & 6.0            & 3.620                      & 0.6102                   \\
 		\hline
-		0.5     & 8.0            & 4.891                      & 0.6357                   \\
+		0.5     & 8.0            & 5.121                      & 0.5884                 \\
 		\hline
-		1.0     & 4.0            & 2.248                      & 0.5409                   \\
+		1.0     & 4.0            & 2.190                      & 0.5328                   \\
 		\hline
-		1.0     & 6.0            & 3.261                      & 0.6233                   \\
+		1.0     & 6.0            & 3.698                      & 0.6457                   \\
 		\hline
-		1.0     & 8.0            & 5.155                      & 0.6302                   \\
+		1.0     & 8.0            & 4.603                      & 0.6187                   \\
 		\hline
-		1.5     & 4.0            & 2.089                      & 0.4508                   \\
+		1.5     & 4.0            & 2.110                      & 0.4450                   \\
 		\hline
-		1.5     & 6.0            & 3.576                      & 0.6440                   \\
+		1.5     & 6.0            & 3.550                      & 0.6637                   \\
 		\hline
-		1.5     & 8.0            & 4.696                      & 0.6013                   \\
+		1.5     & 8.0            & 4.665                      & 0.5294                   \\
 		\hline
 	\end{tabular}
 	\caption{Results of the Maximum Heading and Lateral Error for Various K and Speed Values}
@@ -1033,21 +1033,21 @@ The results of the testing identified that the best performance for both maximum
 
 \begin{figure}
 	\centering
-	\includegraphics[width=4in]{waypoints_k-15_v-4}
+	\includegraphics[width=4in]{/knc_eval/waypoints_k-15_v-4}
 	\caption{Vehicle Path Compared to Waypoints for k=1.5 1/s and Base Velocity of 4.0 m/s Over Time}
 	\label{fig:waypointsk10v4}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\includegraphics[width=4in]{lateral_k-15_v-4}
+	\includegraphics[width=4in]{/knc_eval/lateral_k-15_v-4}
 	\caption{Lateral Error with k=1.5 1/s and Base Velocity of 4.0 m/s Over Time}
 	\label{fig:lateralk10v4}
 \end{figure}
 
 \begin{figure}
 	\centering
-	\includegraphics[width=4in]{heading_k-15_v-4}
+	\includegraphics[width=4in]{/knc_eval/heading_k-15_v-4}
 	\caption{Heading Error with k=1.5 1/s and Base Velocity of 4.0 m/s Over Time}
 	\label{fig:headingk10v4}
 \end{figure}
@@ -1175,7 +1175,7 @@ Our plan was to construct a test track for the JetAcker in order to test our sys
 
 Due to the complications that arose with the JetAcker, the primary method of evaluation for the system was done through the Carla simulation software. However, even though Carla is a great environment for testing there is a limited amount of information that can be extracted from the Carla-ROS bridge that makes it difficult to evaluate where the lane center truly is. In order to get around this, the waypoint path that was used for the keeping and control subsystem was broken into four distinct parts that each exhibited a unique path characteristic that can be used to evaluate the system as a whole. The vehicle is then spawned at the beginning of each segment, and once the vehicle reaches the end the evaluation subsystem will output the maximum lateral error and the error over time associated with that trial. 
 
-The four different trial paths used for the evaluation are a straight line, a shallow snake curve, a moderately sharp circular curve, and a straight line that has a lane merge. The straight line is a path that has no turns associated with it, and it meant to confirm that the vehicle is actually capable of following a clear path. The second evaluation path is the shallow snake path. The purpose of this path is to determine that the vehicle is capable of identifying curves present in the vehicles field of view, and then to then proceed to follow the lanes. Thirdly, a moderately sharp circular path was added to evaluate if the vehicle can control itself well on sharper corners. Lastly, a straight lane path that has another lane merge into it was used to evaluate how the system is able to handle that scenario.
+The four different trial paths used for the evaluation are a straight line, a shallow snake curve, a moderately sharp circular curve, and a straight line that has a lane merge. The straight line is a path that has no turns associated with it, and it meant to confirm that the vehicle is actually capable of following a clear path. The second evaluation path is the shallow snake path. The purpose of this path is to determine that the vehicle is capable of identifying curves present in the vehicles field of view, and then to then proceed to follow the lanes. The two curves in the snake path have a radii of approximately 340 meters and 85 meters, respectively. Thirdly, a moderately sharp circular path was added to evaluate if the vehicle can control itself well on sharper corners. The curve of the circular shape has a radius of approximately 55 meters. Lastly, a straight lane path that has another lane merge into it was used to evaluate how the system is able to handle that scenario.
 
 Each trial path was run through five times to achieve an average maximum lateral error over time. Additionally, each trial path outputted a line chart of the lateral error over time to identify any noticable patterns present in the lateral error. Finally, each trial also outputted a line chart comparing the overall path of the vehicle to the path of the waypoints to provide a birds-eye view of the path the vehicle takes. The results of the testing can be found in Table \ref{tab:overal_eval}.
 
@@ -1184,13 +1184,13 @@ Each trial path was run through five times to achieve an average maximum lateral
 	\begin{tabular}{c c c c c c c c }
 		\textbf{Trial Path} & \textbf{Trial 1} & \textbf{Trial 2} & \textbf{Trial 3} & \textbf{Trial 4} & \textbf{Trial 5} & \textbf{Average} & \textbf{Standard Deviation} \\ [0.5ex]
 		\hline
-		Straight Path & 0.0425 m & 0.0517 m & 0.0690 m & 0.0592 m & 0.0449 m & 0.0535 m & 0.0109 m \\		
+		Straight Path & 0.0529 m & 0.0405 m & 0.0491 m & 0.0573 m & 0.0535 m & 0.0506 m & 0.0064 m \\		
 		\hline
-		Snake Path & 0.3482 m & 0.3332 m & 0.3348 m & 0.3491 m & 0.3630 m & 0.3457 m & 0.0121 m \\		
+		Snake Path & 0.3216 m & 0.3174 m & 0.3202 m & 0.3172 m & 0.3223 m & 0.3197 m & 0.0023 m \\		
 		\hline
-		Circle Path & 0.5569 m & 0.5372 m & 0.5340 m & 0.5463 m & 0.5221 m & 0.5393 m & 0.0131 m \\		
+		Circle Path & 0.5086 m & 0.4997 m & 0.5119 m & 0.5104 m & 0.5455 m & 0.5152 m & 0.0176 m \\		
 		\hline
-		Merge Path & 1.3978 m & 1.3881 m & 1.4532 m & 1.3979 m & 1.4164 m & 1.4107 m & 0.0259 m \\		
+		Merge Path & 1.4733 m & 1.3943 m & 1.4385 m & 1.4829 m & 1.4563 m & 1.4491 m & 0.0350 m \\		
 		\hline
 	\end{tabular}
 	\caption{Results of Maximum Lateral Devation across 5 Trials for 4 Unique Paths}
@@ -1340,7 +1340,6 @@ On the hardware side, more stuff
 
 We bit off a lot more than we could chew. We're happy with the progress, but if we knew what we know now we would have been a lot more productive.
 
-\printbibliography
 \vspace{12pt}
 
 \appendix
@@ -1352,14 +1351,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\centering
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{waypoints_k-05_v-4.png}
+		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-05_v-4.png}
 		\captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 4.0 m/s Over Time}
 		\label{fig:wayk5v4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{lateral_k-05_v-4.png}
+		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-05_v-4.png}
 		\captionof{figure}{Lateral Error with k=0.5 1/s and Base Velocity of 4.0 m/s Over Time}
 		\label{fig:latk5v4}
 	\end{minipage}
@@ -1369,14 +1368,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\centering
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{heading_k-05_v-4.png}
+		\includegraphics[width=\linewidth]{/knc_eval/heading_k-05_v-4.png}
 		\captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 4.0 m/s Over Time}
 		\label{fig:headk5v4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{waypoints_k-05_v-6.png}
+		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-05_v-6.png}
 		\captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 6.0 m/s Over Time}
 		\label{fig:wayk5v6}
 	\end{minipage}
@@ -1386,14 +1385,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\centering
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{lateral_k-05_v-6.png}
+		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-05_v-6.png}
 		\captionof{figure}{Lateral Error with k=0.5 1/s and Base Velocity of 6.0 m/s Over Time}
 		\label{fig:latk5v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{heading_k-05_v-6.png}
+		\includegraphics[width=\linewidth]{/knc_eval/heading_k-05_v-6.png}
 		\captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 6.0 m/s Over Time}
 		\label{fig:headk5v6}
 	\end{minipage}
@@ -1403,14 +1402,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\centering
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{waypoints_k-05_v-8.png}
+		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-05_v-8.png}
 		\captionof{figure}{Vehicle Path Compared to Waypoints for k=0.5 1/s and Base Velocity of 8.0 m/s Over Time}
 		\label{fig:wayk5v8}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{lateral_k-05_v-8.png}
+		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-05_v-8.png}
 		\captionof{figure}{Lateral Error with k=0.5 1/s and Base Velocity of 8.0 m/s Over Time}
 		\label{fig:latk5v8}
 	\end{minipage}
@@ -1420,14 +1419,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\centering
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{heading_k-05_v-8.png}
+		\includegraphics[width=\linewidth]{/knc_eval/heading_k-05_v-8.png}
 		\captionof{figure}{Heading Error with k=0.5 1/s and Base Velocity of 8.0 m/s Over Time}
 		\label{fig:headk5v8}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{waypoints_k-1_v-4.png}
+		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-1_v-4.png}
 		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.0 1/s and Base Velocity of 4.0 m/s Over Time}
 		\label{fig:wayk10v4}
 	\end{minipage}
@@ -1437,14 +1436,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\centering
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{lateral_k-1_v-4.png}
+		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-1_v-4.png}
 		\captionof{figure}{Lateral Error with k=1.0 1/s and Base Velocity of 4.0 m/s Over Time}
 		\label{fig:latk10v4}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{heading_k-1_v-4.png}
+		\includegraphics[width=\linewidth]{/knc_eval/heading_k-1_v-4.png}
 		\captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 4.0 m/s Over Time}
 		\label{fig:headk10v4}
 	\end{minipage}
@@ -1455,14 +1454,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\centering
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{waypoints_k-1_v-6.png}
+		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-1_v-6.png}
 		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.0 1/s and Base Velocity of 6.0 m/s Over Time}
 		\label{fig:wayk10v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{lateral_k-1_v-6.png}
+		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-1_v-6.png}
 		\captionof{figure}{Lateral Error with k=1.0 1/s and Base Velocity of 6.0 m/s Over Time}
 		\label{fig:latk10v6}
 	\end{minipage}
@@ -1472,14 +1471,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\centering
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{heading_k-1_v-6.png}
+		\includegraphics[width=\linewidth]{/knc_eval/heading_k-1_v-6.png}
 		\captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 6.0 m/s Over Time}
 		\label{fig:headk10v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{waypoints_k-1_v-8.png}
+		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-1_v-8.png}
 		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.0 1/s and Base Velocity of 8.0 m/s Over Time}
 		\label{fig:wayk10v8}
 	\end{minipage}
@@ -1489,14 +1488,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\centering
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{lateral_k-1_v-8.png}
+		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-1_v-8.png}
 		\captionof{figure}{Lateral Error with k=1.0 1/s and Base Velocity of 8.0 m/s Over Time}
 		\label{fig:latk10v8}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{heading_k-1_v-8.png}
+		\includegraphics[width=\linewidth]{/knc_eval/heading_k-1_v-8.png}
 		\captionof{figure}{Heading Error with k=1.0 1/s and Base Velocity of 8.0 m/s Over Time}
 		\label{fig:headk10v8}
 	\end{minipage}
@@ -1506,14 +1505,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\centering
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{waypoints_k-15_v-6.png}
+		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-15_v-6.png}
 		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.5 1/s and Base Velocity of 6.0 m/s Over Time}
 		\label{fig:wayk15v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{lateral_k-15_v-6.png}
+		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-15_v-6.png}
 		\captionof{figure}{Lateral Error with k=1.5 1/s and Base Velocity of 6.0 m/s Over Time}
 		\label{fig:latk15v6}
 	\end{minipage}
@@ -1523,14 +1522,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\centering
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{heading_k-15_v-6.png}
+		\includegraphics[width=\linewidth]{/knc_eval/heading_k-15_v-6.png}
 		\captionof{figure}{Heading Error with k=1.5 1/s and Base Velocity of 6.0 m/s Over Time}
 		\label{fig:headk15v6}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{waypoints_k-15_v-8.png}
+		\includegraphics[width=\linewidth]{/knc_eval/waypoints_k-15_v-8.png}
 		\captionof{figure}{Vehicle Path Compared to Waypoints for k=1.5 1/s and Base Velocity of 8.0 m/s Over Time}
 		\label{fig:wayk15v8}
 	\end{minipage}
@@ -1540,14 +1539,14 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 	\centering
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{lateral_k-15_v-8.png}
+		\includegraphics[width=\linewidth]{/knc_eval/lateral_k-15_v-8.png}
 		\captionof{figure}{Lateral Error with k=1.5 1/s and Base Velocity of 8.0 m/s Over Time}
 		\label{fig:latk15v8}
 	\end{minipage}%
 	\hspace{0.1\textwidth}%
 	\begin{minipage}{.45\textwidth}
 		\centering
-		\includegraphics[width=\linewidth]{heading_k-15_v-8.png}
+		\includegraphics[width=\linewidth]{/knc_eval/heading_k-15_v-8.png}
 		\captionof{figure}{Heading Error with k=1.5 1/s and Base Velocity of 8.0 m/s Over Time}
 		\label{fig:headk15v4}
 	\end{minipage}
