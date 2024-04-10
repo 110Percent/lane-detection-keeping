@@ -9,7 +9,7 @@ from rclpy.node import Node
 from lane_interfaces.msg import LaneLocation
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
-import ros2_ws.src.lane_nodes_py.lane_nodes_py.transforms.line_transforms as line_transforms
+import lane_nodes_py.transforms.line_transforms as line_transforms
 import cv2
 
 from .detection.detection import Detection
