@@ -18,6 +18,7 @@ ros2_ws/src/lane_nodes_py/lane_nodes_py/test_videos/*
 *.cb
 *.cb2
 .*.lb
+*.pdf
 
 ## Intermediate documents:
 *.dvi

@@ -539,7 +539,7 @@ Subsystem-specific requirements:
 
 
 \subsubsection{Technologies and Methods}
-
+~\\
 \underline{Line Detection:}
 
 The backbone of the detection subsystem lies in its use of computer vision and machine learning to identify lane markers in video
@@ -581,8 +581,15 @@ general-purpose computation.
 NVIDIA provides the CUDA (Compute Unified Device Architecture) Toolkit \cite{CUDA} to allow developers to interface with its
 GPUs for general-purpose computational tasks.
 A similar stack, ROCm, is provided by AMD for use with its Radeon series of GPUs. \cite{ROCm}
+\\~\\
+\underline{Confidence}
 
+The line detection system is not perfect. The exact position of the lines can fluctuate from frame to frame, and lines sometimes disappear briefly before being picked up again. To account for this, a system was designed to take past line data into account when deciding where lines are. This system works by maintaining a list of confidence lanes, which consist of a list of lines that are considered to be a part of the same lane and a confidence value between 0 and 1 that represents how confident the system is that the lane exists. Every time a new set of lines are detected, the system tries to match each one to an existing confidence lane by comparing the position of the line to the average of all the stored lines in each confidence lane. If it is close enough to one, it is added to that confidence lane's list, the oldest one is removed, and the confidence is increased. If it does not match anything, a new confidence lane is created with it as the only element in the list. After all lines have been processed, any confidence lanes that have not had a line added to them have their confidence decreased, and all confidence lanes with a high enough confidence have all their stored lines averaged and sent as output. The goal of this system is to smooth out the fluctuations in detected lines. The average of multiple past lines should reduce the side-to-side movement of the detected line, while the confidence aims to prevent lines from immediately disappearing from the output if they fail to be detected for a few frames.
 
+The confidence system also includes some transformations to normalize the line data. This works by taking all the points that form a line, clipping off a portion at the top towards the horizon, matching a polynomial to what is left, and replacing the original irregular points with evenly-spaced points along the y-axis on this polynomial. Doing this makes operations like averaging and matching lines much more straightforward, since the system can expect to find points at specific y-values and average those. The line detection system struggles towards the horizon, so these points have to be removed before matching the polynomial. This portion of the system should probably be separated out into its own node to improve separation of concerns and make it easier to make changes and improvements to it.
+
+Work on the confidence system began near the end of the semester, and it is not yet complete. The bulk of it is done, but there are still a few issues to iron out before it is useful. Clipping off the portion of the initial line near the horizon is not correctly implemented, resulting in the created polynomials being incorrect and turning the entire output into garbage.
+\\~\\
 \underline{Messaging and Data Transformations:}
 
 A perspective transformation is a geometric transformation which can be applied to an image or list of points on a plane, to correct or modify its perspective. Perspective transformations can be used to correct distortions in an image or modify the viewpoint that an image is perceived at.
@@ -707,9 +714,8 @@ This coincides with requirement \textbf{FR1.2}, allowing the system to infer roa
 of view.
 Detected and inferred lanes also maintain a smooth shape, which is critical in our navigation system as we want to minimize
 jitter introduced by jagged lines caused by errors in the detection subsystem.
-
-\underline{Messaging and Data Transformations:}
-
+\\~\\
+\underline{Messaging and Data Transformations}
 The two main tasks of the Messaging and Data Transformations subsystem are to process the lane data into a format that can be published to a ROS topic, and to perform any transformations on the detected lane markings before they are used by the K\&C subsystem.
 
 After processing source images, the Detection module outputs lane markings as a list of lists, with each list representing a detected line, and each line consisting of several x,y coordinates denoting points on the line. TODO: reference appendix of message schema. This formatting is useful for parsing the lane data, but cannot be easily included in a ROS message. ROS offers a functionality for publishing multi-dimensional arrays to topics; however, gaining familiarity with this functionality would be time consuming and the Python implementation for flattening the list of lines was not overly complex. Because of this, the decision was made to flatten the lane data before publishing it in a ROS message, and unflatten the lane data after it was received.
