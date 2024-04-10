@@ -585,10 +585,10 @@ A similar stack, ROCm, is provided by AMD for use with its Radeon series of GPUs
 
 \underline{Messaging and Data Transformations}
 
-A perspective transformation is a geometric transformation which can be applied to an image or list of points on a plane, to correct or modify its perspective. Perspective transformations can be used to correct distortions in an image or modify the viewpoint that an image is perceived at. 
-Homography refers to a transformation that maps points from one plane to another. In computer vision applications, homography is often used to describe the relationship of two images taken of the same scene, from different perspectives. Homography is useful for perspective transformations because it retains proportionality of the points within the image. To perform a perspective transformation, a homography matrix must be calculated. A homography matrix is a 3x3 matrix which describes the perspective transformation between two planes. 
-The first step of a typical method for generating a homography matrix is to identify sample points in the source image which form a polygon whose proportions are known, irrespective of how they may appear in the image. This is often done by identifying a quadrilateral within the source image which is known to be rectangular. For example, if an image contains a tile floor with rectangular tiles, the four corners of a tile may be used as the source points. The angles between these points are known to be 90 degrees, so the corresponding coordinates in the transformed image can be determined. From these source and destination points, the homography matrix may be generated and used the image or list of points within the image to complete the perspective transformation. Figure XX below gives an example perspective transformation. The source points in the source image are chosen, shown on the left, and their corresponding points on the destination image are shown on the right. 
-/includegraphics{transform_carleton.png}
+A perspective transformation is a geometric transformation which can be applied to an image or list of points on a plane, to correct or modify its perspective. Perspective transformations can be used to correct distortions in an image or modify the viewpoint that an image is perceived at.
+Homography refers to a transformation that maps points from one plane to another. In computer vision applications, homography is often used to describe the relationship of two images taken of the same scene, from different perspectives. Homography is useful for perspective transformations because it retains proportionality of the points within the image. To perform a perspective transformation, a homography matrix must be calculated. A homography matrix is a 3x3 matrix which describes the perspective transformation between two planes.
+The first step of a typical method for generating a homography matrix is to identify sample points in the source image which form a polygon whose proportions are known, irrespective of how they may appear in the image. This is often done by identifying a quadrilateral within the source image which is known to be rectangular. For example, if an image contains a tile floor with rectangular tiles, the four corners of a tile may be used as the source points. The angles between these points are known to be 90 degrees, so the corresponding coordinates in the transformed image can be determined. From these source and destination points, the homography matrix may be generated and used the image or list of points within the image to complete the perspective transformation. Figure XX below gives an example perspective transformation. The source points in the source image are chosen, shown on the left, and their corresponding points on the destination image are shown on the right.
+\includegraphics{transform_carleton.png}
 
 \subsubsection{Conceptualization}
 \underline{Line Detection}
@@ -699,11 +699,11 @@ Detected and inferred lanes also maintain a smooth shape, which is critical in o
 jitter introduced by jagged lines caused by errors in the detection subsystem.
 
 \underline{Messaging and Data Transformations}
-The two main tasks of the Messaging and Data Transformations subsystem are to process the lane data into a format that can be published to a ROS topic, and to perform any transformations on the detected lane markings before they are used by the K&C subsystem. 
+The two main tasks of the Messaging and Data Transformations subsystem are to process the lane data into a format that can be published to a ROS topic, and to perform any transformations on the detected lane markings before they are used by the K\&C subsystem.
 
-After processing source images, the Detection module outputs lane markings as a list of lists, with each list representing a detected line, and each line consisting of several x,y coordinates denoting points on the line. TODO: reference appendix of message schema. This formatting is useful for parsing the lane data, but cannot be easily included in a ROS message. ROS offers a functionality for publishing multi-dimensional arrays to topics; however, gaining familiarity with this functionality would be time consuming and the Python implementation for flattening the list of lines was not overly complex. Because of this, the decision was made to flatten the lane data before publishing it in a ROS message, and unflatten the lane data after it was received. 
+After processing source images, the Detection module outputs lane markings as a list of lists, with each list representing a detected line, and each line consisting of several x,y coordinates denoting points on the line. TODO: reference appendix of message schema. This formatting is useful for parsing the lane data, but cannot be easily included in a ROS message. ROS offers a functionality for publishing multi-dimensional arrays to topics; however, gaining familiarity with this functionality would be time consuming and the Python implementation for flattening the list of lines was not overly complex. Because of this, the decision was made to flatten the lane data before publishing it in a ROS message, and unflatten the lane data after it was received.
 
-The mechanism used in the K&C system, described in, CONCEPTUALIZATION SECTION FOR K&C, requires data where the lane markings are plotted on a cartesian grid from a top-down perspective of the scene. The K&C subsystem assumes the position of the camera to be at the origin, with lane markings extending in the positive y direction with lines to the left of the car having negative x coordinates and lines to the right of the car having positive x coordinates. These stipulations mean that after lanes have been detected from the source image, a perspective transformation must be performed to provide usable lane data to the K&C subsystem for making steering adjustments. This design decision increases the risk of issues resulting from propagation of error or latency through the additional calculations, but it allows for the integration with the chosen solution for the K&C subsystem. For future iterations of the system, the perspective transformation may become unnecessary, depending on the specific controller used in those future iterations. 
+The mechanism used in the K\&C system, described in, CONCEPTUALIZATION SECTION FOR K\&C, requires data where the lane markings are plotted on a cartesian grid from a top-down perspective of the scene. The K\&C subsystem assumes the position of the camera to be at the origin, with lane markings extending in the positive y direction with lines to the left of the car having negative x coordinates and lines to the right of the car having positive x coordinates. These stipulations mean that after lanes have been detected from the source image, a perspective transformation must be performed to provide usable lane data to the K\&C subsystem for making steering adjustments. This design decision increases the risk of issues resulting from propagation of error or latency through the additional calculations, but it allows for the integration with the chosen solution for the K\&C subsystem. For future iterations of the system, the perspective transformation may become unnecessary, depending on the specific controller used in those future iterations.
 
 
 \subsubsection{Software Architecture}
@@ -736,7 +736,7 @@ meaning that running lane detection in a separate container does not add any unn
 \underline{Line Detection}
 
 \underline{Messaging and Data Transformations}
-The first challenge addressed by the Messaging and Data Transformations module is the reformatting of lane data into a ROS compatible data type. Publishing messages to ROS topics first requires the use of message interfaces. The interfaces for the system are defined in the \texttt{/ros2\_ws/src/lane\_interfaces} directory. The interface for sending lane location data is named LaneLocation and consists of five attributes, stamp, frame\_id, lanes, row\_lengths, and img\_shape. The stamp and frame\_id attributes are of type string and provide the timestamp for the message and filename for the image associated with the lanes respectively. These two attributes are not currently used by the system, but were added to include metadata that may become useful for future features. The lanes attribute is an array with elements of type float32. This attribute contains the data representing the lanes detected for an image. The row\_lengths attribute is an array with elements of type int32 and stores the number of points for each detected line. The image\_shape attribute is also an array with elements of type int32 and stores the dimensions of the image, to be used in the perspective transformation. 
+The first challenge addressed by the Messaging and Data Transformations module is the reformatting of lane data into a ROS compatible data type. Publishing messages to ROS topics first requires the use of message interfaces. The interfaces for the system are defined in the \texttt{/ros2\_ws/src/lane\_interfaces} directory. The interface for sending lane location data is named LaneLocation and consists of five attributes, stamp, frame\_id, lanes, row\_lengths, and img\_shape. The stamp and frame\_id attributes are of type string and provide the timestamp for the message and filename for the image associated with the lanes respectively. These two attributes are not currently used by the system, but were added to include metadata that may become useful for future features. The lanes attribute is an array with elements of type float32. This attribute contains the data representing the lanes detected for an image. The row\_lengths attribute is an array with elements of type int32 and stores the number of points for each detected line. The image\_shape attribute is also an array with elements of type int32 and stores the dimensions of the image, to be used in the perspective transformation.
 
 Flattening and Unflattening
 The lines detected by the Detection subsystem are outputted as a list of lists, with each list representing a detected line, and each line consisting of several x,y coordinates denoting points on the line, as described in CONCEPTUALIZATION SECTION FOR DET. Since the object is a multidimensional list, it must be restructured to allow for it to be published to a ROS topic. To account for this, the list was flattened by iterating through each list of points, and separately adding the x and y components to a list. The points remain ordered as they were in the original list. An example is shown below:
@@ -744,7 +744,7 @@ The lines detected by the Detection subsystem are outputted as a list of lists, 
 \[ 1: \{[(x1, y1), (x2, y2), ...], [(x3, y3), (x4, y4), ...], [(x5, y5), (x6, y6), ...], ...\} \]
 \[ 2: \{x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, ...\} \]
 
-Object 1 depicts the structure of the lanes before flattening, and object 2 depicts the lanes after flattening. 
+Object 1 depicts the structure of the lanes before flattening, and object 2 depicts the lanes after flattening.
 
 
 
@@ -1173,7 +1173,7 @@ Our plan was to construct a test track for the JetAcker in order to test our sys
 
 \subsection{Evaluation - Results}
 
-Due to the complications that arose with the JetAcker, the primary method of evaluation for the system was done through the Carla simulation software. However, even though Carla is a great environment for testing there is a limited amount of information that can be extracted from the Carla-ROS bridge that makes it difficult to evaluate where the lane center truly is. In order to get around this, the waypoint path that was used for the keeping and control subsystem was broken into four distinct parts that each exhibited a unique path characteristic that can be used to evaluate the system as a whole. The vehicle is then spawned at the beginning of each segment, and once the vehicle reaches the end the evaluation subsystem will output the maximum lateral error and the error over time associated with that trial. 
+Due to the complications that arose with the JetAcker, the primary method of evaluation for the system was done through the Carla simulation software. However, even though Carla is a great environment for testing there is a limited amount of information that can be extracted from the Carla-ROS bridge that makes it difficult to evaluate where the lane center truly is. In order to get around this, the waypoint path that was used for the keeping and control subsystem was broken into four distinct parts that each exhibited a unique path characteristic that can be used to evaluate the system as a whole. The vehicle is then spawned at the beginning of each segment, and once the vehicle reaches the end the evaluation subsystem will output the maximum lateral error and the error over time associated with that trial.
 
 The four different trial paths used for the evaluation are a straight line, a shallow snake curve, a moderately sharp circular curve, and a straight line that has a lane merge. The straight line is a path that has no turns associated with it, and it meant to confirm that the vehicle is actually capable of following a clear path. The second evaluation path is the shallow snake path. The purpose of this path is to determine that the vehicle is capable of identifying curves present in the vehicles field of view, and then to then proceed to follow the lanes. Thirdly, a moderately sharp circular path was added to evaluate if the vehicle can control itself well on sharper corners. Lastly, a straight lane path that has another lane merge into it was used to evaluate how the system is able to handle that scenario.
 
@@ -1184,13 +1184,13 @@ Each trial path was run through five times to achieve an average maximum lateral
 	\begin{tabular}{c c c c c c c c }
 		\textbf{Trial Path} & \textbf{Trial 1} & \textbf{Trial 2} & \textbf{Trial 3} & \textbf{Trial 4} & \textbf{Trial 5} & \textbf{Average} & \textbf{Standard Deviation} \\ [0.5ex]
 		\hline
-		Straight Path & 0.0425 m & 0.0517 m & 0.0690 m & 0.0592 m & 0.0449 m & 0.0535 m & 0.0109 m \\		
+		Straight Path       & 0.0425 m         & 0.0517 m         & 0.0690 m         & 0.0592 m         & 0.0449 m         & 0.0535 m         & 0.0109 m                    \\
 		\hline
-		Snake Path & 0.3482 m & 0.3332 m & 0.3348 m & 0.3491 m & 0.3630 m & 0.3457 m & 0.0121 m \\		
+		Snake Path          & 0.3482 m         & 0.3332 m         & 0.3348 m         & 0.3491 m         & 0.3630 m         & 0.3457 m         & 0.0121 m                    \\
 		\hline
-		Circle Path & 0.5569 m & 0.5372 m & 0.5340 m & 0.5463 m & 0.5221 m & 0.5393 m & 0.0131 m \\		
+		Circle Path         & 0.5569 m         & 0.5372 m         & 0.5340 m         & 0.5463 m         & 0.5221 m         & 0.5393 m         & 0.0131 m                    \\
 		\hline
-		Merge Path & 1.3978 m & 1.3881 m & 1.4532 m & 1.3979 m & 1.4164 m & 1.4107 m & 0.0259 m \\		
+		Merge Path          & 1.3978 m         & 1.3881 m         & 1.4532 m         & 1.3979 m         & 1.4164 m         & 1.4107 m         & 0.0259 m                    \\
 		\hline
 	\end{tabular}
 	\caption{Results of Maximum Lateral Devation across 5 Trials for 4 Unique Paths}
@@ -1215,8 +1215,8 @@ The straight path had little relevant insights to gain from it. The average maxi
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_1}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 1}
 		\label{fig:straight_way_1}
-		\end{minipage}
-\end{figure}	
+	\end{minipage}
+\end{figure}
 
 \textbf{Snake Path}
 
@@ -1236,8 +1236,8 @@ The snake path was originally chosen to evaluate how effectively the autonomous 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_1}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 1}
 		\label{fig:snake_way_1}
-		\end{minipage}
-\end{figure}	
+	\end{minipage}
+\end{figure}
 
 \textbf{Circle Path}
 
@@ -1257,8 +1257,8 @@ The third trial map our team chose was the Circle path, which was originally cho
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_1}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 1}
 		\label{fig:circle_way_1}
-		\end{minipage}
-\end{figure}	
+	\end{minipage}
+\end{figure}
 
 \textbf{Merge Path}
 
@@ -1278,12 +1278,12 @@ The final trial that our team chose was a merge path. This means that the vehicl
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_1}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 1}
 		\label{fig:merge_way_1}
-		\end{minipage}
+	\end{minipage}
 \end{figure}
 
 \textbf{Conclusions}
 
-Overall, the system was not capable of maintinging a maximum lateral error below 0.45 meters in all tested environments. It was capable of maintining a sufficiently low maximum lateral error when the shape of curves in the road was sufficiently shallow, but after a certain point was no longer capable of always remaining between the lane lines. Furthermore, the system was incapable of keeping when any disturbances to the lane data were present since when the other lane merged onto the vehicles path it was incapable of properly determining the lane center and flew off course. 
+Overall, the system was not capable of maintinging a maximum lateral error below 0.45 meters in all tested environments. It was capable of maintining a sufficiently low maximum lateral error when the shape of curves in the road was sufficiently shallow, but after a certain point was no longer capable of always remaining between the lane lines. Furthermore, the system was incapable of keeping when any disturbances to the lane data were present since when the other lane merged onto the vehicles path it was incapable of properly determining the lane center and flew off course.
 
 Of further note, the other graphs generated in the other trials can be found in Appendix B.
 
@@ -1570,8 +1570,8 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_2}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 2}
 		\label{fig:straight_way_2}
-		\end{minipage}
-\end{figure}	
+	\end{minipage}
+\end{figure}
 
 \begin{figure}[H]
 	\centering
@@ -1587,8 +1587,8 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_3}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 3}
 		\label{fig:straight_way_3}
-		\end{minipage}
-\end{figure}	
+	\end{minipage}
+\end{figure}
 
 \begin{figure}[H]
 	\centering
@@ -1604,8 +1604,8 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_4}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 4}
 		\label{fig:straight_way_4}
-		\end{minipage}
-\end{figure}	
+	\end{minipage}
+\end{figure}
 
 \begin{figure}[H]
 	\centering
@@ -1621,8 +1621,8 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_straight_5}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Straight Path Trial 5}
 		\label{fig:straight_way_5}
-		\end{minipage}
-\end{figure}	
+	\end{minipage}
+\end{figure}
 
 
 
@@ -1646,7 +1646,7 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_2}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 2}
 		\label{fig:snake_way_2}
-		\end{minipage}
+	\end{minipage}
 \end{figure}
 
 \begin{figure}[H]
@@ -1663,7 +1663,7 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_3}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 3}
 		\label{fig:snake_way_3}
-		\end{minipage}
+	\end{minipage}
 \end{figure}
 
 \begin{figure}[H]
@@ -1680,7 +1680,7 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_4}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 4}
 		\label{fig:snake_way_4}
-		\end{minipage}
+	\end{minipage}
 \end{figure}
 
 \begin{figure}[H]
@@ -1697,7 +1697,7 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_snake_5}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Snake Path Trial 5}
 		\label{fig:snake_way_5}
-		\end{minipage}
+	\end{minipage}
 \end{figure}
 
 
@@ -1721,7 +1721,7 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_2}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 2}
 		\label{fig:circle_way_2}
-		\end{minipage}
+	\end{minipage}
 \end{figure}
 
 \begin{figure}[H]
@@ -1738,7 +1738,7 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_3}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 3}
 		\label{fig:circle_way_3}
-		\end{minipage}
+	\end{minipage}
 \end{figure}
 
 \begin{figure}[H]
@@ -1755,7 +1755,7 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_4}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 4}
 		\label{fig:circle_way_4}
-		\end{minipage}
+	\end{minipage}
 \end{figure}
 
 \begin{figure}[H]
@@ -1772,7 +1772,7 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_circle_5}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Circle Path Trial 5}
 		\label{fig:circle_way_5}
-		\end{minipage}
+	\end{minipage}
 \end{figure}
 
 
@@ -1796,7 +1796,7 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_2}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 2}
 		\label{fig:merge_way_2}
-		\end{minipage}
+	\end{minipage}
 \end{figure}
 
 \begin{figure}[H]
@@ -1813,7 +1813,7 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_3}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 3}
 		\label{fig:merge_way_3}
-		\end{minipage}
+	\end{minipage}
 \end{figure}
 
 \begin{figure}[H]
@@ -1830,7 +1830,7 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_4}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 4}
 		\label{fig:merge_way_4}
-		\end{minipage}
+	\end{minipage}
 \end{figure}
 
 \begin{figure}[H]
@@ -1847,7 +1847,7 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\includegraphics[width=\linewidth]{/overall_eval/waypoints_merge_5}
 		\captionof{figure}{Vehicle Path compared to Lane Center for Merge Path Trial 5}
 		\label{fig:merge_way_5}
-		\end{minipage}
+	\end{minipage}
 \end{figure}
 
 \end{document}
