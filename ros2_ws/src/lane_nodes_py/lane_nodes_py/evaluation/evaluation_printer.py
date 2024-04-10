@@ -57,7 +57,6 @@ class DataAnalyzer():
             if np.cross((front[0] - back[0], front[1] - back[1]),
                         (current_location[0] - back[0], current_location[1] - back[1])) < 0:
                 d = -d
-            # TODO: Figure out a way to differentiate between which side of the waypoint the lad is on
 
             angle = np.arctan2((front[1] - back[1]), (front[0] - back[0]))
 
@@ -84,7 +83,7 @@ class DataAnalyzer():
         plt.ylabel('Lateral Error(meters)')
 
         ax = plt.gca()
-        globaly = [-1.5, 1.5]
+        globaly = [-5.5, 5.5]
         ax.set_ylim(globaly)
         plt.grid(axis='y')
         plt.savefig('/root/Lateral_Error.png')
@@ -114,18 +113,6 @@ class DataAnalyzer():
         plt.xlabel('X-Coordinate (meters)')
         plt.ylabel('Y-Coordinate (meters)')
 
-        """
-        plt.tick_params(
-            axis='both',  # changes apply to the x-axis
-            which='both',  # both major and minor ticks are affected
-            bottom=False,  # ticks along the bottom edge are off
-            top=False,  # ticks along the top edge are off
-            left=False,
-            right=False,
-            labelleft=False,
-            labelbottom=False)  # labels along the bottom edge are off
-        """
-
         plt.legend()
 
         plt.text(self.vehicle_path[0].pose.pose.position.x, self.vehicle_path[0].pose.pose.position.y, 'Start')
@@ -154,6 +141,14 @@ class DataAnalyzer():
             diff = (globalx[1] - globalx[0]) - (globaly[1] - globaly[0])
             globaly[1] += diff / 2
             globaly[0] -= diff / 2
+
+        ten_percent_x = (globalx[1] - globalx[0]) / 10
+        globalx[1] += ten_percent_x
+        globalx[0] += ten_percent_x
+
+        ten_percent_y = (globaly[1] - globaly[0]) / 10
+        globaly[1] += ten_percent_y
+        globaly[0] += ten_percent_y
 
         ax = plt.gca()
         ax.set_xlim(globalx)
