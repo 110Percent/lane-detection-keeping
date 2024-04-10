@@ -1206,6 +1206,22 @@ There are some downsides to using ROS, however. There are many different incompa
 
 Despite these issues, ROS provides huge benefits to the design and implementation of our system. It enables us to easily break down the system into separate subsystems and develop them independently of one another simultaneously. A simple stub can be made to publish test data, enabling easy testing of individual nodes. This makes splitting work between group members easy once topic names and message types are decided upon. It can make it harder to follow the flow of data, but since all nodes must subscribe to a topic using its name, a search in the codebase for the name of a topic will reveal all the nodes that publish and subscribe to it. Additionally, because nodes just publish to a topic without having to know what is subscribing to it, it is easy to swap out parts of the system by simply replacing them with a new node that publishes and subscribes to the same topics. This makes upgrading parts of the system or expanding it very easy. For instance, visualizing the data can be done by a node that simply subscribes to the relevant topics without having to make any other changes to the system. It also means that the system can easily be adapted to run on different hardware/simulations. All that is required is a node that can publish a camera feed to a topic and one that can control the hardware/simulation using the commands sent out by K\&C.
 
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ROS1Distros.png}
+		\captionof{figure}{A sample of ROS 1 distros\cite{ROS1Distros}}
+		\label{fig:ros1distros}
+	\end{minipage}%
+	\hspace{0.1\textwidth}%
+	\begin{minipage}{.45\textwidth}
+		\centering
+		\includegraphics[width=\linewidth]{ROS2Distros.png}
+		\captionof{figure}{A sample of ROS 2 distros\cite{ROS2Distros}}
+		\label{fig:ros2distros}
+	\end{minipage}
+\end{figure}
 
 \subsubsection{Docker}
 In addition to ROS, Docker was also used to assist with the integration of the software and hardware systems. A common problem with software is dependency issues, where running tasks would fail due to a dependency issue present with external packages. Docker solves this issue by making software run in isolated environments, making it less likely for packaging issues to be encountered. This helps with our project because there are a lot of dependency issues present with the simulation and the JetAcker, meaning containerized software is crucial to the applications success.
