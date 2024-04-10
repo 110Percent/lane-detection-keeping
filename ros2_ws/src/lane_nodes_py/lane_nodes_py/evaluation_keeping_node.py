@@ -54,7 +54,7 @@ class EvaluationKeeping(Node):
         self.get_logger().info("Evaluation Node Initialized with mode " + str(self.eval_mode))
 
     def publish_latest_path(self):
-        self.get_logger().info('Publishing the latest generated path')
+        # self.get_logger().info('Publishing the latest generated path')
         msg = self.lane_pair
         if msg is None:
             return

@@ -26,7 +26,7 @@ class KeepingNode(Node):
         self.timer = self.create_timer(1 / OUTPUT_FREQUENCY, self.movement_output_callback)
 
         # Create the subscriber for receiving lane data
-        if os.environ['VEHICLE_VELOCITY'] != "FULL":
+        if os.environ['EVAL_MODE'] != "FULL":
             self.lane_subscription = self.create_subscription(
                 LaneLocation,
                 'bev_lane_location_data',
