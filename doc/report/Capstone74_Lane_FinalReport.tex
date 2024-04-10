@@ -1,4 +1,4 @@
-\documentclass[titlepage]{article}
+\documentclass[titlepage,draft]{article}
 
 
 \usepackage[T1]{fontenc}
@@ -733,9 +733,58 @@ The networking stack in ROS2 allows nodes between Docker containers to communica
 meaning that running lane detection in a separate container does not add any unnecessary complications in the system's architecture.
 
 \subsubsection{Implementation}
-\underline{Line Detection}
+\underline{Video Input}
+
+The first step in implementing the lane detection aspect of the system is to set up a node that can accept video input
+from a real or virtual camera.
+This node, dubbed the Camera Controller, is responsible for capturing video frames from whichever source the system is
+configured to use and outputting them to the Detection node as \texttt{sensor\_msgs/Image} messages over a ROS topic.
+Since the system, in its state for this year, is designed to run on either the HiWonder JetAcker or a computer running
+the CARLA simulator, the Camera Controller node is set up to accept video input from either the JetAcker's camera
+via the \texttt{/camera/rgb/image\_raw} topic or from the CARLA-ROS bridge's simulated dashcam via the
+\texttt{/carla/ego\_vehicle/camera/rgb/image\_raw} topic.
+One of the main reasons for this design decision is to allow the system to be as hardware-agnostic as possible,
+especially given that one of the initial cameras we were considering using for the JetAcker required a custom driver
+to be installed on the system, and we wanted to minimize coupling between the system and the hardware it runs on.
+\\
+
+\underline{Video Preprocessing}
+
+CLRNet expects images to be in a $800 \times 600$ resolution before processing, with a configurable \texttt{cut\_height}
+parameter that determines how much of the image from the top is cropped before being fed into the network.
+When CLRNet was initially trained on the TuSimple dataset, the images were cropped to remove the top 320 pixels in order
+to remove irrelevant information from above the horizon line (not used in lane detection) from frames.
+Since CLRNet is trained on dashcam footage, any additional preprocessing steps such as colour space conversion
+may yield worse results than the original images, as the network is already trained to work with the colour space
+provided by the dashcam.
+\\
+
+\underline{Lane Detection}
+
+Using CLRNet for lane detection without re-training the model on the dataset is relatively simple.
+TuRoad provides the LaneDet \cite{LaneDet} tool, a Python program that interfaces with different lane detection models
+to detect lanes in images and show the results in a window or save them to a file.
+While the tool is designed to be a command-line utility, it can be easily modified to be used as a Python module
+to be integrated into the Detection node by replacing the file path input with input provided by the Camera Controller node.
+LaneDet also does not have explicit support for CLRNet, but the model can be loaded into the tool by modifying some of
+the dependency imports to load code from the CLRNet Python interface instead of the default model interface in the repository.
+Code in \texttt{detection.py} makes the necessary imports to code which was borrowed from LaneDet to load the
+CLRNet model and run it on arbitrary video frames which are passed in from the Camera Controller node.
+\\
+
+\underline{Detection Results}
+
+Once CLRNet has been run on a video frame, the model provides output formatted as a list of lanes, where each lane is
+a series of points on the lane.
+Each point is a tuple of decimal numbers ranging from 0 to 1, representing the x and y coordinates of the point with
+respect to the input image's dimensions.
+Upon a successful detection cycle, the Detection node makes the required formatting adjustments to the data before sending
+it to the Keeping \& Control node.
+\\
+
 
 \underline{Messaging and Data Transformations}
+
 The first challenge addressed by the Messaging and Data Transformations module is the reformatting of lane data into a ROS compatible data type. Publishing messages to ROS topics first requires the use of message interfaces. The interfaces for the system are defined in the \texttt{/ros2\_ws/src/lane\_interfaces} directory. The interface for sending lane location data is named LaneLocation and consists of five attributes, stamp, frame\_id, lanes, row\_lengths, and img\_shape. The stamp and frame\_id attributes are of type string and provide the timestamp for the message and filename for the image associated with the lanes respectively. These two attributes are not currently used by the system, but were added to include metadata that may become useful for future features. The lanes attribute is an array with elements of type float32. This attribute contains the data representing the lanes detected for an image. The row\_lengths attribute is an array with elements of type int32 and stores the number of points for each detected line. The image\_shape attribute is also an array with elements of type int32 and stores the dimensions of the image, to be used in the perspective transformation.
 
 Flattening and Unflattening
@@ -1852,4 +1901,4 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 
 \end{document}
 
-% LocalWords:  leaderboard Ackermann
+% LocalWords:  leaderboard Ackermann JetAcker
