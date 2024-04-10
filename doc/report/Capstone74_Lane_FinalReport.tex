@@ -32,6 +32,10 @@
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
 T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \addbibresource{References.bib}
+\addbibresource{external/egbib.bib}
+
+\newcommand{\methodname}{CLRNet}
+
 \begin{document}
 
 \title{A Lane Detection and Following System for Autonomous Vehicles\\
@@ -805,6 +809,19 @@ Object 1 depicts the structure of the lanes before flattening, and object 2 depi
 
 
 \subsubsection{Evaluation}
+
+\input{external/tusimple}
+
+Given the extensive evaluation performed on CLRNet by its authors, we used the results of their experiments described in
+the CLRNet paper \cite{zheng2022clrnet} as a benchmark for its use in the system.
+For one of its benchmarks, Zheng et el. used the TuSimple dataset to compare performance scores of the different implementations
+of CLRNet to other state-of-the-art lane detection models.
+CLRNet, using ResNet18 as a backbone, provides the highest F1 score out of all the models tested, with a score of 97.89\%.
+
+In this case, the F1 score is a relevant metric to use for evaluating lane detection performance, as it measures both
+the rate at which the model correctly detects lanes and the rate at which it correctly ignores non-lane features in the frame.
+The former is important for ensuring the vehicle has a clear understanding of where its lane boundaries are, while the latter
+is important for ensuring the vehicle does not make steering adjustments based on false positives derived from the video frame.
 
 \subsection{Lane Keeping \& Control}
 The Lane Keeping \& Control (K\&C) subsystem is responsible for taking in lane position data with relation to the vehicle, determining the best corrective action to take to steer the vehicle towards the center of its lane and execute the appropriate instructions to the hardware/simulation.
