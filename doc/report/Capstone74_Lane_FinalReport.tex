@@ -112,11 +112,8 @@ The system is expected to function similarly to lane-following technologies in e
 
 \subsubsection{Functional Requirements}
 \begin{itemize}
-	\item  FR1: Lane Detection Accuracy. The system should accurately detect all lane borders within 10 centimetres of their actual position on the road 75\% of the time lane positions are calculated in a given video frame.
 
-	      TODO: Need to confirm why this number is acceptable
-
-	\item FR2: Lane Following Precision. The system should maintain a deviation of no more than 0.45 meters from the center of its lane under normal driving conditions.
+	\item FR1: Lane Following Precision. The system should maintain a deviation of no more than 0.45 meters from the center of its lane under normal driving conditions.
 
 	      In the City of Toronto, the lane width guidelines require that the minimum lane width of any through lane be a minimum
 	      of 3.0 meters. \cite{LaneWidthsGuideline}
@@ -125,13 +122,13 @@ The system is expected to function similarly to lane-following technologies in e
 	      This leaves a maximum of 0.45 meters of leeway that the vehicle can deviate from the center of the lane without
 	      accidentally entering another lane.
 
-	\item FR3: Real-time Processing
+	\item FR2: Real-time Processing
 	      The system should complete the entire processing pipeline from video frame to hardware instruction in 150 milliseconds or less.
 
 	      TODO: Provide a reasoning for why 150 milliseconds is acceptable.
 
 
-	\item FR4: Loosely Coupled Software. The system must only interact with external hardware through dedicated bridges and require minimal configuration between deployment locations.
+	\item FR3: Loosely Coupled Software. The system must only interact with external hardware through dedicated bridges and require minimal configuration between deployment locations.
 
 	      An important part of creating a lane following program is that it is usable in a wide variety of situations with minimal configuration. A lane assist system that is perfect for a single type of vehicle is less practical if it cannot be applied to other kinds of vehicles. Therefore, it is an important functional requirement for our software system to be as hardware-agnostic as possible, and that all interactions with external systems have consistent connections.
 
@@ -592,17 +589,17 @@ Work on the confidence system began near the end of the semester, and it is not 
 \\~\\
 \underline{Messaging and Data Transformations:}
 
-A perspective transformation is a geometric transformation which can be applied to an image or list of points on a plane, to correct or modify its perspective. Perspective transformations can be used to correct distortions in an image or modify the viewpoint that an image is perceived at.
+The main transformation peformed on the lane data is a perspective transformation. A perspective transformation is a geometric transformation which can be applied to an image or list of points on a plane, to correct or modify its perspective \cite{CarletonHomography}. Perspective transformations can be used to correct distortions in an image or modify the viewpoint that an image is perceived at.
 Homography refers to a transformation that maps points from one plane to another. In computer vision applications, homography is often used to describe the relationship of two images taken of the same scene, from different perspectives. Homography is useful for perspective transformations because it retains proportionality of the points within the image. To perform a perspective transformation, a homography matrix must be calculated. A homography matrix is a 3x3 matrix which describes the perspective transformation between two planes.
 The first step of a typical method for generating a homography matrix is to identify sample points in the source image which form a polygon whose proportions are known, irrespective of how they may appear in the image. This is often done by identifying a quadrilateral within the source image which is known to be rectangular. For example, if an image contains a tile floor with rectangular tiles, the four corners of a tile may be used as the source points. The angles between these points are known to be 90 degrees, so the corresponding coordinates in the transformed image can be determined. From these source and destination points, the homography matrix may be generated and used the image or list of points within the image to complete the perspective transformation. Figure \ref{CarletonTransform} gives an example perspective transformation. The source points in the source image are chosen, shown on the left, and their corresponding points on the destination image are shown on the right.
 \begin{figure}
 	\centering
 	\includegraphics[width=6in]{transform_carleton.png}
-	\caption{An example of a perspective transformation.}
+	\caption{An example of a perspective transformation \cite{CarletonHomography}.}
 	\label{CarletonTransform}
 \end{figure}
 
-
+When it comes to publishing lane data messages to ROS topics, some configuration is required to ensure compatibility with the underlying ROS messaging functionality. ROS messages are defined in a .msg file, which specifies the message type and fields. The message type is the name of the message, and the fields are the data that the message contains. To publish this data to a ROS topic, the data must be converted to a ROS message type \cite{ros_documentation}. For sending lane data, a custom message type must be defined in a .msg file. This message type must contain the data that is to be sent, and the data must be converted to this message type before being published to the ROS topic. In regards to our system, the lane data needing to be published is contained in a multidimensional array. ROS provides an interface for sending multidimensional arrays where a schema must be defined and this schema is used for processing the array into a message that can be published to a ROS topic \cite{ros_multi_array}. Another option for sending lane data involves flattening the data into a one dimensional array of \texttt{float32} values. This transforms the data into a compatible message type which can be published to a ROS topic. The data can then be reconstructed from the one dimensional array when it is received by another node. 
 
 
 \subsubsection{Conceptualization}
@@ -718,9 +715,9 @@ jitter introduced by jagged lines caused by errors in the detection subsystem.
 \underline{Messaging and Data Transformations}
 The two main tasks of the Messaging and Data Transformations subsystem are to process the lane data into a format that can be published to a ROS topic, and to perform any transformations on the detected lane markings before they are used by the K\&C subsystem.
 
-After processing source images, the Detection module outputs lane markings as a list of lists, with each list representing a detected line, and each line consisting of several x,y coordinates denoting points on the line. TODO: reference appendix of message schema. This formatting is useful for parsing the lane data, but cannot be easily included in a ROS message. ROS offers a functionality for publishing multi-dimensional arrays to topics; however, gaining familiarity with this functionality would be time consuming and the Python implementation for flattening the list of lines was not overly complex. Because of this, the decision was made to flatten the lane data before publishing it in a ROS message, and unflatten the lane data after it was received.
+After processing source images, the Detection module outputs lane markings as a list of lists, with each list representing a detected line, and each line consisting of several x,y coordinates denoting points on the line.  This formatting is useful for parsing the lane data, but cannot be easily included in a ROS message. ROS offers a functionality for publishing multi-dimensional arrays to topics; however, gaining familiarity with this functionality would be time consuming and the Python implementation for flattening the list of lines was not overly complex. Because of this, the decision was made to flatten the lane data before publishing it in a ROS message, and unflatten the lane data after it was received.
 
-The mechanism used in the K\&C system, described in, CONCEPTUALIZATION SECTION FOR K\&C, requires data where the lane markings are plotted on a cartesian grid from a top-down perspective of the scene. The K\&C subsystem assumes the position of the camera to be at the origin, with lane markings extending in the positive y direction with lines to the left of the car having negative x coordinates and lines to the right of the car having positive x coordinates. These stipulations mean that after lanes have been detected from the source image, a perspective transformation must be performed to provide usable lane data to the K\&C subsystem for making steering adjustments. This design decision increases the risk of issues resulting from propagation of error or latency through the additional calculations, but it allows for the integration with the chosen solution for the K\&C subsystem. For future iterations of the system, the perspective transformation may become unnecessary, depending on the specific controller used in those future iterations.
+The mechanism used in the K\&C system, described in Section \ref{KCConcept}, requires data where the lane markings are plotted on a cartesian grid from a top-down perspective of the scene. The K\&C subsystem assumes the position of the camera to be at the origin, with lane markings extending in the positive y direction with lines to the left of the car having negative x coordinates and lines to the right of the car having positive x coordinates. These stipulations mean that after lanes have been detected from the source image, a perspective transformation must be performed to provide usable lane data to the K\&C subsystem for making steering adjustments. This design decision increases the risk of issues resulting from propagation of error or latency through the additional calculations, but it allows for the integration with the chosen solution for the K\&C subsystem. For future iterations of the system, the perspective transformation may become superfluous, depending on the specific controller used in those future iterations.
 
 
 \subsubsection{Software Architecture}
@@ -801,16 +798,32 @@ it to the Keeping \& Control node.
 
 
 \underline{Messaging and Data Transformations}
+
+
 The first challenge addressed by the Messaging and Data Transformations module is the reformatting of lane data into a ROS compatible data type. Publishing messages to ROS topics first requires the use of message interfaces. The interfaces for the system are defined in the \texttt{/ros2\_ws/src/lane\_interfaces} directory. The interface for sending lane location data is named LaneLocation and consists of five attributes, stamp, frame\_id, lanes, row\_lengths, and img\_shape. The stamp and frame\_id attributes are of type string and provide the timestamp for the message and filename for the image associated with the lanes respectively. These two attributes are not currently used by the system, but were added to include metadata that may become useful for future features. The lanes attribute is an array with elements of type float32. This attribute contains the data representing the lanes detected for an image. The row\_lengths attribute is an array with elements of type int32 and stores the number of points for each detected line. The image\_shape attribute is also an array with elements of type int32 and stores the dimensions of the image, to be used in the perspective transformation.
 
-Flattening and Unflattening
-The lines detected by the Detection subsystem are outputted as a list of lists, with each list representing a detected line, and each line consisting of several x,y coordinates denoting points on the line, as described in Section \ref{DetConcept}. Since the object is a multidimensional list, it must be restructured to allow for it to be published to a ROS topic. To account for this, the list was flattened by iterating through each list of points, and separately adding the x and y components to a list. The points remain ordered as they were in the original list. An example is shown below:
+The lines detected by the Detection subsystem are outputted as a list of lists, with each list representing a detected line, and each line consisting of several x,y coordinates denoting points on the line, as described in Section \ref{DetConcept}. Since the object is a multidimensional list, it must be restructured to allow for it to be published to a ROS topic. To account for this, the list was flattened by iterating through each list of points, and separately adding the $x$ and $y$ components to a list. The points remain ordered as they were in the original list.
 
 \[ 1: \{[(x1, y1), (x2, y2), \cdots], [(x3, y3), (x4, y4), \cdots ], [(x5, y5), (x6, y6), \cdots], \cdots \} \]
 \[ 2: \{x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, \cdots\} \]
 
-Object 1 depicts the structure of the lanes before flattening, and object 2 depicts the lanes after flattening.
+List 1 depicts the structure of the lanes before flattening, and List 2 depicts the lanes after flattening. The implementation for the flattening and unflattening methods is contained in the \texttt{line\_transformations.py} file. For unflattening the data, the process is reversed by iterating through the flattened list and adding the $x$ and $y$ components to a list of points. The points are then grouped into lists of points, with each list representing a detected line. 
 
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{ikea_lines.png}
+	\caption{An example image with detected lane markings, before perspective transformation.  \textit{Modified from} \cite{ikea_image}}
+	\label{ikea_lines}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[height=0.6\textwidth]{top_down_ikea.png}
+	\caption{The example image from Figure \ref{ikea_lines}, after perspective transformation.  \textit{Modified from} \cite{ikea_image}}
+	\label{transformed_ikea}
+\end{figure}
+
+The next challenge tackled by the Messaging and Data Transformation module was to transform the lanes from the first person camera perspective to a top down representation of the scene. In the \texttt{lanes\_to\_birds\_eye()} method in \texttt{line\_transformations.py} file. This method takes lane data as input and converts each point into a corresponding point in the top donw perspective. To obtain the homography matrix for the transformation, the vanishing point of the image is calculated to allow a source trapezoid to be defined \cite{johncmitchell}. The source trapezoid is used in conjunction with a destination rectangle and both are passed into the \texttt{cv2.getPerspectiveTransform()} method from Python's OpenCV library. The homography matrix is then used to transform each point in the lane data using the \texttt{cv2.perspectiveTransform()} method. The transformed lane data is then returned to be published to a ROS topic. Figure \ref{ikea_lines} shows an example image with detected lane markings, and Figure \ref{transformed_ikea} shows the same image after perspective transformation. The images themselves are not transformed within the actual implementation and are shown in the figures to improve understanding. 
 
 
 \subsubsection{Evaluation}
@@ -865,6 +878,7 @@ Another important methodology for this project is that of feedback control syste
 Cars and car-like vehicles use an arrangement of linkages called an Ackermann steering geometry in order to steer effectively[17]. It allows for the wheels on the inside and outside of a turn to trace circles of different radii, preventing slipping. In systems that use Ackermann steering or something similar, the front wheels turn while the rear wheels remain in place. In contrast, robots like the JetAuto use mecanum wheels, which allow for omnidirectional movement. While this is a useful property for robots, we intend to use the JetAuto to evaluate the system’s capabilities for car-like vehicles. As such, this subsystem should be able to send commands to vehicles with mecanum wheels that result in Ackermann-like movement. While this concept was not explicitly taught as part of a software engineering degree at carleton, the integration of hardware components with embedded systems relates to the practices discussed in SYSC 3310 Introduction to Real-Time Systems.
 
 \subsubsection{Conceptualization}
+\label{KCConcept}
 
 There are many control loops that could be used to handle the lane keeping and control requirements for this sub-system. However, out of all these methods, there are three that have stood out for us as potential conceptual solutions.\\~\\
 \underline{PID Controller:}\\
