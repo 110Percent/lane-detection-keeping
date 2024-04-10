@@ -79,27 +79,27 @@ class DataAnalyzer():
     def print_measurement_diagrams(self, k, v):
         # Lateral Error
         plt.plot(list(zip(*self.lateral_error))[0], list(zip(*self.lateral_error))[1])
-        plt.title('Lateral Error with k=' + str(k) + ' and base velocity of ' + str(v) + 'm/s Over Time')
+        # plt.title('Lateral Error with k=' + str(k) + ' and base velocity of ' + str(v) + 'm/s Over Time')
         plt.xlabel('Time(seconds)')
         plt.ylabel('Lateral Error(meters)')
 
         ax = plt.gca()
         globaly = [-1.5, 1.5]
         ax.set_ylim(globaly)
-
+        plt.grid(axis='y')
         plt.savefig('/root/Lateral_Error.png')
         plt.clf()
 
         # Heading Error
         plt.plot(list(zip(*self.heading_error))[0], list(zip(*self.heading_error))[1])
-        plt.title('Heading Error with k=' + str(k) + ' and base velocity of ' + str(v) + 'm/s Over Time')
+        # plt.title('Heading Error with k=' + str(k) + ' and base velocity of ' + str(v) + 'm/s Over Time')
         plt.xlabel('Time(seconds)')
         plt.ylabel('Heading Error(radians)')
 
         ax = plt.gca()
         globaly2 = [-0.7, 0.7]
         ax.set_ylim(globaly2)
-
+        plt.grid(axis='y')
         plt.savefig('/root/Heading_Error.png')
         plt.clf()
 
@@ -109,7 +109,7 @@ class DataAnalyzer():
             vehicle_path_points += [(p.pose.pose.position.x, p.pose.pose.position.y)]
         plt.plot(list(zip(*self.waypoints))[0], list(zip(*self.waypoints))[1], label='Waypoint Path')
         plt.plot(list(zip(*vehicle_path_points))[0], list(zip(*vehicle_path_points))[1], label='Vehicle Path')
-        plt.title('Vehicle Path compared to Waypoints for k=' + str(k) + ' and base velocity of ' + str(v) + 'm/s')
+        # plt.title('Vehicle Path compared to Waypoints for k=' + str(k) + ' and base velocity of ' + str(v) + 'm/s')
 
         plt.xlabel('X-Coordinate (meters)')
         plt.ylabel('Y-Coordinate (meters)')
