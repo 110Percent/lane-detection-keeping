@@ -17,7 +17,7 @@ class DataAnalyzer():
         self.calculate_error_over_time()
 
     def calculate_error_over_time(self):
-
+        start_time = self.vehicle_path[0].header.stamp.sec + (self.vehicle_path[0].header.stamp.nanosec * 0.000000001)
         for vehicle_point in self.vehicle_path:
             closest = None
 
@@ -71,10 +71,10 @@ class DataAnalyzer():
             while heading_error < -np.pi:
                 heading_error = heading_error + (2 * np.pi)
             self.heading_error += [
-                (vehicle_point.header.stamp.sec + (0.000000001 * vehicle_point.header.stamp.nanosec), heading_error)]
+                (vehicle_point.header.stamp.sec + (0.000000001 * vehicle_point.header.stamp.nanosec) - start_time, heading_error)]
 
             self.lateral_error += [
-                (vehicle_point.header.stamp.sec + (0.000000001 * vehicle_point.header.stamp.nanosec), d)]
+                (vehicle_point.header.stamp.sec + (0.000000001 * vehicle_point.header.stamp.nanosec) - start_time, d)]
 
     def print_measurement_diagrams(self, k, v):
         # Lateral Error
