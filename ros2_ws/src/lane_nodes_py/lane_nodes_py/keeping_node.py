@@ -5,7 +5,7 @@ from lane_interfaces.msg import LaneLocation, LaneLocation2
 from ackermann_msgs.msg import AckermannDrive
 from lane_nodes_py.keeping.keeping import Keeping
 from lane_nodes_py.keeping.lane_wrapper import LaneWrapper
-import ros2_ws.src.lane_nodes_py.lane_nodes_py.transforms.line_transforms as line_transforms
+import lane_nodes_py.transforms.line_transforms as line_transforms
 
 import os
 

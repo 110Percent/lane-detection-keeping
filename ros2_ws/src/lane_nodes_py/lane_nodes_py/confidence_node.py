@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 
 from lane_interfaces.msg import LaneLocation
-import ros2_ws.src.lane_nodes_py.lane_nodes_py.transforms.line_transforms as line_transforms
+import lane_nodes_py.transforms.line_transforms as line_transforms
 
 from .confidence import Confidence
 
