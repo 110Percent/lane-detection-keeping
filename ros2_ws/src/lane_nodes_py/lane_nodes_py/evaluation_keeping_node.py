@@ -5,13 +5,13 @@ from rclpy.node import Node
 
 from nav_msgs.msg import Path, Odometry
 
-from lane_nodes_py.evaluation_helper import quaternion_to_euler, dist, in_front_arc, polish_path, transform_points
+from lane_nodes_py.evaluation.evaluation_helper import quaternion_to_euler, dist, in_front_arc, polish_path, transform_points
 
-from lane_nodes_py.evaluation_printer import DataAnalyzer
+from lane_nodes_py.evaluation.evaluation_printer import DataAnalyzer
 
 from lane_interfaces.msg import LaneLocation2
 
-from lane_nodes_py.waypoints import wp, wp_straight, wp_snake, wp_circle, wp_merge
+from lane_nodes_py.evaluation.waypoints import wp, wp_straight, wp_snake, wp_circle, wp_merge
 
 import os
 

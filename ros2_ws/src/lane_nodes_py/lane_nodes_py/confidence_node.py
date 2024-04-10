@@ -4,7 +4,7 @@ from rclpy.node import Node
 from lane_interfaces.msg import LaneLocation
 import lane_nodes_py.transforms.line_transforms as line_transforms
 
-from .confidence import Confidence
+from lane_nodes_py.confidence.confidence import Confidence
 
 # ROS 2 node for the confidence system
 class ConfidenceNode(Node):
