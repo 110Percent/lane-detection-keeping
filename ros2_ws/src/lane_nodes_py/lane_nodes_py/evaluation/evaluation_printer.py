@@ -144,11 +144,11 @@ class DataAnalyzer():
 
         ten_percent_x = (globalx[1] - globalx[0]) / 10
         globalx[1] += ten_percent_x
-        globalx[0] += ten_percent_x
+        globalx[0] -= ten_percent_x
 
         ten_percent_y = (globaly[1] - globaly[0]) / 10
         globaly[1] += ten_percent_y
-        globaly[0] += ten_percent_y
+        globaly[0] -= ten_percent_y
 
         ax = plt.gca()
         ax.set_xlim(globalx)
