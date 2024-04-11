@@ -13,6 +13,7 @@
 \usepackage{graphicx}
 \usepackage{indentfirst}
 \usepackage{listings}
+\usepackage{pdfpages}
 \usepackage{setspace}
 \usepackage{textcomp}
 \usepackage{titlesec}
@@ -37,6 +38,8 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \newcommand{\methodname}{CLRNet}
 
 \begin{document}
+
+\pagenumbering{gobble}
 
 \title{A Lane Detection and Following System for Autonomous Vehicles\\
 {\footnotesize Carleton University Engineering Capstone Group \#74}
@@ -74,6 +77,24 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
 
 \newpage
+
+\hspace{0pt}
+\vfill
+
+\begin{quote}
+	We've arranged a society on science and technology in which nobody understands anything about science and technology,
+	and this combustible mixture of ignorance and power sooner or later is going to blow up in our faces. I mean, who i
+	running the science and technology in a democracy if the people don't know anything about it?
+
+	--- Carl Sagan
+\end{quote}
+
+\vfill
+\hspace{0pt}
+
+\newpage
+
+\pagenumbering{arabic}
 
 \setstretch{1.5}
 \begin{abstract}
@@ -129,7 +150,7 @@ The system is expected to function similarly to lane-following technologies in e
 	\item FR2: Real-time Processing
 	      The system should complete the entire processing pipeline from video frame to hardware instruction in 150 milliseconds or less.
 
-		  A period of 150 ms for lane detection is sufficient to detect any changes quickly enough to respond safely. A vehicle moving at 120 km/h, a typical speed to see on a highway, will travel 5 m in 150 ms. At speeds this high, 5 m is not enough distance for any large changes to occur in the road, and no major course corrections could be made in such a short distance. At lower speeds, the distance covered will be substantially smaller. 
+	      A period of 150 ms for lane detection is sufficient to detect any changes quickly enough to respond safely. A vehicle moving at 120 km/h, a typical speed to see on a highway, will travel 5 m in 150 ms. At speeds this high, 5 m is not enough distance for any large changes to occur in the road, and no major course corrections could be made in such a short distance. At lower speeds, the distance covered will be substantially smaller.
 
 
 	\item FR3: Loosely Coupled Software. The system must only interact with external hardware through dedicated bridges and require minimal configuration between deployment locations.
@@ -491,7 +512,7 @@ processing.
 Requirement from system-wide requirements:
 
 \begin{itemize}
-	\item \textbf{FR1}: 
+	\item \textbf{FR1}:
 \end{itemize}
 
 Subsystem-specific requirements:
@@ -539,7 +560,7 @@ Subsystem-specific requirements:
 
 
 \subsubsection{Technologies and Methods}
-~\\
+
 \underline{Line Detection:}
 
 The backbone of the detection subsystem lies in its use of computer vision and machine learning to identify lane markers in video
@@ -594,7 +615,7 @@ The first step of a typical method for generating a homography matrix is to iden
 	\label{CarletonTransform}
 \end{figure}
 
-When it comes to publishing lane data messages to ROS topics, some configuration is required to ensure compatibility with the underlying ROS messaging functionality. ROS messages are defined in a .msg file, which specifies the message type and fields. The message type is the name of the message, and the fields are the data that the message contains. To publish this data to a ROS topic, the data must be converted to a ROS message type \cite{ros_documentation}. For sending lane data, a custom message type must be defined in a .msg file. This message type must contain the data that is to be sent, and the data must be converted to this message type before being published to the ROS topic. In regards to our system, the lane data needing to be published is contained in a multidimensional array. ROS provides an interface for sending multidimensional arrays where a schema must be defined and this schema is used for processing the array into a message that can be published to a ROS topic \cite{ros_multi_array}. Another option for sending lane data involves flattening the data into a one dimensional array of \texttt{float32} values. This transforms the data into a compatible message type which can be published to a ROS topic. The data can then be reconstructed from the one dimensional array when it is received by another node. 
+When it comes to publishing lane data messages to ROS topics, some configuration is required to ensure compatibility with the underlying ROS messaging functionality. ROS messages are defined in a .msg file, which specifies the message type and fields. The message type is the name of the message, and the fields are the data that the message contains. To publish this data to a ROS topic, the data must be converted to a ROS message type \cite{ros_documentation}. For sending lane data, a custom message type must be defined in a .msg file. This message type must contain the data that is to be sent, and the data must be converted to this message type before being published to the ROS topic. In regards to our system, the lane data needing to be published is contained in a multidimensional array. ROS provides an interface for sending multidimensional arrays where a schema must be defined and this schema is used for processing the array into a message that can be published to a ROS topic \cite{ros_multi_array}. Another option for sending lane data involves flattening the data into a one dimensional array of \texttt{float32} values. This transforms the data into a compatible message type which can be published to a ROS topic. The data can then be reconstructed from the one dimensional array when it is received by another node.
 
 
 \subsubsection{Conceptualization}
@@ -810,7 +831,7 @@ The lines detected by the Detection subsystem are outputted as a list of lists, 
 \[ 1: \{[(x1, y1), (x2, y2), \cdots], [(x3, y3), (x4, y4), \cdots ], [(x5, y5), (x6, y6), \cdots], \cdots \} \]
 \[ 2: \{x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, x6, y6, \cdots\} \]
 
-List 1 depicts the structure of the lanes before flattening, and List 2 depicts the lanes after flattening. The implementation for the flattening and unflattening methods is contained in the \texttt{line\_transformations.py} file. For unflattening the data, the process is reversed by iterating through the flattened list and adding the $x$ and $y$ components to a list of points. The points are then grouped into lists of points, with each list representing a detected line. 
+List 1 depicts the structure of the lanes before flattening, and List 2 depicts the lanes after flattening. The implementation for the flattening and unflattening methods is contained in the \texttt{line\_transformations.py} file. For unflattening the data, the process is reversed by iterating through the flattened list and adding the $x$ and $y$ components to a list of points. The points are then grouped into lists of points, with each list representing a detected line.
 
 \begin{figure}
 	\centering
@@ -826,7 +847,7 @@ List 1 depicts the structure of the lanes before flattening, and List 2 depicts 
 	\label{transformed_ikea}
 \end{figure}
 
-The next challenge tackled by the Messaging and Data Transformation module was to transform the lanes from the first person camera perspective to a top down representation of the scene. In the \texttt{lanes\_to\_birds\_eye()} method in \texttt{line\_transformations.py} file. This method takes lane data as input and converts each point into a corresponding point in the top donw perspective. To obtain the homography matrix for the transformation, the vanishing point of the image is calculated to allow a source trapezoid to be defined \cite{johncmitchell}. The source trapezoid is used in conjunction with a destination rectangle and both are passed into the \texttt{cv2.getPerspectiveTransform()} method from Python's OpenCV library. The homography matrix is then used to transform each point in the lane data using the \texttt{cv2.perspectiveTransform()} method. The transformed lane data is then returned to be published to a ROS topic. Figure \ref{ikea_lines} shows an example image with detected lane markings, and Figure \ref{transformed_ikea} shows the same image after perspective transformation. The images themselves are not transformed within the actual implementation and are shown in the figures to improve understanding. 
+The next challenge tackled by the Messaging and Data Transformation module was to transform the lanes from the first person camera perspective to a top down representation of the scene. In the \texttt{lanes\_to\_birds\_eye()} method in \texttt{line\_transformations.py} file. This method takes lane data as input and converts each point into a corresponding point in the top donw perspective. To obtain the homography matrix for the transformation, the vanishing point of the image is calculated to allow a source trapezoid to be defined \cite{johncmitchell}. The source trapezoid is used in conjunction with a destination rectangle and both are passed into the \texttt{cv2.getPerspectiveTransform()} method from Python's OpenCV library. The homography matrix is then used to transform each point in the lane data using the \texttt{cv2.perspectiveTransform()} method. The transformed lane data is then returned to be published to a ROS topic. Figure \ref{ikea_lines} shows an example image with detected lane markings, and Figure \ref{transformed_ikea} shows the same image after perspective transformation. The images themselves are not transformed within the actual implementation and are shown in the figures to improve understanding.
 
 
 \subsubsection{Evaluation}
@@ -896,7 +917,7 @@ There are many control loops that could be used to handle the lane keeping and c
 
 \underline{PID Controller:}
 
-A PID controller is an error driven controller. This means it works by being fed a source of error, and outputs actions intended to minimize it. The output is calculated using three components: a proportional, a derivative, and an integral component \cite{pid_explanation}. 
+A PID controller is an error driven controller. This means it works by being fed a source of error, and outputs actions intended to minimize it. The output is calculated using three components: a proportional, a derivative, and an integral component \cite{pid_explanation}.
 
 First, the proportional component calculates an output value that is directly proportional to the source of error. The effect of the proportional controller on the output is typically a significant immediate reaction to the output of the device. Next is the derivative component, which calculates an output value using the derivative of the error at the current point in time. The derivative component in PID controllers is typically used as a means of dampening the oscillation in the source of error that arises from the proportional component. Lastly, the integral component works by outputting a value proportional to the total error up to the current point in time. Integral components are largely effective at reducing the steady state error of the system to ensure that it reaches the desired value faster.  Using the outputs of these three values, the PID controller adds them together and outputs a command that is intended to minimize the error, which then starts the next cycle of the PID controller \cite{pid_explanation}. Fig.\ref{fig:piddiagram} illustrates a diagram of a typical PID controller.\\
 
@@ -1111,7 +1132,7 @@ Once the vehicle gets within 5 meters of the last waypoint, the evaluation subsy
 		\hline
 		0.5     & 6.0            & 3.620                      & 0.6102                   \\
 		\hline
-		0.5     & 8.0            & 5.121                      & 0.5884                 \\
+		0.5     & 8.0            & 5.121                      & 0.5884                   \\
 		\hline
 		1.0     & 4.0            & 2.190                      & 0.5328                   \\
 		\hline
@@ -1288,13 +1309,13 @@ Each trial path was run through five times to achieve an average maximum lateral
 	\begin{tabular}{c c c c c c c c }
 		\textbf{Trial Path} & \textbf{Trial 1} & \textbf{Trial 2} & \textbf{Trial 3} & \textbf{Trial 4} & \textbf{Trial 5} & \textbf{Average} & \textbf{Standard Deviation} \\ [0.5ex]
 		\hline
-		Straight Path       & 0.0529 m         & 0.0405 m         & 0.0491 m         & 0.0573 m         & 0.0535 m         & 0.0506 m         & 0.0064 m            		\\		
-		\hline         
-		Snake Path          & 0.3216 m         & 0.3174 m         & 0.3202 m         & 0.3172 m         & 0.3223 m         & 0.3197 m         & 0.0023 m            		\\		
-		\hline         
-		Circle Path         & 0.5086 m         & 0.4997 m         & 0.5119 m         & 0.5104 m         & 0.5455 m         & 0.5152 m         & 0.0176 m            		\\		
-		\hline         
-		Merge Path          & 1.4733 m         & 1.3943 m         & 1.4385 m         & 1.4829 m         & 1.4563 m         & 1.4491 m         & 0.0350 m            		\\		
+		Straight Path       & 0.0529 m         & 0.0405 m         & 0.0491 m         & 0.0573 m         & 0.0535 m         & 0.0506 m         & 0.0064 m                    \\
+		\hline
+		Snake Path          & 0.3216 m         & 0.3174 m         & 0.3202 m         & 0.3172 m         & 0.3223 m         & 0.3197 m         & 0.0023 m                    \\
+		\hline
+		Circle Path         & 0.5086 m         & 0.4997 m         & 0.5119 m         & 0.5104 m         & 0.5455 m         & 0.5152 m         & 0.0176 m                    \\
+		\hline
+		Merge Path          & 1.4733 m         & 1.3943 m         & 1.4385 m         & 1.4829 m         & 1.4563 m         & 1.4491 m         & 0.0350 m                    \\
 		\hline
 	\end{tabular}
 	\caption{Results of Maximum Lateral Devation across 5 Trials for 4 Unique Paths}
@@ -1952,6 +1973,10 @@ We bit off a lot more than we could chew. We're happy with the progress, but if 
 		\label{fig:merge_way_5}
 	\end{minipage}
 \end{figure}
+
+\section{Project Proposal}
+
+\includepdf[pages=-,pagecommand={},width=\textwidth]{external/proposal.pdf}
 
 \end{document}
 
