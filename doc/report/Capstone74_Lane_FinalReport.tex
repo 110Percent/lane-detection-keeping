@@ -246,9 +246,9 @@ Lastly, the report will conclude with a reflection done by the group which will 
 \section{The Engineering Project}
 
 \subsection{Health and Safety}
-For most of the development process, work was completed remotely and involved exclusively software development. As a result, there were no significant health and safety concerns that arose during the better part of development. However, as the project moved into the testing phase, potential saftey risks became apparent. The team made sure to follow all safety guidelines when working with the HiWonder JetAcker, and made sure to always have a spotter when the vehicle was in motion. Additionally, the team made sure to always have someone on standby to kill the program, stopping all commands to the JetAcker. The team also made sure a fire extingushier was nearby in case of spontaneous combustion of the JetAcker battery.
+For most of the development process, work was completed remotely and involved exclusively software development. As a result, there were no significant health and safety concerns that arose during the better part of development. However, as the project moved into the testing phase, potential safety risks became apparent. The team made sure to follow all safety guidelines when working with the HiWonder JetAcker, and made sure to always have a spotter when the vehicle was in motion. Additionally, the team made sure to always have someone on standby to kill the program, stopping all commands to the JetAcker. The team also made sure a fire extinguisher was nearby in case of spontaneous combustion of the JetAcker battery.
 
-\subsection{Engineering Profesionalism}
+\subsection{Engineering Professionalism}
 
 The team used their experience from ECOR 4995 to a satisfactory extent during the performance of the project. The foremost principles from this course which we made sure to follow were effectively working as a team, and ensuring sustainability in our system.
 
@@ -259,7 +259,7 @@ In regards to legal and ethical obligations, the team ensured that all usage of 
 \subsection{Project Management}
 One of the goals of the engineering project is real experience in working on a long-term team project. Students should explain what project management techniques or processes were used to coordinate, manage and perform their project.
 
-The way that we approached the development of our system was focused on an agile development cycle. The purpose of this is because while we were confident with our ability to work on the project, we understood that there was a lot of risk involved in what we were trying to do. Because of that, we couldn't set fixed goals and plan too far ahead and were forced to be flexible with deadlines and accomplishing goals. In order to properly keep track of all the required tasks and objectives, we used the project management service "ClickUp", explained in more detail in Chapter 3, which allowed us to easily track what had to be done, what dependencies existed in tasks, and track the progress on our timeline.
+The way that we approached the development of our system was focused on an agile development cycle. The purpose of this is because while we were confident with our ability to work on the project, we understood that there was a lot of risk involved in what we were trying to do. Because of that, we couldn't set fixed goals and plan too far ahead and were forced to be flexible with deadlines and accomplishing goals. In order to properly keep track of all the required tasks and objectives, we used the project management service "ClickUp" \cite{ClickUp}, which allowed us to easily track what had to be done, what dependencies existed in tasks, and track the progress on our timeline.
 
 \subsection{Justification of Suitability for Degree Program}
 In this section, students should explain how the project
@@ -521,7 +521,7 @@ Requirement from system-wide requirements:
 \begin{itemize}
 	\item \textbf{FR2}: Real-time Processing. The system should complete the entire processing pipeline from video frame to hardware instruction in 150 milliseconds or less.
 
-	The Detection subsystem must be perfomant enough to complete the entire processing pipeline in less than 150 milliseconds to ensure that movement commands can be sent in time to properly correct the vehicle's position.
+	      The Detection subsystem must be perfomant enough to complete the entire processing pipeline in less than 150 milliseconds to ensure that movement commands can be sent in time to properly correct the vehicle's position.
 \end{itemize}
 
 Subsystem-specific requirements:
@@ -1451,8 +1451,8 @@ Since the project was a very new domain for everyone in the group, there was a r
 
 For starters, a major initial challenge we encountered during the project was with the convolutional neural network. We initially planned to perform the lane detection by using our own neural network, but we were unable to actually design our own. It was a very ambitious attempt, but unfortunately, we were not sufficiently proficient in that field to be able to even make a simple neural network from scratch. We were able to get around this by simply using an existing pre-trained neural network so we were able to get around the problem in the end.
 
-Additionally, there were numerous challenges that took place in the development of the control system. Since no members of the team had any experience with control systems on account of the entire team being in the software engineering stream, we didn't know how to even start designing systems for that. This means one member of the team was effectively assigned to both learn and create a control system for use in the project. This presented a wide range of challenges through almost every stage of learning. 
-Using the JetAcker posed a far greater challenge than expected on account of the different versions of ROS, but the end result was an incredibly useful ROS bridge Docker container that can be used in any situation in the future where communication between ROS 1 and 2 using arbitrary message types is required. 
+Additionally, there were numerous challenges that took place in the development of the control system. Since no members of the team had any experience with control systems on account of the entire team being in the software engineering stream, we didn't know how to even start designing systems for that. This means one member of the team was effectively assigned to both learn and create a control system for use in the project. This presented a wide range of challenges through almost every stage of learning.
+Using the JetAcker posed a far greater challenge than expected on account of the different versions of ROS, but the end result was an incredibly useful ROS bridge Docker container that can be used in any situation in the future where communication between ROS 1 and 2 using arbitrary message types is required.
 
 The need for the Confidence node was discovered fairly early on, but work on it did not begin until very late into the project and it is incomplete. This should be a high priority for the next group to pick up this project, as it is likely to provide a substantial improvement to the performance of the system and is mostly complete.\\
 
