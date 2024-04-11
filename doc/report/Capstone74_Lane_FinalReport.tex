@@ -11,6 +11,7 @@
 \usepackage{caption}
 \usepackage{float}
 \usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
 \usepackage{indentfirst}
 \usepackage{listings}
 \usepackage{pdfpages}
@@ -87,28 +88,31 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{acronym}
 	\acro{API}{Application Programming Interface}
 
-\acro{CNN}{Convolutional Neural Network}
+	\acro{CNN}{Convolutional Neural Network}
 
-\acro{EOL}{End of Life}
+	\acro{EOL}{End of Life}
 
-\acro{FRX}{Functional Requirement X}
+	\acro{FRX}{Functional Requirement X}
 
-\acro{KNC}{(Lane) Keeping and Control}
+	\acro{KNC}{(Lane) Keeping and Control}
 
-\acro{ML}{Machine Learning}
+	\acro{ML}{Machine Learning}
 
-\acro{MVP}{Minimum Viable Product}
+	\acro{MVP}{Minimum Viable Product}
 
-\acro{NFRX}{Non-Functional Requirement X}
+	\acro{NFRX}{Non-Functional Requirement X}
 
-\acro{PID}{Proportional-Integral-Derivative}
+	\acro{PID}{Proportional-Integral-Derivative}
 
-\acro{ROS}{Robot Operating System}
+	\acro{ROS}{Robot Operating System}
 
-\acro{SAE}{Society for Automotive Engineers}
+	\acro{SAE}{Society for Automotive Engineers}
 
-\acro{SBC}{Single-Board Computer}
+	\acro{SBC}{Single-Board Computer}
 \end{acronym}
+
+
+\setstretch{1.5}
 \newpage
 
 
@@ -116,9 +120,9 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \vfill
 
 \begin{quote}
-	We've arranged a society on science and technology in which nobody understands anything about science and technology,
+	``We've arranged a society on science and technology in which nobody understands anything about science and technology,
 	and this combustible mixture of ignorance and power sooner or later is going to blow up in our faces. I mean, who is
-	running the science and technology in a democracy if the people don't know anything about it?
+	running the science and technology in a democracy if the people don't know anything about it?''
 
 	--- Carl Sagan
 \end{quote}
@@ -128,9 +132,7 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
 \newpage
 
-\pagenumbering{arabic}
 
-\setstretch{1.5}
 \begin{abstract}
 	\noindent Autonomous driving technology has garnered significant attention lately due to its potential to
 	improve road safety and help remove the need for menial adjustments from drivers on the road.
@@ -155,6 +157,20 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 	lane-keeping precision, and computational efficiency.
 \end{abstract}
 
+\textbf{Preamble: Source Code}
+
+The source code for the project and this report can be found at:
+\url{https://github.com/110Percent/lane-detection-keeping}
+
+The repository contains everything needed to run the project, including source code, Dockerfiles and instructions /
+documentation on how to run the project.
+
+
+
+\newpage
+
+
+\pagenumbering{arabic}
 
 \section{Introduction}
 
