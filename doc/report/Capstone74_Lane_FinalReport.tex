@@ -1,4 +1,4 @@
-\documentclass[titlepage, draft]{article}
+\documentclass[titlepage]{article}
 
 
 \usepackage[T1]{fontenc}
@@ -743,6 +743,7 @@ Work on the confidence system began near the end of the project, and it is not y
 \\
 
 \textbf{Messaging and Data Transformations}
+
 The two main tasks of the Messaging and Data Transformations subsystem are to process the lane data into a format that can be published to a ROS topic, and to perform any transformations on the detected lane markings before they are used by the K\&C subsystem.
 
 After processing source images, the Detection module outputs lane markings as a list of lists, with each list representing a detected line, and each line consisting of several x,y coordinates denoting points on the line.  This formatting is useful for parsing the lane data, but cannot be easily included in a ROS message. ROS offers a functionality for publishing multi-dimensional arrays to topics; however, gaining familiarity with this functionality would be time consuming and the Python implementation for flattening the list of lines was not overly complex. Because of this, the decision was made to flatten the lane data before publishing it in a ROS message, and unflatten the lane data after it was received.
