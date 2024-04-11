@@ -1,4 +1,4 @@
-\documentclass[titlepage,draft]{article}
+\documentclass[titlepage]{article}
 
 
 \usepackage[T1]{fontenc}
@@ -147,7 +147,7 @@ The system is expected to function similarly to lane-following technologies in e
 	      This leaves a maximum of 0.45 meters of leeway that the vehicle can deviate from the centre of the lane without
 	      accidentally entering another lane.
 
-	\item FR2: Real-time Processing
+	\item FR2: Real-time Processing.
 	      The system should complete the entire processing pipeline from video frame to hardware instruction in 150 milliseconds or less.
 
 	      A period of 150 ms for lane detection is sufficient to detect any changes quickly enough to respond safely. A vehicle moving at 120 km/h, a typical speed to see on a highway, will travel 5 m in 150 ms. At speeds this high, 5 m is not enough distance for any large changes to occur in the road, and no major course corrections could be made in such a short distance. At lower speeds, the distance covered will be substantially smaller.
@@ -512,7 +512,9 @@ processing.
 Requirement from system-wide requirements:
 
 \begin{itemize}
-	\item \textbf{FR1}:
+	\item \textbf{FR2}: Real-time Processing. The system should complete the entire processing pipeline from video frame to hardware instruction in 150 milliseconds or less.
+
+	The Detection subsystem must be perfomant enough to complete the entire processing pipeline in less than 150 milliseconds to ensure that movement commands can be sent in time to properly correct the vehicle's position.
 \end{itemize}
 
 Subsystem-specific requirements:
@@ -534,13 +536,7 @@ Subsystem-specific requirements:
 	      other solid object.
 	      Drivers are able to recognize these lines, but primitive detection algorithms may not make the distinction that two disjoint
 	      line segments on an image belong to the same road line.
-	\item \textbf{NFR1.1}: Real-time Processing: The subsystem must process video input fast enough to output lane location data
-	      at a rate of no less than 10 frames per second.
-
-	      Real-time processing is critical for a system that controls a vehicle moving at high-speeds along a road such as a highway.
-	      While the curvature of high-speed roads is often slight to allow drivers to maintain control of their vehicles, the
-	      system needs to be able to react to these changes quickly to maintain a smooth path at the centre of its lane as it drives.
-	\item \textbf{NFR1.2}: Generic Input Handling: The subsystem must be able to accept video input that originated from any
+	\item \textbf{NFR1.1}: Generic Input Handling: The subsystem must be able to accept video input that originated from any
 	      class of video device.
 
 	      One of the main goals of this project is that the system remain as hardware-agnostic as possible, and can be adapted for
@@ -548,7 +544,7 @@ Subsystem-specific requirements:
 	      In order to maintain this principle, the detection subsystem must decouple itself from any specific video capture hardware or
 	      simulator that it ingests data from as we develop the system, such that future groups and developers can continue to work
 	      on the system with different hardware or in different simulators.
-	\item \textbf{NFR1.3}: The subsystem must accept and produce data on channels that can be accessed by external and/or future code.
+	\item \textbf{NFR1.2}: The subsystem must accept and produce data on channels that can be accessed by external and/or future code.
 
 	      This system is a starting point for the Lane Detection project for future groups to improve upon in later years.
 	      In addition, future groups may be tasked with combining different autonomous driving systems into a single vehicle that provides
@@ -561,7 +557,7 @@ Subsystem-specific requirements:
 
 \subsubsection{Technologies and Methods}
 
-\underline{Line Detection:}
+\textbf{Line Detection:}
 
 The backbone of the detection subsystem lies in its use of computer vision and machine learning to identify lane markers in video
 frames.
@@ -603,7 +599,7 @@ NVIDIA provides the CUDA (Compute Unified Device Architecture) Toolkit \cite{CUD
 GPUs for general-purpose computational tasks.
 A similar stack, ROCm, is provided by AMD for use with its Radeon series of GPUs. \cite{ROCm}
 
-\underline{Messaging and Data Transformations:}
+\textbf{Messaging and Data Transformations:}
 
 The main transformation peformed on the lane data is a perspective transformation. A perspective transformation is a geometric transformation which can be applied to an image or list of points on a plane, to correct or modify its perspective \cite{CarletonHomography}. Perspective transformations can be used to correct distortions in an image or modify the viewpoint that an image is perceived at.
 Homography refers to a transformation that maps points from one plane to another. In computer vision applications, homography is often used to describe the relationship of two images taken of the same scene, from different perspectives. Homography is useful for perspective transformations because it retains proportionality of the points within the image. To perform a perspective transformation, a homography matrix must be calculated. A homography matrix is a 3x3 matrix which describes the perspective transformation between two planes.
@@ -621,7 +617,7 @@ When it comes to publishing lane data messages to ROS topics, some configuration
 \subsubsection{Conceptualization}
 \label{DetConcept}
 
-\underline{Line Detection:}
+\textbf{Line Detection:}
 
 There are many possible approaches to the problem of detecting road lines from a camera mounted in a vehicle.
 In the planning phase of the project, we considered the use of detection techniques that did not use machine learning at all.
@@ -728,7 +724,7 @@ of view.
 Detected and inferred lanes also maintain a smooth shape, which is critical in our navigation system as we want to minimize
 jitter introduced by jagged lines caused by errors in the detection subsystem.
 
-\underline{Confidence}
+\textbf{Confidence}
 
 The line detection system is not perfect. The exact position of the lines can fluctuate from frame to frame, and lines sometimes disappear briefly before being picked up again. To account for this, a system was designed to take past line data into account when deciding where lines are. This system works by maintaining a list of ``confidence lanes'', which consist of a list of lines that are considered to be a part of the same lane and a confidence value between 0 and 1 that represents how confident the system is that the lane exists. Every time a new set of lines are detected, the system tries to match each one to an existing confidence lane by comparing the position of the line to the average of all the stored lines in each confidence lane. If it is close enough to one, it is added to that confidence lane's list, the oldest one is removed, and the confidence is increased. If it does not match anything, a new confidence lane is created with it as the only element in the list. After all lines have been processed, any confidence lanes that have not had a line added to them have their confidence decreased, and all confidence lanes with a high enough confidence have all their stored lines averaged and sent as output. The goal of this system is to smooth out the fluctuations in detected lines. The average of multiple past lines should reduce the side-to-side movement of the detected line, while the confidence aims to prevent lines from immediately disappearing from the output if they fail to be detected for a few frames.
 
@@ -736,7 +732,7 @@ The confidence system also includes some transformations to normalize the line d
 
 Work on the confidence system began near the end of the project, and it is not yet complete. The bulk of it is done, but there are still a few issues to iron out before it is useful. There is an issue with the implementation for clipping off the portion of the initial line near the horizon that results in the created polynomials being incorrect and making the entire output unusable.
 
-\underline{Messaging and Data Transformations}
+\textbf{Messaging and Data Transformations}
 The two main tasks of the Messaging and Data Transformations subsystem are to process the lane data into a format that can be published to a ROS topic, and to perform any transformations on the detected lane markings before they are used by the K\&C subsystem.
 
 After processing source images, the Detection module outputs lane markings as a list of lists, with each list representing a detected line, and each line consisting of several x,y coordinates denoting points on the line.  This formatting is useful for parsing the lane data, but cannot be easily included in a ROS message. ROS offers a functionality for publishing multi-dimensional arrays to topics; however, gaining familiarity with this functionality would be time consuming and the Python implementation for flattening the list of lines was not overly complex. Because of this, the decision was made to flatten the lane data before publishing it in a ROS message, and unflatten the lane data after it was received.
@@ -771,7 +767,7 @@ The networking stack in ROS2 allows nodes between Docker containers to communica
 meaning that running lane detection in a separate container does not add any unnecessary complications in the system's architecture.
 
 \subsubsection{Implementation}
-\underline{Video Input}
+\textbf{Video Input}
 
 The first step in implementing the lane detection aspect of the system is to set up a node that can accept video input
 from a real or virtual camera.
@@ -786,7 +782,7 @@ especially given that one of the initial cameras we were considering using for t
 to be installed on the system, and we wanted to minimize coupling between the system and the hardware it runs on.
 \\
 
-\underline{Video Preprocessing}
+\textbf{Video Preprocessing}
 
 CLRNet expects images to be in a $800 \times 600$ resolution before processing, with a configurable \texttt{cut\_height}
 parameter that determines how much of the image from the top is cropped before being fed into the network.
@@ -797,7 +793,7 @@ may yield worse results than the original images, as the network is already trai
 provided by the dashcam.
 \\
 
-\underline{Lane Detection}
+\textbf{Lane Detection}
 
 Using CLRNet for lane detection without re-training the model on the dataset is relatively simple.
 TuRoad provides the LaneDet \cite{LaneDet} tool, a Python program that interfaces with different lane detection models
@@ -810,7 +806,7 @@ Code in \texttt{detection.py} makes the necessary imports to code which was borr
 CLRNet model and run it on arbitrary video frames which are passed in from the Camera Controller node.
 \\
 
-\underline{Detection Results}
+\textbf{Detection Results}
 
 Once CLRNet has been run on a video frame, the model provides output formatted as a list of lanes, where each lane is
 a series of points on the lane.
@@ -821,7 +817,7 @@ it to the Keeping \& Control node.
 \\
 
 
-\underline{Messaging and Data Transformations}
+\textbf{Messaging and Data Transformations}
 
 
 The first challenge addressed by the Messaging and Data Transformations module is the reformatting of lane data into a ROS compatible data type. Publishing messages to ROS topics first requires the use of message interfaces. The interfaces for the system are defined in the \texttt{/ros2\_ws/src/lane\_interfaces} directory. The interface for sending lane location data is named LaneLocation and consists of five attributes, stamp, frame\_id, lanes, row\_lengths, and img\_shape. The stamp and frame\_id attributes are of type string and provide the timestamp for the message and filename for the image associated with the lanes respectively. These two attributes are not currently used by the system, but were added to include metadata that may become useful for future features. The lanes attribute is an array with elements of type float32. This attribute contains the data representing the lanes detected for an image. The row\_lengths attribute is an array with elements of type int32 and stores the number of points for each detected line. The image\_shape attribute is also an array with elements of type int32 and stores the dimensions of the image, to be used in the perspective transformation.
@@ -915,7 +911,7 @@ Cars and car-like vehicles use an arrangement of linkages called an Ackermann st
 There are many control loops that could be used to handle the lane keeping and control requirements for this sub-system. However, out of all these methods, there are three that have stood out for us as potential conceptual solutions.
 \\
 
-\underline{PID Controller:}
+\textbf{PID Controller:}
 
 A PID controller is an error driven controller. This means it works by being fed a source of error, and outputs actions intended to minimize it. The output is calculated using three components: a proportional, a derivative, and an integral component \cite{pid_explanation}.
 
@@ -954,7 +950,7 @@ The main advantage with a PID controller is its simplicity, both with designing 
 Despite the advantages, there are numerous drawbacks to using a PID controller. For starters, the tuning of the controller can only be so effective. Since there are only three constants to tune, there is a much worse peak to the performance of the controller compared to more sophisticated models, such as the Model Predictive Control described next. Additionally, since the model is error driven it is very sensitive to noise in the error, especially with respect to the derivative component.
 \\
 
-\underline{Model Predictive Control:}
+\textbf{Model Predictive Control:}
 
 The MPC controller is a more sophisticated control system compared to the PID controller, with use in various industries and areas in academia \cite{GARCIA1989335}. It utilizes a model of the system, a cost function, and an optimization algorithm to determine the optimal strategy for minimizing error, which in this case is the distance between the car's centre and the centre of its lane.
 
@@ -963,7 +959,7 @@ One significant advantage of this controller is its potential for high accuracy 
 However, MPC comes with the drawback of increased complexity. Unlike a PID controller, which is relatively straightforward to set up and configure, implementing an MPC controller involves considering a larger set of variables and a model of the environment surrounding the system, making it more challenging during the initial stages of development.
 \\
 
-\underline{Stanford Mathematical Model (Stanley Controller):}
+\textbf{Stanford Mathematical Model (Stanley Controller):}
 
 The Stanley controller is a model based controller that calculates its recommended trajectory by using the vehicles distance to the centre of the path and the heading error with the tangent line of the closest point. Most notably, it focuses on the trajectory of the vehicle with respect to the orientation of the front wheels as opposed to the entire vehicles body\cite{4282788}.
 
@@ -988,7 +984,7 @@ The main advantage of the Stanley controller is that it can be very easy to impl
 However, a disadvantage with the control system is that the dynamic model is not interchangeable between environments. The dynamic model has a very strong relationship with the architecture of the vehicle, meaning that it is not particularly interchangeable to new systems.
 \\
 
-\underline{Chosen Solution:}
+\textbf{Chosen Solution:}
 
 The original decision for which control system architecture to base the subsystem on was a PID controller. At that time, the two main control systems that were being considered was the PID controller and the MPC controller. Between these two options, it was significantly more difficult to try and implement the MPC controller due to the complexity associated with its implementation and the more complex theory associated with it. As a result, a PID controller was chosen as the starting point for development.
 
@@ -1019,7 +1015,7 @@ The subsystem makes use of a proxy pattern for handling and sending requests. Th
 
 
 \subsubsection{Implementation}
-\underline{Communication Schema}
+\textbf{Communication Schema}
 
 The first step in building the K\&C subsystem was by establishing the communication schema between this subsystem and the adjacent control systems. This was imperative since without an idea of how each subsystem would communicate with this one, it would be impossible to start the development process. This meant identifying the correct input to the system, and the correct output from the system to the environment.
 
@@ -1034,7 +1030,7 @@ For the input to the system, a schema needed to be designed that allowed for a l
 	\label{fig:tusimple_dataformat}
 \end{figure}
 
-\underline{Creating the PID Controller}
+\textbf{Creating the PID Controller}
 
 After the data schema was established, the next step was the PID controller. The PID controller was originally chosen as the control system due to its simplicity of design, so this represented the next hurdle for implementing this subsystem.
 
@@ -1044,7 +1040,7 @@ The implementation of the PID controller can be found within our project
 repository at \\\texttt{/lane-detection-keeping/ros2\textunderscore ws/src/lane\textunderscore nodes\textunderscore py/lane\textunderscore nodes\textunderscore py/keeping/pid\textunderscore controller.py}
 \\
 
-\underline{Creating the Internal Map}
+\textbf{Creating the Internal Map}
 
 After the PID controller was implemented, the next step was creating an internal representation of the vehicle's environment. This is important for two reasons. For starters, having an internal representation of the environment would be essential in calculating the error that needs to be fed into the PID controller for it to work. Without an appropriate model of the environment available, it would be hard to determine the error and the control system would have a hard time properly steering. Additionally, since the rate at which lane data is produced is much slower than the rate at which the control system must enact movement commands, the system must be able to track roughly how far the vehicle has moved through its environment as it generates movement commands. Without this, the subsystem would not be able to achieve its output frequency of 50Hz.
 
@@ -1072,17 +1068,17 @@ The full implementation of the internal mapping system can be found within the c
 \texttt{/lane-detection-keeping/ros2\textunderscore ws/src/lane\textunderscore nodes\textunderscore py/lane\textunderscore odes\textunderscore py/keeping/robot\textunderscore path.py}
 \\
 
-\underline{The Problem with PID}
+\textbf{The Problem with PID}
 
 After having created the PID controller and the internal representation of the vehicle in its environment, it came time to put these two components together to create a functional system. However, this proved to be a challenge. While the theory behind the use of a PID controller is very straightforward, a conventional PID controller works by taking a single source of error and outputting commands that are intended to minimize it. With respect to a system such as autonomous driving, it's difficult to identify a singular source of error. For example, if we consider the source of error to be just the distance between the vehicles front axis to the centre of the lane and the output to represent the steering angle, then it becomes very easy for the vehicle to overcompensate its steering and start turning the opposite direction if the vehicle is too far away. On the other hand, if the source of error is the heading error of the vehicle then the vehicle will reach a parallel state with the centre of the lane and not be obliged to move closer to it. As a result, it proved difficult to identify an appropriate way to implement a single PID controller that can effectively include both of these errors in the PID algorithm. Furthermore, attempts to find implementations of PID controllers online for autonomous driving proved difficult and unhelpful, and a search for an alternative control system began.
 \\
 
-\underline{The Discovery of the Stanley Controller}
+\textbf{The Discovery of the Stanley Controller}
 
 Further research conducted on simple control systems for autonomous driving led to the discovery of the Stanley Controller. This controller was originally designed in 2005 by Stanford University for autonomous driving in the 2005 DARPA Autonomous Driving Challenge, and works by using a mathematical model of the vehicle's position relative to the centre of the lane and provides a means of effectively balancing the cross track error and the heading error of the vehicle at the same time \cite{4282788}, addressing the issues with implementing a PID controller. Since this control method looked functional and there was sufficient documentation from the control system's original page, the team worked to implement this control system instead.
 \\
 
-\underline{The Implementation of the Stanley Controller}
+\textbf{The Implementation of the Stanley Controller}
 
 The Stanley controller primarily requires two sources of error to function.
 
@@ -1109,7 +1105,7 @@ After these two heading values have been determined, their values are added toge
 Another important part of the output command is the output velocity. The AckermannDrive message type requires a target speed, so another mechanism has to be put in place to determine which speed should be used. For our system, we decided that a PID controller should be effective for managing the velocity of the controls, but in order to keep things as simple as possible to reduce the amount of issues no controller was implemented for the longitudal control and only the lateral controllers were used.
 \\
 
-\underline{Evaluating the Stanley Controller}
+\textbf{Evaluating the Stanley Controller}
 
 After the controller was implemented, necessary procedures had to be created in order to properly evaluate it. Since at this point in time only CARLA has been properly integrated, a means of evaluating the performance of the controller though CARLA had to be used. Fortunately, within CARLA is a series of waypoints that are generated whenever a vehicle spawns into a map. Those waypoints can be taken and then modified to be fed into the control system as a means of providing a path without the detection module by providing those waypoints in a form similar to the way lanes are presented to the subsystem. In order to send the right waypoints, a new evaluation subsystem was designed that listens to CARLA for the vehicle's current position in the map and generates a series of points to be sent to the vehicle. Furthermore, since this subsystem can listen to the vehicle's position at all times, it is able to output graphs detailing the path of the vehicle as it travels through the system, and with the waypoints being followed identify how far away from the center of the road the vehicle is at all times. The visualizations for the vehicle were created with pythons MatPlotLib package.
 
