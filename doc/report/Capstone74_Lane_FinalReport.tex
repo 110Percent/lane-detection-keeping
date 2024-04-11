@@ -29,6 +29,7 @@
 }
 \usepackage{multirow}
 \usepackage{makecell}
+\usepackage{acronym}
 
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
 T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -121,11 +122,40 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 	lane-keeping precision, and computational efficiency.
 \end{abstract}
 
+\newpage
+\section*{Table of Abbreviations}
+\begin{acronym}
+	\acro{API}{Application Programming Interface}
 
+\acro{CNN}{Convolutional Neural Network}
+
+\acro{EOL}{End of Life}
+
+\acro{FRX}{Functional Requirement X}
+
+\acro{KNC}{(Lane) Keeping and Control}
+
+\acro{ML}{Machine Learning}
+
+\acro{MVP}{Minimum Viable Product}
+
+\acro{NFRX}{Non-Functional Requirement X}
+
+\acro{PID}{Proportional-Integral-Derivative}
+
+\acro{ROS}{Robot Operating System}
+
+\acro{SAE}{Society for Automotive Engineers}
+
+\acro{SBC}{Single-Board Computer}
+\end{acronym}
+\newpage
 
 \section{Introduction}
 
 The primary objective of this project is to create a system for autonomous vehicles that uses computer vision and hardware interfacing to allow the vehicle to monitor the position of lanes on its road and maintain a steady position within its own lane as it drives.
+
+
 
 \subsection{Identification of the Need}
 Our project addresses a critical concern in autonomous vehicle development: the reliable detection and following of lanes in dynamic and diverse real-world environments. By enhancing the capabilities of autonomous vehicles to maintain their positions within lanes, our system aims to bolster road safety and reduce the need for human interaction for maintaining a steady course on trips in various kinds of roads and environmental conditions.
